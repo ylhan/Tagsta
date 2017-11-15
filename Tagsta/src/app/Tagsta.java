@@ -1,14 +1,18 @@
 package app;
 
 
+import app.view.DirectoryViewController;
 import app.view.RootLayoutController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.TreeItem;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -17,6 +21,7 @@ import java.io.IOException;
 public class Tagsta extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
+    private DirectoryViewController dvc;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -65,6 +70,10 @@ public class Tagsta extends Application {
 
             // Set person overview into the center of root layout.
             rootLayout.setCenter(imageOverview);
+
+            // Initialize the directory controller and give it a reference to this app
+            dvc = loader.getController();
+            dvc.setMainApp(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -79,5 +88,29 @@ public class Tagsta extends Application {
      */
     public Stage getPrimaryStage() {
         return primaryStage;
+    }
+
+    /**
+     * Updates the directory view images
+     * @param image the updated image
+     */
+    public void updateImage(Image image) {
+        dvc.updateImage(image);
+    }
+
+    /**
+     * Updates the directory view tree
+     * @param item the updated directory view
+     */
+    public void updateDirectoryView(TreeItem<File> item) {
+        dvc.updateDirectoryView(item);
+    }
+
+    /**
+     * Updates the file view
+     * @param item the updated file view
+     */
+    public void updateFileView(TreeItem<File> item) {
+        dvc.updateFileView(item);
     }
 }

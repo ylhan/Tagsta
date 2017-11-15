@@ -5,6 +5,7 @@ import app.Tagsta;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TreeItem;
+import javafx.scene.image.Image;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
@@ -41,9 +42,12 @@ public class RootLayoutController {
         //Show open file dialog
         File file = fileChooser.showOpenDialog(main.getPrimaryStage());
 
+        // Updates the image and the file view if the file is valid
         if (file != null) {
-            // TODO: display image
+            main.updateImage(new Image("file:" + file.getPath()));
+            main.updateFileView(new TreeItem<>(file));
         } else {
+            // Show an error if the file is invalid
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("IMAGE INVALID");
             alert.setContentText("COULD NOT OPEN IMAGE FILE");
@@ -68,8 +72,10 @@ public class RootLayoutController {
             alert.setContentText("COULD NOT OPEN DIRECTORY");
             alert.showAndWait();
         } else {
+            // Update the directory tree view
             TreeItem<File> root = getNodesForDirectory(choice);
             root.setExpanded(true);
+            main.updateDirectoryView(root);
         }
     }
 
