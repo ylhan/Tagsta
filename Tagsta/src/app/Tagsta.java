@@ -5,6 +5,7 @@ import app.view.RootLayoutController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -25,6 +26,8 @@ public class Tagsta extends Application {
 
         // Initializes the root elements of the application (border pane, and menu bar)
         initRootLayout();
+        // Initializes and adds the image view to the root UI
+        showImageOverview();
     }
 
     /**
@@ -45,6 +48,23 @@ public class Tagsta extends Application {
             // Initialize the root controller and give it a reference to this app
             RootLayoutController rls = loader.getController();
             rls.setMainApp(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Shows the Image overview inside the root layout.
+     */
+    public void showImageOverview() {
+        try {
+            // Load person overview.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("view/ImageOverview.fxml"));
+            AnchorPane imageOverview = loader.load();
+
+            // Set person overview into the center of root layout.
+            rootLayout.setCenter(imageOverview);
         } catch (IOException e) {
             e.printStackTrace();
         }

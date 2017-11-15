@@ -18,6 +18,10 @@ public class RootLayoutController {
     // Reference to the main application
     private Tagsta main;
 
+    /**
+     * Give directory viewer a reference to the main application
+     * @param mainApp the main app
+     */
     public void setMainApp(Tagsta mainApp) {
         this.main = mainApp;
     }
