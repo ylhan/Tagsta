@@ -1,3 +1,4 @@
+package app.model;
 import java.nio.file.Path;
 
 public class FileManager {
