@@ -1,4 +1,5 @@
 package app.model;
+import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,9 +32,9 @@ public class TagManager {
 
     }
 
-    public ImageManager getImage(Path path) {
+    public ImageManager getImage(File file) {
         for (ImageManager imageManager : this.listOfImages){
-            if (imageManager.returnPath().equals(path)){
+            if (imageManager.returnPath().equals(file.getPath())){
                 return imageManager;
             }
         }
