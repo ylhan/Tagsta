@@ -44,7 +44,7 @@ public class RootLayoutController {
 
         // Updates the image and the file view if the file is valid
         if (file != null) {
-            main.updateImage(new Image("file:" + file.getPath()));
+            main.updateImage(main.getTagManager().getImageManager(file).getImage());
             main.updateFileView(new TreeItem<>(file));
         } else {
             // Show an error if the file is invalid
