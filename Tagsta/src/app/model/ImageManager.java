@@ -1,8 +1,9 @@
 package app.model;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import javafx.collections.*;
-
+import java.io.File;
 public class ImageManager {
     private ObservableList<String> tags;
     private ObservableList<ObservableList<String>> previousTags;
@@ -14,11 +15,9 @@ public class ImageManager {
         imagePath = path;
         previousNames = FXCollections.observableArrayList(new ArrayList<String>());
         previousTags = FXCollections.observableArrayList(new ArrayList<ObservableList<String>>());
-        String temp = imagePath.getFileName().toString();
-        int index = temp.lastIndexOf("\\");
-        name = "@" + temp.substring(index + 1 ,temp.length() - 3);
+        name = imagePath.getFileName().toString();
+        name = name.substring(0, name.length() - 4);
         tags = FXCollections.observableArrayList(new ArrayList<String>());
-        tags.add(name);
     }
 
     public void rename(String newName) {
@@ -30,20 +29,44 @@ public class ImageManager {
     }
 
     public void addTag(String tag) {
-        name = name + "@" + tag;
-        tags.add(tag);
+        previousNames.add(name);
+        previousTags.add(tags);
+        tags.add("@" + tag);
+        String temp = imagePath.toString();
+        int index = temp.lastIndexOf("\\");
+        temp = temp.substring(0, index + name.length() + 1) + " @" + tag + temp.substring(temp.length() - 4);
+        new File(imagePath.toString()).renameTo(new File(temp));
+        File imageFile = new File(temp);
+        imagePath = Paths.get(imageFile.getAbsolutePath());
+        previousNames.add(name);
+        name = name + " @" + tag;
     }
 
     public void removeTag(String tag) {
         previousTags.add(tags);
         previousNames.add(name);
-        String tagName = "@" + tag;
+        String tagName = " @" + tag;
         int index = name.indexOf(tagName);
-        name = name.substring(0, index) + name.substring(index + tagName.length() + 1);
+        if(index + tagName.length() + 1 < name.length()) {
+            name = name.substring(0, index) + name.substring(index + tagName.length());
+        }
+        else {
+            name = name.substring(0, index);
+        }
+        String temp = imagePath.toString();
+        index = temp.indexOf(tagName);
+        temp = temp.substring(0, index) + temp.substring(index + tagName.length());
+        new File(imagePath.toString()).renameTo(new File(temp));
+        File imageFile = new File(temp);
+        imagePath = Paths.get(imageFile.getAbsolutePath());
         tags.remove(tagName);
     }
 
     public Path returnPath() {
         return imagePath;
+    }
+
+    public ObservableList<String> getTags() {
+        return tags;
     }
 }
