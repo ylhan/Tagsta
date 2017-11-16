@@ -54,7 +54,7 @@
                               </StackPane>
                               <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0">
                                 <buttons>
-                                    <Button mnemonicParsing="false" text="+" />
+                                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="+" />
                                   <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="-" />
                                 </buttons>
                               </ButtonBar>
