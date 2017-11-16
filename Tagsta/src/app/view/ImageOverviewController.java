@@ -1,6 +1,7 @@
 package app.view;
 
 import app.Tagsta;
+import app.model.ImageManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -65,10 +66,10 @@ public class ImageOverviewController {
   /**
    * Updates the image
    *
-   * @param img the updated images
+   * @param im the updated images
    */
-  public void updateImage(Image img) {
-    image.setImage(img);
+  public void updateImage(ImageManager im) {
+    image.setImage(im.getImage());
     if (sp.getHeight() <= image.getImage().getHeight()
         || sp.getWidth() <= image.getImage().getWidth()) {
       image.setFitWidth(sp.getWidth());
@@ -118,7 +119,7 @@ public class ImageOverviewController {
       // Make sure the item isn't a directory
       if (!item.getValue().isDirectory()) {
         // Update the Image
-        main.updateImage(main.getTagManager().getImageManager(item.getValue()).getImage());
+        main.updateImage(main.getTagManager().getImageManager(item.getValue()));
         // Update the file view
         updateFileView(item);
       }

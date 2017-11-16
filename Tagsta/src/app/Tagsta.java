@@ -1,6 +1,7 @@
 package app;
 
 
+import app.model.ImageManager;
 import app.model.TagManager;
 import app.view.ImageOverviewController;
 import app.view.RootLayoutController;
@@ -97,10 +98,10 @@ public class Tagsta extends Application {
 
     /**
      * Updates the directory view images
-     * @param image the updated image
+     * @param im the updated image
      */
-    public void updateImage(Image image) {
-        imc.updateImage(image);
+    public void updateImage(ImageManager im) {
+        imc.updateImage(im);
     }
 
     /**
