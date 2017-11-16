@@ -8,18 +8,16 @@ public class TagManager {
     private boolean showExtensions;
     private boolean usesThumbnails;
     private ArrayList<ImageManager> listOfImages;
-    private FileManager fileManager;
     private boolean isFirstTime;
 
     public TagManager() {
-        this.fileManager = new FileManager();
         this.setConfigOptions();
-        this.listOfImages = this.fileManager.loadImageManagers();
+        this.listOfImages = FileManager.loadImageManagers();
         this.isFirstTime = true;
     }
 
     private void setConfigOptions(){
-        HashMap<String, String> configMap = this.fileManager.getConfigDetails();
+        HashMap<String, String> configMap = FileManager.getConfigDetails();
         this.showExtensions = Boolean.parseBoolean(configMap.get("showExtensions"));
         this.usesThumbnails = Boolean.parseBoolean(configMap.get("usesThumbnails"));
     }
