@@ -3,6 +3,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import javafx.collections.*;
+import javafx.scene.image.Image;
 import java.io.File;
 public class ImageManager {
     private ObservableList<String> tags;
@@ -10,6 +11,7 @@ public class ImageManager {
     private ObservableList<String> previousNames;
     private String name;
     private Path imagePath;
+
 
     public ImageManager(Path path) {
         imagePath = path;
@@ -68,5 +70,9 @@ public class ImageManager {
 
     public ObservableList<String> getTags() {
         return tags;
+    }
+
+    public Image getImage() {
+        return new Image(imagePath.toString());
     }
 }
