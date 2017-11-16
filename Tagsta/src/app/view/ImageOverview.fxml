@@ -51,8 +51,8 @@
                               <StackPane prefHeight="392.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                      <ScrollPane fx:id="sp" fitToHeight="true" fitToWidth="true" prefHeight="393.0" prefWidth="656.0">
-                                         <VBox alignment="CENTER">
-                                             <HBox alignment="CENTER">
+                                         <VBox alignment="CENTER" fillWidth="false">
+                                             <HBox alignment="CENTER" fillHeight="false">
                                                  <ImageView fx:id="image" preserveRatio="true" />
                                              </HBox>
                                          </VBox>
@@ -61,8 +61,8 @@
                               </StackPane>
                               <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0">
                                 <buttons>
-                                    <Button fx:id="zoomIn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleZoomIn" text="+" />
-                                  <Button fx:id="zoomOut" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="-" />
+                                    <Button fx:id="zoomIn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#handleZoomIn" text="+" />
+                                  <Button fx:id="zoomOut" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#handleZoomOut" text="-" />
                                 </buttons>
                               </ButtonBar>
                                     </children></AnchorPane>

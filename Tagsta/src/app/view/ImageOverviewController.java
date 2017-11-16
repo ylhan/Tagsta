@@ -73,9 +73,27 @@ public class ImageOverviewController {
         image.setFitWidth(sp.getWidth());
     }
 
+    /**
+     * Zooms in to the image
+     */
     @FXML
-    private void handleZoomIn(MouseEvent click) {
+    private void handleZoomIn() {
+        if (image.getFitHeight() < 10000 && image.getFitWidth() < 10000) {
+            image.setFitHeight(image.getFitHeight() * 1.1);
+            image.setFitWidth(image.getFitWidth() * 1.1);
+        }
+    }
 
+    /**
+     * Zooms out of the image
+     */
+    @FXML
+    private void handleZoomOut() {
+        System.out.println(image.getFitHeight());
+        if (image.getFitHeight() > 50 && image.getFitWidth() > 50) {
+            image.setFitHeight(image.getFitHeight() * 0.9);
+            image.setFitWidth(image.getFitWidth() * 0.9);
+        }
     }
     /**
      * Handles user selecting/double clicking an item from a tree view
