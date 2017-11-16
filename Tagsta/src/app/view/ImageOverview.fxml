@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
@@ -9,22 +11,23 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.view.DirectoryViewController">
     <children>
-        <SplitPane dividerPositions="0.2408026755852843" layoutX="124.0" layoutY="120.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <SplitPane dividerPositions="0.1" layoutX="124.0" layoutY="120.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
-                <AnchorPane minHeight="50.0" minWidth="50.0" prefWidth="300.0" SplitPane.resizableWithParent="false">
+                <AnchorPane minHeight="50.0" minWidth="50.0" prefWidth="250.0" SplitPane.resizableWithParent="false">
                     <children>
                         <GridPane prefHeight="598.0" prefWidth="188.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints maxHeight="104.0" minHeight="0.0" prefHeight="22.0" vgrow="NEVER" />
                                 <RowConstraints maxHeight="220.0" minHeight="2.0" prefHeight="48.0" vgrow="SOMETIMES" />
                                 <RowConstraints maxHeight="253.0" minHeight="0.0" prefHeight="24.0" vgrow="NEVER" />
-                                <RowConstraints maxHeight="548.0" minHeight="10.0" prefHeight="504.0" vgrow="ALWAYS" />
+                                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="ALWAYS" />
                             </rowConstraints>
                             <children>
                                 <TreeView fx:id="directoryView" prefHeight="468.0" prefWidth="188.0" GridPane.rowIndex="3" />
@@ -38,13 +41,23 @@
                     <children>
                         <SplitPane dividerPositions="0.6641414141414141" layoutX="122.0" layoutY="210.0" orientation="VERTICAL" prefHeight="398.0" prefWidth="368.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <items>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="292.0" prefWidth="366.0">
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="688.0">
                                     <children>
-                                        <ScrollPane prefHeight="392.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                            <content>
-                                                <ImageView fx:id="image" pickOnBounds="true" preserveRatio="true" />
-                                            </content>
-                                        </ScrollPane>
+                              <StackPane prefHeight="392.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                              <ScrollPane fx:id="sp" prefHeight="393.0" prefWidth="656.0">
+                                                  <content>
+                                                      <ImageView fx:id="image" pickOnBounds="true" preserveRatio="true" />
+                                                  </content>
+                                              </ScrollPane>
+                                 </children>
+                              </StackPane>
+                              <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0">
+                                <buttons>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="+" />
+                                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="-" />
+                                </buttons>
+                              </ButtonBar>
                                     </children></AnchorPane>
                                 <AnchorPane minHeight="50.0" minWidth="50.0" prefHeight="78.0" prefWidth="366.0">
                                     <children>

@@ -2,6 +2,7 @@ package app.view;
 
 import app.Tagsta;
 import javafx.fxml.FXML;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -23,6 +24,9 @@ public class DirectoryViewController {
 
     @FXML
     private TreeView<File> fileView = new TreeView<>();
+
+    @FXML
+    private ScrollPane sp;
 
     private Tagsta main;
 
@@ -66,6 +70,10 @@ public class DirectoryViewController {
      */
     @FXML
     private void initialize() {
+        image.setPreserveRatio(true);
+        image.fitWidthProperty().bind(sp.widthProperty());
+        image.fitHeightProperty().bind(sp.heightProperty());
+
         // https://stackoverflow.com/questions/44210453/how-to-display-only-the-filename-in-a-javafx-treeview
         // Display only the directory name (folder2 instead of /home/user/folder2)
         directoryView.setCellFactory(new Callback<TreeView<File>, TreeCell<File>>() {
