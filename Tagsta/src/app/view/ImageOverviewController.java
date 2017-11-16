@@ -15,7 +15,7 @@ import javafx.util.Callback;
 import java.io.File;
 
 /** Controller for the directory viewer (file/directory tree) */
-public class DirectoryViewController {
+public class ImageOverviewController {
     @FXML
     private ImageView image;
 

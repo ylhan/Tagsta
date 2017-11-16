@@ -1,7 +1,7 @@
 package app;
 
 
-import app.view.DirectoryViewController;
+import app.view.ImageOverviewController;
 import app.view.RootLayoutController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +21,7 @@ import java.io.IOException;
 public class Tagsta extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
-    private DirectoryViewController dvc;
+    private ImageOverviewController dvc;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
