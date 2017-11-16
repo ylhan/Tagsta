@@ -48,6 +48,8 @@ public class Tagsta extends Application {
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
+            primaryStage.setMinWidth(900);
+            primaryStage.setMinHeight(650);
             primaryStage.show();
 
             // Initialize the root controller and give it a reference to this app
