@@ -128,6 +128,24 @@ public class FileManager {
     }
 
     /**
+     * Checks if this is the first time running the program by looking for whether a first-time-file exists
+     * @return Whether this is the first time running the program
+     */
+    public static boolean ifFirstTime(){
+        File firstFile = Paths.get("firstFile").toFile();
+        if (!firstFile.exists()){
+            try{
+                firstFile.createNewFile();
+            }
+            catch (IOException ex){
+                ex.printStackTrace();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Moves an image from the current location to a new location, replacing a file if one is already there in the
      * nnew location
      * @param currentPath The current path of the image
