@@ -1,19 +1,26 @@
 package app.model;
 import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TagManager {
     private boolean showExtensions;
     private boolean usesThumbnails;
-    private ArrayList<ImageManager> listOfImages;
+    private ArrayList<ImageManager> listOfImageManagers;
     private boolean isFirstTime;
 
     public TagManager() {
-        this.setConfigOptions();
-        this.listOfImages = FileManager.loadImageManagers();
-        this.isFirstTime = true;
+        if (FileManager.isFirstTime()){
+            this.showExtensions = false;
+            this.usesThumbnails = false;
+            this.listOfImageManagers = new ArrayList<>();
+        }
+        else{
+            this.listOfImageManagers = FileManager.loadImageManagers();
+            this.setConfigOptions();
+        }
     }
 
     private void setConfigOptions(){
@@ -22,22 +29,26 @@ public class TagManager {
         this.usesThumbnails = Boolean.parseBoolean(configMap.get("usesThumbnails"));
     }
 
-    public void startProgram(){
-
-    }
-
     public void closeProgram() {
-
+        HashMap<String, String> configMap= new HashMap<>();
+        configMap.put("showExtensions", ((Boolean)this.showExtensions).toString());
+        configMap.put("usesThumbnails", ((Boolean)this.usesThumbnails).toString());
+        FileManager.saveFiles(this.listOfImageManagers, configMap);
     }
 
-    public ImageManager getImage(File file) {
-        for (ImageManager imageManager : this.listOfImages){
-            if (imageManager.returnPath().equals(file.getPath())){
+    public ImageManager getImageManager(File file) {
+        for (ImageManager imageManager : this.listOfImageManagers){
+            if (imageManager.returnPath().toString().equals(file.getPath())){
                 return imageManager;
             }
         }
-        return null;
+        ImageManager temp = new ImageManager(Paths.get(file.getPath()));
+        this.listOfImageManagers.add(temp);
+        return temp;
     }
 
+    public boolean isFirstTime() {
+        return isFirstTime;
+    }
 
 }
