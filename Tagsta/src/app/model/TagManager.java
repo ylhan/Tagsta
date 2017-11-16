@@ -1,6 +1,7 @@
 package app.model;
 import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,7 +12,7 @@ public class TagManager {
     private boolean isFirstTime;
 
     public TagManager() {
-        if (this.isFirstTime()){ //change "this" to FileManager
+        if (FileManager.isFirstTime()){
             this.showExtensions = false;
             this.usesThumbnails = false;
             this.listOfImages = new ArrayList<>();
@@ -37,14 +38,17 @@ public class TagManager {
 
     public ImageManager getImage(File file) {
         for (ImageManager imageManager : this.listOfImages){
-            if (imageManager.returnPath().equals(file.getPath())){
+            if (imageManager.returnPath().toString().equals(file.getPath())){
                 return imageManager;
             }
         }
-        return null;
+        ImageManager temp = new ImageManager(Paths.get(file.getPath()));
+        this.listOfImages.add(temp);
+        return temp;
     }
 
     public boolean isFirstTime() {
         return isFirstTime;
     }
+
 }
