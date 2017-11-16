@@ -32,7 +32,12 @@ public class FileManager {
     private static File getConfigFile(){
         Path configPath = Paths.get("config.properties");
         File file = configPath.toFile();
-        //do something if config file does not exist
+        if(!file.exists()){
+            HashMap<String, String> configMap= new HashMap<>();
+            configMap.put("showExtensions", "false");
+            configMap.put("usesThumbnails", "false");
+            FileManager.storeConfig(configMap);
+        }
         return file;
     }
 
