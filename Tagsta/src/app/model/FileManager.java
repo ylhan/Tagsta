@@ -1,7 +1,9 @@
 package app.model;
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -97,6 +99,11 @@ public class FileManager {
     }
 
     public void moveImage(Path currentPath, Path newPath) {
-
+        try {
+            Files.move(currentPath, newPath, StandardCopyOption.REPLACE_EXISTING);
+        }
+        catch (IOException ex){
+            System.out.println("file could not be moved");
+        }
     }
 }
