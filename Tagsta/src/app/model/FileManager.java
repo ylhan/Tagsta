@@ -80,7 +80,7 @@ public class FileManager {
         }
     }
 
-    public Map<String, String> getConfigDetails(){
+    public HashMap<String, String> getConfigDetails(){
         HashMap<String, String> configMap = new HashMap<>();
         File configFile = this.getConfigFile();
         try {
