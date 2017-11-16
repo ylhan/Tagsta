@@ -9,7 +9,9 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
@@ -62,10 +64,23 @@
                                     </children></AnchorPane>
                                 <AnchorPane minHeight="50.0" minWidth="50.0" prefHeight="78.0" prefWidth="366.0">
                                     <children>
-                                        <Label layoutX="32.0" layoutY="10.0" text="Tags" AnchorPane.leftAnchor="32.0" AnchorPane.topAnchor="10.0" />
-                              <Button layoutX="21.0" layoutY="156.0" mnemonicParsing="false" text="Add Tag" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="21.0" />
-                              <TextField layoutX="104.0" layoutY="156.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="104.0" />
-                              <Button layoutX="594.0" layoutY="154.0" mnemonicParsing="false" text="Show History" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+                              <BorderPane layoutX="206.0" layoutY="-31.0" prefHeight="196.0" prefWidth="712.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <top>
+                                              <Label text="Tags" BorderPane.alignment="CENTER" />
+                                 </top>
+                                 <bottom>
+                                    <AnchorPane prefHeight="40.0" prefWidth="712.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <Button mnemonicParsing="false" text="Show History" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0" />
+                                          <TextField layoutX="138.0" layoutY="1.0" prefHeight="26.0" prefWidth="262.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="105.0" AnchorPane.topAnchor="15.0" />
+                                          <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="88.0" text="Add Tag" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="15.0" />
+                                       </children>
+                                    </AnchorPane>
+                                 </bottom>
+                                 <center>
+                                    <FlowPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                 </center>
+                              </BorderPane>
                                     </children>
                                 </AnchorPane>
                             </items>
