@@ -1,30 +1,27 @@
 package app.model;
 import java.io.*;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 public class FileManager {
-    private Path configPath;
-
-    public FileManager() throws IOException{
-        this.loadConfig();
-    }
 
     public void saveFiles(ArrayList<ImageManager> imageManagers){
         this.storeConfig();
         this.storeImageManagers(imageManagers);
     }
 
-    private Path getConfigFile() throws IOException{
-        Path configPath = Paths.get("config.xml");
+    private File getConfigFile(){
+        Path configPath = Paths.get("config.properties");
         File file = configPath.toFile();
         if (!file.exists()) {
             System.out.println("file does not exist");
             this.storeConfig();
         }
-        return configPath;
+        return file;
     }
 
     private void storeImageManagers(ArrayList<ImageManager> imageManagers) {
@@ -66,11 +63,37 @@ public class FileManager {
     }
 
     private void storeConfig() {
-
+        File configFile = new File("config.properties");
+        try {
+            Properties properties = new Properties();
+            properties.setProperty("displayExtensions", "TagManager.displaysExtensions()");
+            properties.setProperty("showsThumbnails", "TagManager.showsThumbnails()");
+            properties.setProperty("sortsBy", "TagManager.sortType()");
+            FileWriter writer = new FileWriter(configFile);
+            properties.store(writer, "configuration settings");
+            writer.close();
+        }
+        catch (IOException ex) {
+            System.out.println("IO error");
+        }
     }
 
-    private void loadConfig() throws IOException{
-        this.configPath = this.getConfigFile();
+    public Map<String, String> getConfigDetails(){
+        HashMap<String, String> configMap = new HashMap<>();
+        File configFile = this.getConfigFile();
+        try {
+            FileReader reader = new FileReader(configFile);
+            Properties properties = new Properties();
+            properties.load(reader);
+            configMap.put("displayExtensions", properties.getProperty("displayExtensions"));
+            configMap.put("showsThumbnails", properties.getProperty("showsThumbnails"));
+            configMap.put("sortsBy", properties.getProperty("sortsBy"));
+            reader.close();
+        }
+        catch (IOException ex) {
+            System.out.println("IO error");
+        }
+        return configMap;
     }
 
     public void moveImage(Path currentPath, Path newPath) {
