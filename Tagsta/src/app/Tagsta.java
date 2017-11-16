@@ -1,6 +1,7 @@
 package app;
 
 
+import app.model.TagManager;
 import app.view.ImageOverviewController;
 import app.view.RootLayoutController;
 import javafx.application.Application;
@@ -21,10 +22,12 @@ import java.io.IOException;
 public class Tagsta extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
-    private ImageOverviewController dvc;
+    private ImageOverviewController imc;
+    private TagManager tm;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        tm = new TagManager();
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Tagsta");
         this.primaryStage.setMaximized(true);
@@ -74,8 +77,8 @@ public class Tagsta extends Application {
             rootLayout.setCenter(imageOverview);
 
             // Initialize the directory controller and give it a reference to this app
-            dvc = loader.getController();
-            dvc.setMainApp(this);
+            imc = loader.getController();
+            imc.setMainApp(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -97,7 +100,7 @@ public class Tagsta extends Application {
      * @param image the updated image
      */
     public void updateImage(Image image) {
-        dvc.updateImage(image);
+        imc.updateImage(image);
     }
 
     /**
@@ -105,7 +108,7 @@ public class Tagsta extends Application {
      * @param item the updated directory view
      */
     public void updateDirectoryView(TreeItem<File> item) {
-        dvc.updateDirectoryView(item);
+        imc.updateDirectoryView(item);
     }
 
     /**
@@ -113,6 +116,13 @@ public class Tagsta extends Application {
      * @param item the updated file view
      */
     public void updateFileView(TreeItem<File> item) {
-        dvc.updateFileView(item);
+        imc.updateFileView(item);
+    }
+
+    /**
+     * @return the tag manager for this program
+     */
+    public TagManager getTagManager() {
+        return tm;
     }
 }
