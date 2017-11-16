@@ -22,14 +22,19 @@ public class ImageManager {
         tags = FXCollections.observableArrayList(new ArrayList<String>());
     }
 
-    public void rename(String newName) {
-        name = newName;
-    }
-
+    /***
+     * Returns the file name of the image (currently without extension)
+     * @return the file name of the image without file extension.
+     */
     public String getName() {
         return name;
     }
 
+    /***
+     * Adds a tag to the file name of the image. Alters the name of the image in directory & adds the tag to the list of tags.
+     * Adds the name before changes to the previous names list. Adds a list of tags before changes to the previous tags List.
+     * @param tag String to be added to the file name of the image.
+     */
     public void addTag(String tag) {
         previousNames.add(name);
         previousTags.add(tags);
@@ -43,6 +48,12 @@ public class ImageManager {
         previousNames.add(name);
         name = name + " @" + tag;
     }
+
+    /***
+     * Removes a tag from the file name of the image. Alters the name of the image in directory & removes the tag from the list of tags.
+     * Adds the name before changes to the previous names list. Adds a list of tags before changes to the previous tags List.
+     * @param tag String to be removed from the file name of the image.
+     */
 
     public void removeTag(String tag) {
         previousTags.add(tags);
@@ -61,7 +72,7 @@ public class ImageManager {
         new File(imagePath.toString()).renameTo(new File(temp));
         File imageFile = new File(temp);
         imagePath = Paths.get(imageFile.getAbsolutePath());
-        tags.remove(tagName);
+        tags.remove(tagName.substring(1));
     }
 
     public Path returnPath() {
@@ -75,4 +86,6 @@ public class ImageManager {
     public Image getImage() {
         return new Image(imagePath.toString());
     }
+
+
 }
