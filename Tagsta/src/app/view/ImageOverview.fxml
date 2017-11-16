@@ -13,12 +13,12 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
-
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.view.ImageOverviewController">
+
+<AnchorPane minHeight="120.0" minWidth="200.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.view.ImageOverviewController">
     <children>
         <SplitPane dividerPositions="0.1" layoutX="124.0" layoutY="120.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
@@ -50,10 +50,10 @@
                                     <children>
                               <StackPane prefHeight="392.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                     <ScrollPane fx:id="sp" prefHeight="393.0" prefWidth="656.0" fitToWidth="true" fitToHeight="true" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS">
-                                         <VBox alignment="CENTER" minWidth="${sp.viewportBounds.width}" minHeight="${sp.viewportBounds.height}">
+                                     <ScrollPane fx:id="sp" fitToHeight="true" fitToWidth="true" prefHeight="393.0" prefWidth="656.0">
+                                         <VBox alignment="CENTER">
                                              <HBox alignment="CENTER">
-                                                 <ImageView fx:id="image" pickOnBounds="true" preserveRatio="true"/>
+                                                 <ImageView fx:id="image" preserveRatio="true" />
                                              </HBox>
                                          </VBox>
                                      </ScrollPane>
@@ -61,8 +61,8 @@
                               </StackPane>
                               <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0">
                                 <buttons>
-                                    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="+" />
-                                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="-" />
+                                    <Button fx:id="zoomIn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleZoomIn" text="+" />
+                                  <Button fx:id="zoomOut" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="-" />
                                 </buttons>
                               </ButtonBar>
                                     </children></AnchorPane>
