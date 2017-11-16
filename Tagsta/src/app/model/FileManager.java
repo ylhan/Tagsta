@@ -131,7 +131,7 @@ public class FileManager {
      * Checks if this is the first time running the program by looking for whether a first-time-file exists
      * @return Whether this is the first time running the program
      */
-    public static boolean ifFirstTime(){
+    public static boolean isFirstTime(){
         File firstFile = Paths.get("firstFile").toFile();
         if (!firstFile.exists()){
             try{
