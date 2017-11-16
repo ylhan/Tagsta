@@ -35,7 +35,7 @@ public class ImageManager {
         String temp = imagePath.toString();
         int index = temp.lastIndexOf("\\");
         temp = temp.substring(0, index + name.length() + 1) + " @" + tag + temp.substring(temp.length() - 4);
-        new File(temp).renameTo(new File(temp));
+        new File(imagePath.toString()).renameTo(new File(temp));
         File imageFile = new File(temp);
         imagePath = Paths.get(imageFile.getAbsolutePath());
         previousNames.add(name);
@@ -56,7 +56,7 @@ public class ImageManager {
         String temp = imagePath.toString();
         index = temp.indexOf(tagName);
         temp = temp.substring(0, index) + temp.substring(index + tagName.length());
-        new File(temp).renameTo(new File(temp));
+        new File(imagePath.toString()).renameTo(new File(temp));
         File imageFile = new File(temp);
         imagePath = Paths.get(imageFile.getAbsolutePath());
         tags.remove(tagName);
