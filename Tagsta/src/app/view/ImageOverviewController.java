@@ -2,10 +2,10 @@ package app.view;
 
 import app.Tagsta;
 import app.model.ImageManager;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
@@ -32,8 +32,11 @@ public class ImageOverviewController {
 
   @FXML private FlowPane tagView;
 
+  @FXML private TextField tf;
+
   private Tagsta main;
 
+  private ImageManager im;
   /**
    * Give directory viewer a reference to the main application
    *
@@ -69,6 +72,7 @@ public class ImageOverviewController {
    * @param im the updated images
    */
   public void updateImage(ImageManager im) {
+    this.im = im;
     image.setImage(im.getImage());
     if (sp.getHeight() <= image.getImage().getHeight()
         || sp.getWidth() <= image.getImage().getWidth()) {
@@ -78,8 +82,27 @@ public class ImageOverviewController {
       image.setFitWidth(image.getImage().getWidth());
       image.setFitHeight(image.getImage().getHeight());
     }
+    newTagView(im.getTags());
   }
 
+  private void newTagView(ObservableList<String> tags) {
+    tagView.getChildren().clear();
+    for (String tag : tags) {
+      tagView.getChildren().add(createTag(tag));
+    }
+  }
+
+  @FXML
+  private void addTag() {
+      if (im != null) {
+          String tag = tf.getText();
+          if (tag != null) {
+              tagView.getChildren().add(createTag(tag));
+              im.addTag(tag);
+              tf.clear();
+          }
+      }
+  }
   /** Zooms in to the image */
   @FXML
   private void handleZoomIn() {
@@ -134,12 +157,17 @@ public class ImageOverviewController {
       HBox h = loader.load();
       Tag t = loader.getController();
       t.setTag(tagString);
-      t.handleDeleteTag(event -> tagView.getChildren().remove(h));
+      t.handleDeleteTag(event -> removeTag(h, tagString));
       return h;
     } catch (IOException e) {
       e.printStackTrace();
     }
     return null;
+  }
+
+  private void removeTag(HBox tag, String tagString) {
+    tagView.getChildren().remove(tag);
+    im.removeTag(tagString);
   }
   /** Initializes the directory view controller */
   @FXML
