@@ -11,9 +11,15 @@ public class TagManager {
     private boolean isFirstTime;
 
     public TagManager() {
-        this.setConfigOptions();
-        this.listOfImages = FileManager.loadImageManagers();
-        this.isFirstTime = true;
+        if (this.isFirstTime()){ //change "this" to FileManager
+            this.showExtensions = false;
+            this.usesThumbnails = false;
+            this.listOfImages = new ArrayList<>();
+        }
+        else{
+            this.listOfImages = FileManager.loadImageManagers();
+            this.setConfigOptions();
+        }
     }
 
     private void setConfigOptions(){
@@ -22,12 +28,11 @@ public class TagManager {
         this.usesThumbnails = Boolean.parseBoolean(configMap.get("usesThumbnails"));
     }
 
-    public void startProgram(){
-
-    }
-
     public void closeProgram() {
-
+        HashMap<String, String> configMap= new HashMap<>();
+        configMap.put("showExtensions", ((Boolean)this.showExtensions).toString());
+        configMap.put("usesThumbnails", ((Boolean)this.usesThumbnails).toString());
+        FileManager.saveFiles(this.listOfImages, configMap);
     }
 
     public ImageManager getImage(File file) {
@@ -39,5 +44,7 @@ public class TagManager {
         return null;
     }
 
-
+    public boolean isFirstTime() {
+        return isFirstTime;
+    }
 }
