@@ -8,17 +8,17 @@ import java.util.HashMap;
 public class TagManager {
     private boolean showExtensions;
     private boolean usesThumbnails;
-    private ArrayList<ImageManager> listOfImages;
+    private ArrayList<ImageManager> listOfImageManagers;
     private boolean isFirstTime;
 
     public TagManager() {
         if (FileManager.isFirstTime()){
             this.showExtensions = false;
             this.usesThumbnails = false;
-            this.listOfImages = new ArrayList<>();
+            this.listOfImageManagers = new ArrayList<>();
         }
         else{
-            this.listOfImages = FileManager.loadImageManagers();
+            this.listOfImageManagers = FileManager.loadImageManagers();
             this.setConfigOptions();
         }
     }
@@ -33,17 +33,17 @@ public class TagManager {
         HashMap<String, String> configMap= new HashMap<>();
         configMap.put("showExtensions", ((Boolean)this.showExtensions).toString());
         configMap.put("usesThumbnails", ((Boolean)this.usesThumbnails).toString());
-        FileManager.saveFiles(this.listOfImages, configMap);
+        FileManager.saveFiles(this.listOfImageManagers, configMap);
     }
 
-    public ImageManager getImage(File file) {
-        for (ImageManager imageManager : this.listOfImages){
+    public ImageManager getImageManager(File file) {
+        for (ImageManager imageManager : this.listOfImageManagers){
             if (imageManager.returnPath().toString().equals(file.getPath())){
                 return imageManager;
             }
         }
         ImageManager temp = new ImageManager(Paths.get(file.getPath()));
-        this.listOfImages.add(temp);
+        this.listOfImageManagers.add(temp);
         return temp;
     }
 
