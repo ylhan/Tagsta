@@ -9,6 +9,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -98,14 +100,21 @@ public class ImageOverviewController {
 
   @FXML
   private void addTag() {
-      if (im != null) {
-          String tag = tf.getText();
-          if (tag != null) {
-              tagView.getChildren().add(createTag(tag));
-              im.addTag(tag);
-              tf.clear();
-          }
+    if (im != null && im != "" ) {
+      String tag = tf.getText();
+      if (tag != null) {
+        tagView.getChildren().add(createTag(tag));
+        im.addTag(tag);
+        tf.clear();
       }
+    }
+  }
+
+  @FXML
+  private void addTagOnEnter(KeyEvent keyPressed) {
+    if (keyPressed.getCode().equals(KeyCode.ENTER)) {
+        addTag();
+    }
   }
   /** Zooms in to the image */
   @FXML
