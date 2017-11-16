@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.File;
@@ -30,6 +31,9 @@ public class ImageOverviewController {
 
     @FXML
     private Button zoomOut;
+
+    @FXML
+    private Button showHistory;
 
     private Tagsta main;
 
@@ -69,8 +73,13 @@ public class ImageOverviewController {
      */
     public void updateImage(Image img) {
         image.setImage(img);
-        image.setFitHeight(sp.getHeight());
-        image.setFitWidth(sp.getWidth());
+        if (sp.getHeight() <= image.getImage().getHeight() || sp.getWidth() <= image.getImage().getWidth()) {
+            image.setFitWidth(sp.getWidth());
+            image.setFitHeight(sp.getHeight());
+        } else {
+            image.setFitWidth(image.getImage().getWidth());
+            image.setFitHeight(image.getImage().getHeight());
+        }
     }
 
     /**
@@ -89,12 +98,19 @@ public class ImageOverviewController {
      */
     @FXML
     private void handleZoomOut() {
-        System.out.println(image.getFitHeight());
         if (image.getFitHeight() > 50 && image.getFitWidth() > 50) {
             image.setFitHeight(image.getFitHeight() * 0.9);
             image.setFitWidth(image.getFitWidth() * 0.9);
         }
     }
+
+    @FXML
+    private void handleShowHistory() {
+        Stage historyWindow = new Stage();
+
+    }
+
+
     /**
      * Handles user selecting/double clicking an item from a tree view
      * https://stackoverflow.com/questions/17348357/how-to-trigger-event-when-double-click-on-a-tree-node

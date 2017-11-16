@@ -75,7 +75,7 @@
                                  <bottom>
                                     <AnchorPane prefHeight="40.0" prefWidth="712.0" BorderPane.alignment="CENTER">
                                        <children>
-                                          <Button mnemonicParsing="false" text="Show History" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0" />
+                                          <Button fx:id="showHistory" mnemonicParsing="false" onMouseClicked="#handleShowHistory" text="Show History" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0" />
                                           <TextField layoutX="138.0" layoutY="1.0" prefHeight="26.0" prefWidth="262.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="105.0" AnchorPane.topAnchor="15.0" />
                                           <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="88.0" text="Add Tag" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="15.0" />
                                        </children>
