@@ -108,4 +108,8 @@ public class ImageManager {
     FileManager.moveImage(imagePath, Paths.get(pathString));
     imagePath = Paths.get(pathString);
   }
+
+  public ObservableList<String> getPrevNames() {
+    return previousNames;
+  }
 }
