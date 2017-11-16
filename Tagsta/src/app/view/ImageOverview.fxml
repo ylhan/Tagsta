@@ -82,7 +82,7 @@
                                     </AnchorPane>
                                  </bottom>
                                  <center>
-                                    <FlowPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                    <FlowPane fx:id="tagView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                                  </center>
                               </BorderPane>
                                     </children>
