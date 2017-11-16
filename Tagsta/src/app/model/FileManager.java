@@ -32,7 +32,12 @@ public class FileManager {
     private static File getConfigFile(){
         Path configPath = Paths.get("config.properties");
         File file = configPath.toFile();
-        //do something if config file does not exist
+        if(!file.exists()){
+            HashMap<String, String> configMap= new HashMap<>();
+            configMap.put("showExtensions", "false");
+            configMap.put("usesThumbnails", "false");
+            FileManager.storeConfig(configMap);
+        }
         return file;
     }
 
@@ -50,6 +55,7 @@ public class FileManager {
             output.close();
         }
         catch(IOException ex){
+            System.out.println("IO error in storeImageManagers");
             ex.printStackTrace();
         }
     }
@@ -69,14 +75,14 @@ public class FileManager {
             imageManagers = (ArrayList<ImageManager>) input.readObject();
             input.close();
         } catch (IOException ex) {
-            System.out.println("io exception");
+            System.out.println("io exception in loadImageManagers");
             ex.printStackTrace();
             imageManagers = new ArrayList<>();
             FileManager.storeImageManagers(imageManagers);
             return imageManagers;
         }
         catch (ClassNotFoundException ex){
-            System.out.println("classpath is broken");
+            System.out.println("classpath is broken in loadImageManagers");
             ex.printStackTrace();
             imageManagers = new ArrayList<>();
             FileManager.storeImageManagers(imageManagers);
@@ -100,7 +106,7 @@ public class FileManager {
             writer.close();
         }
         catch (IOException ex) {
-            System.out.println("IO error");
+            System.out.println("IO error in storeConfig");
             ex.printStackTrace();
         }
     }
@@ -121,7 +127,7 @@ public class FileManager {
             reader.close();
         }
         catch (IOException ex) {
-            System.out.println("IO error");
+            System.out.println("IO error in getConfigDetails");
             ex.printStackTrace();
         }
         return configMap;
@@ -138,6 +144,7 @@ public class FileManager {
                 firstFile.createNewFile();
             }
             catch (IOException ex){
+                System.out.println("IO exception in isFirstTime");
                 ex.printStackTrace();
             }
             return true;
@@ -156,8 +163,8 @@ public class FileManager {
             Files.move(currentPath, newPath, StandardCopyOption.REPLACE_EXISTING);
         }
         catch (IOException ex){
-            ex.printStackTrace();
             System.out.println("file could not be moved");
+            ex.printStackTrace();
         }
     }
 }

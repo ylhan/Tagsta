@@ -126,7 +126,7 @@ public class ImageOverviewController {
             // Make sure the item isn't a directory
             if (!item.getValue().isDirectory()) {
                 // Update the Image
-                updateImage(new Image("file:" + item.getValue().getPath()));
+                main.updateImage(main.getTagManager().getImageManager(item.getValue()).getImage());
                 // Update the file view
                 updateFileView(item);
             }
