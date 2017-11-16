@@ -4,7 +4,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import javafx.collections.*;
 import javafx.scene.image.Image;
-import java.io.File;
 public class ImageManager {
     private ObservableList<String> tags;
     private ObservableList<ObservableList<String>> previousTags;
@@ -21,7 +20,6 @@ public class ImageManager {
         name = name.substring(0, name.length() - 4);
         tags = FXCollections.observableArrayList(new ArrayList<String>());
     }
-
     /***
      * Returns the file name of the image (currently without extension)
      * @return the file name of the image without file extension.
@@ -42,9 +40,8 @@ public class ImageManager {
         String temp = imagePath.toString();
         int index = temp.lastIndexOf("\\");
         temp = temp.substring(0, index + name.length() + 1) + " @" + tag + temp.substring(temp.length() - 4);
-        new File(imagePath.toString()).renameTo(new File(temp));
-        File imageFile = new File(temp);
-        imagePath = Paths.get(imageFile.getAbsolutePath());
+        FileManager.moveImage(imagePath, Paths.get(temp));
+        imagePath = Paths.get(temp);
         previousNames.add(name);
         name = name + " @" + tag;
     }
@@ -69,9 +66,8 @@ public class ImageManager {
         String temp = imagePath.toString();
         index = temp.indexOf(tagName);
         temp = temp.substring(0, index) + temp.substring(index + tagName.length());
-        new File(imagePath.toString()).renameTo(new File(temp));
-        File imageFile = new File(temp);
-        imagePath = Paths.get(imageFile.getAbsolutePath());
+        FileManager.moveImage(imagePath, Paths.get(temp));
+        imagePath = Paths.get(temp);
         tags.remove(tagName.substring(1));
     }
 
@@ -86,6 +82,4 @@ public class ImageManager {
     public Image getImage() {
         return new Image(imagePath.toString());
     }
-
-
 }
