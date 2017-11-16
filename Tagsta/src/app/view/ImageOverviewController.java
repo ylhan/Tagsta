@@ -4,6 +4,8 @@ import app.Tagsta;
 import app.model.ImageManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +20,8 @@ import java.io.IOException;
 
 /** Controller for the directory viewer (file/directory tree) */
 public class ImageOverviewController {
+  private ImageManager imageManager;
+
   @FXML private ImageView image;
 
   @FXML private TreeView<File> directoryView = new TreeView<>();
@@ -31,6 +35,8 @@ public class ImageOverviewController {
   @FXML private Button zoomOut;
 
   @FXML private FlowPane tagView;
+
+  @FXML private Button showHistory;
 
   private Tagsta main;
 
@@ -69,6 +75,7 @@ public class ImageOverviewController {
    * @param im the updated images
    */
   public void updateImage(ImageManager im) {
+    this.imageManager = imageManager;
     image.setImage(im.getImage());
     if (sp.getHeight() <= image.getImage().getHeight()
         || sp.getWidth() <= image.getImage().getWidth()) {
@@ -101,6 +108,13 @@ public class ImageOverviewController {
   @FXML
   private void handleShowHistory() {
     Stage historyWindow = new Stage();
+    historyWindow.setTitle("History of names");
+    Group root = new Group();
+    historyWindow.setScene(new Scene(root, 450, 450));
+    ListView<String> list = new ListView<String>();
+    list.setItems(this.imageManager.getPrevNames());
+    root.getChildren().add(list);
+    historyWindow.show();
   }
 
   /**
