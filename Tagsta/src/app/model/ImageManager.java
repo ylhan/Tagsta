@@ -3,9 +3,11 @@ package app.model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
+import javafx.util.converter.LocalDateTimeStringConverter;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class ImageManager {
@@ -40,20 +42,19 @@ public class ImageManager {
    * @param tag String to be added to the file name of the image.
    */
   public void addTag(String tag) {
-    previousNames.add(name);
-    previousTags.add(tags);
     tags.add("@" + tag);
     String temp = imagePath.toString();
     int index = temp.lastIndexOf("\\");
-    temp =
-        temp.substring(0, index + name.length() + 1)
-            + " @"
-            + tag
-            + temp.substring(temp.length() - 4);
+    temp = temp.substring(0, index + name.length() + 1) + " @" + tag + temp.substring(temp.length() - 4);
     FileManager.moveImage(imagePath, Paths.get(temp));
     imagePath = Paths.get(temp);
     previousNames.add(name);
     name = name + " @" + tag;
+    LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
+    String current = converter.toString(LocalDateTime.now());
+    String nameAndDate = current + ", " + name;
+    previousNames.add(nameAndDate);
+    previousTags.add(tags);
   }
 
   /**
@@ -64,13 +65,12 @@ public class ImageManager {
    * @param tag String to be removed from the file name of the image.
    */
   public void removeTag(String tag) {
-    previousTags.add(tags);
-    previousNames.add(name);
     String tagName = " @" + tag;
     int index = name.indexOf(tagName);
-    if (index + tagName.length() + 1 < name.length()) {
+    if(index + tagName.length() + 1 < name.length()) {
       name = name.substring(0, index) + name.substring(index + tagName.length());
-    } else {
+    }
+    else {
       name = name.substring(0, index);
     }
     String temp = imagePath.toString();
@@ -79,6 +79,11 @@ public class ImageManager {
     FileManager.moveImage(imagePath, Paths.get(temp));
     imagePath = Paths.get(temp);
     tags.remove(tagName.substring(1));
+    LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
+    String current = converter.toString(LocalDateTime.now());
+    String nameAndDate = current + ", " + name;
+    previousNames.add(nameAndDate);
+    previousTags.add(tags);
   }
 
   public Path returnPath() {
@@ -91,5 +96,16 @@ public class ImageManager {
 
   public Image getImage() {
     return new Image("file:" + imagePath.toString());
+  }
+  public void revert(String name) {
+    int index = previousNames.indexOf(name);
+    LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
+    String current = converter.toString(LocalDateTime.now()) + ", ";
+    this.name = name.substring(current.length() + 1);
+    tags = previousTags.get(index);
+    String pathString = imagePath.toString();
+    pathString = pathString.substring(0, pathString.lastIndexOf("\\") + 1) + name;
+    FileManager.moveImage(imagePath, Paths.get(pathString));
+    imagePath = Paths.get(pathString);
   }
 }
