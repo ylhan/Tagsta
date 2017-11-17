@@ -194,10 +194,10 @@ public class ImageOverviewController {
     if (mouseEvent.getClickCount() == 2) {
       // Get the selected item
       TreeItem<File> item = directoryView.getSelectionModel().getSelectedItem();
-      selectedItemParent = item.getParent();
-      selectedItem = item;
       // Make sure the item isn't a directory
       if (!item.getValue().isDirectory()) {
+        selectedItemParent = item.getParent();
+        selectedItem = item;
         // Update the Image
         main.updateImage(main.getTagManager().getImageManager(item.getValue()));
         // Update the file view
