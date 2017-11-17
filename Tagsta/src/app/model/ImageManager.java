@@ -38,7 +38,6 @@ public class ImageManager implements Serializable {
 
   public void revert(String revertedName) {
     int nameIndex = previousNames.indexOf(revertedName);
-    if (tags.equals(FXCollections.observableArrayList(previousTags.get(nameIndex)))) return;
     tags = FXCollections.observableArrayList(previousTags.get(nameIndex));
     String parsedRevertedName = revertedName.substring(revertedName.indexOf("M") + 3);
     String temp = imagePath.toString();
@@ -122,6 +121,10 @@ public class ImageManager implements Serializable {
     return tags;
   }
 
+    public ObservableList<ObservableList<String>> getPreviousTags() {
+        return previousTags;
+    }
+
   public Image getImage() {
     return new Image("file:" + imagePath.toString());
   }
@@ -129,19 +132,8 @@ public class ImageManager implements Serializable {
   public File getFile() {
     return new File(imagePath.toString());
   }
-  /**
-   * public void revert(String name) { int index = previousNames.indexOf(name);
-   * LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter(); String current =
-   * converter.toString(LocalDateTime.now()) + ", "; name = name.substring(current.length() + 1);
-   * tags = previousTags.get(index); String pathString = imagePath.toString(); pathString =
-   * pathString.substring(0, pathString.lastIndexOf("\\") + 1) + name;
-   *
-   * <p>System.out.println(pathString);
-   *
-   * <p>FileManager.moveImage(imagePath, Paths.get(pathString)); imagePath = Paths.get(pathString);
-   * }
-   */
-  public ObservableList<String> getPrevNames() {
+
+   public ObservableList<String> getPrevNames() {
     return previousNames;
   }
 

@@ -2,6 +2,7 @@ package app.view;
 
 import app.Tagsta;
 import app.model.ImageManager;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,6 +22,9 @@ import javafx.util.Callback;
 
 import java.io.File;
 import java.io.IOException;
+
+import static javafx.scene.control.Alert.AlertType.ERROR;
+import static javafx.scene.control.Alert.AlertType.INFORMATION;
 
 /** Controller for the directory viewer (file/directory tree) */
 public class ImageOverviewController {
@@ -171,9 +175,19 @@ public class ImageOverviewController {
                         if (event.getButton().equals(MouseButton.PRIMARY)) {
                             if (event.getClickCount() == 2) {
                                 String listItem = list.getSelectionModel().getSelectedItem();
-                                im.revert(listItem);
-                                newTagView(im.getTags());
-                                updateFileView(new TreeItem<>(im.getFile()));
+                                int nameIndex = im.getPrevNames().indexOf(listItem);
+                                if (im.getTags().equals(FXCollections.observableArrayList(im.getPreviousTags().get(nameIndex)))) {
+                                    Alert sameNameAlert = new Alert(INFORMATION);
+                                    sameNameAlert.setTitle("Revert name");
+                                    sameNameAlert.setHeaderText("Information Alert");
+                                    sameNameAlert.setContentText("Image already has this name!");
+                                    sameNameAlert.showAndWait();
+                                } else {
+                                    im.revert(listItem);
+                                    newTagView(im.getTags());
+                                    updateFileView(new TreeItem<>(im.getFile()));
+                                    historyWindow.close();
+                                }
                             }
                         }
                     }
