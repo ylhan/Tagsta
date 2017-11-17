@@ -23,7 +23,7 @@
     <children>
         <SplitPane dividerPositions="0.1" layoutX="124.0" layoutY="120.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
-                <AnchorPane minHeight="50.0" minWidth="50.0" prefWidth="250.0" SplitPane.resizableWithParent="false">
+                <AnchorPane minHeight="50.0" minWidth="100.0" prefWidth="250.0" SplitPane.resizableWithParent="false">
                     <children>
                         <GridPane prefHeight="598.0" prefWidth="188.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <columnConstraints>
@@ -67,9 +67,9 @@
                                 </buttons>
                               </ButtonBar>
                                     </children></AnchorPane>
-                                <AnchorPane minHeight="50.0" minWidth="50.0" prefHeight="78.0" prefWidth="366.0">
+                                <AnchorPane minHeight="200.0" minWidth="-Infinity" prefWidth="366.0">
                                     <children>
-                              <BorderPane layoutX="206.0" layoutY="-31.0" prefHeight="196.0" prefWidth="712.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <BorderPane layoutX="206.0" layoutY="-31.0" prefHeight="100.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <top>
                                               <Label text="Tags" BorderPane.alignment="CENTER" />
                                  </top>
