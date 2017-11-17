@@ -147,6 +147,8 @@
 	-fx-background-radius: 4.0;
 	-fx-padding: 0.7em;
 	-fx-alignment: CENTER;
+	-fx-border-color: -swatch-500;
+	-fx-border-radius: 4.0;
 }
 
 .button-raised .button .text, .button-flat .button .text {
