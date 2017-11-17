@@ -130,9 +130,10 @@ public class ImageOverviewController {
     Stage historyWindow = new Stage();
     historyWindow.setTitle("History of names");
     Group root = new Group();
-    historyWindow.setScene(new Scene(root, 450, 450));
+    historyWindow.setScene(new Scene(root, 800, 600));
     ListView<String> list = new ListView<String>();
     list.setItems(this.im.getPrevNames());
+    list.setPrefSize(800, 600);
     root.getChildren().add(list);
     historyWindow.show();
   }
