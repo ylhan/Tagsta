@@ -102,7 +102,8 @@ public class ImageOverviewController {
   private void addTag() {
     if (im != null) {
       String tag = tf.getText();
-      if (tag != null && tag != "") {
+      tag = tag.trim();
+      if (tag != null && tag.length() >= 1) {
         tagView.getChildren().add(createTag(tag));
         im.addTag(tag);
         tf.clear();
