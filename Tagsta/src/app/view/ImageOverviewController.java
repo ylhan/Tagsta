@@ -110,6 +110,7 @@ public class ImageOverviewController {
     for (String tag : tags) {
       tagView.getChildren().add(createTag(tag));
     }
+    main.getTagManager().saveProgram();
   }
 
   @FXML
@@ -122,6 +123,7 @@ public class ImageOverviewController {
         im.addTag(tag);
         tf.clear();
         updateFileView(new TreeItem<>(im.getFile()));
+        main.getTagManager().saveProgram();
       }
     }
   }
@@ -239,6 +241,7 @@ public class ImageOverviewController {
     tagView.getChildren().remove(tag);
     im.removeTag(tagString);
     updateFileView(new TreeItem<>(im.getFile()));
+    main.getTagManager().saveProgram();
   }
   /** Initializes the directory view controller */
   @FXML
