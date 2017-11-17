@@ -34,6 +34,22 @@ public class ImageManager {
     return name;
   }
 
+  public void revert(String revertedName) {
+      int nameIndex = previousNames.indexOf(revertedName);
+      tags = previousTags.get(nameIndex);
+      String parsedRevertedName = revertedName.substring(revertedName.indexOf("M")+3);
+      String temp = imagePath.toString();
+      int index = temp.lastIndexOf("\\");
+      temp = temp.substring(0, index+name.length() + 1) + parsedRevertedName + temp.substring(temp.length() - 4);
+      FileManager.moveImage(imagePath, Paths.get(temp));
+      imagePath = Paths.get(temp);
+      LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
+      String current = converter.toString(LocalDateTime.now());
+      String nameAndDate = current + ", " + name;
+      previousNames.add(nameAndDate);
+      name = parsedRevertedName;
+  }
+
   /**
    * * Adds a tag to the file name of the image. Alters the name of the image in directory & adds
    * the tag to the list of tags. Adds the name before changes to the previous names list. Adds a
@@ -96,17 +112,22 @@ public class ImageManager {
   public Image getImage() {
     return new Image("file:" + imagePath.toString());
   }
+  /**
   public void revert(String name) {
     int index = previousNames.indexOf(name);
     LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
     String current = converter.toString(LocalDateTime.now()) + ", ";
-    this.name = name.substring(current.length() + 1);
+    name = name.substring(current.length() + 1);
     tags = previousTags.get(index);
     String pathString = imagePath.toString();
     pathString = pathString.substring(0, pathString.lastIndexOf("\\") + 1) + name;
+
+    System.out.println(pathString);
+
     FileManager.moveImage(imagePath, Paths.get(pathString));
     imagePath = Paths.get(pathString);
   }
+   */
 
   public ObservableList<String> getPrevNames() {
     return previousNames;
