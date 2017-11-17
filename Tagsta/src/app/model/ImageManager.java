@@ -38,7 +38,6 @@ public class ImageManager {
     public void revert(String revertedName) {
         int nameIndex = previousNames.indexOf(revertedName);
         tags = FXCollections.observableArrayList(previousTags.get(nameIndex));
-        System.out.println(tags.toString());
         String parsedRevertedName = revertedName.substring(revertedName.indexOf("M") + 3);
         String temp = imagePath.toString();
         int index = temp.lastIndexOf("\\");
