@@ -26,6 +26,7 @@ public class TagManager {
             this.showExtensions = false;
             this.usesThumbnails = false;
             this.listOfImageManagers = new ArrayList<>();
+            FileManager.saveFiles(this.listOfImageManagers, this.getConfigMap());
         }
         else{
             this.listOfImageManagers = FileManager.loadImageManagers();
@@ -43,13 +44,21 @@ public class TagManager {
     }
 
     /**
-     * Saves the configuration details and ImageManagers to disk using FileManager just before the program exits
+     * Saves the configuration details and ImageManagers to disk using FileManager
      */
-    public void closeProgram() {
+    public void saveProgram() {
+        FileManager.saveFiles(this.listOfImageManagers, this.getConfigMap());
+    }
+
+    /**
+     * Returns the map based on the configuration settings set in this TagManager
+     * @return The configuration settings in a map with keys as settings and values as the settings' values
+     */
+    private HashMap<String, String> getConfigMap(){
         HashMap<String, String> configMap= new HashMap<>();
         configMap.put("showExtensions", ((Boolean)this.showExtensions).toString());
         configMap.put("usesThumbnails", ((Boolean)this.usesThumbnails).toString());
-        FileManager.saveFiles(this.listOfImageManagers, configMap);
+        return configMap;
     }
 
     /**
@@ -66,6 +75,7 @@ public class TagManager {
         }
         ImageManager temp = new ImageManager(Paths.get(file.getPath()));
         this.listOfImageManagers.add(temp);
+        this.saveProgram();
         return temp;
     }
 
