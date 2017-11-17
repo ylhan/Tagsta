@@ -48,7 +48,6 @@ public class ImageManager {
     temp = temp.substring(0, index + name.length() + 1) + " @" + tag + temp.substring(temp.length() - 4);
     FileManager.moveImage(imagePath, Paths.get(temp));
     imagePath = Paths.get(temp);
-    previousNames.add(name);
     name = name + " @" + tag;
     LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
     String current = converter.toString(LocalDateTime.now());
