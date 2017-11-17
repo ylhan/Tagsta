@@ -156,6 +156,7 @@ public class ImageOverviewController {
                 if (event.getClickCount() == 2) {
                     String listItem = list.getSelectionModel().getSelectedItem();
                     im.revert(listItem);
+                    newTagView(im.getTags());
                 }
             }
         }
