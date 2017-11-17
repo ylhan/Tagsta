@@ -89,10 +89,9 @@ public class ImageManager implements Serializable {
    * removes the tag from the list of tags. Adds the name before changes to the previous names list.
    * Adds a list of tags before changes to the previous tags List.
    *
-   * @param tag String to be removed from the file name of the image.
+   * @param tagName String to be removed from the file name of the image.
    */
-  public void removeTag(String tag) {
-    String tagName = " @" + tag;
+  public void removeTag(String tagName) {
     int index = name.indexOf(tagName);
     if (index + tagName.length() + 1 < name.length()) {
       name = name.substring(0, index) + name.substring(index + tagName.length());
