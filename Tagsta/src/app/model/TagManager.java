@@ -70,11 +70,13 @@ public class TagManager {
     public ImageManager getImageManager(File file) {
         for (ImageManager imageManager : this.listOfImageManagers){
             if (imageManager.returnPath().toString().equals(file.getPath())){
+                this.saveProgram();
                 return imageManager;
             }
         }
         ImageManager temp = new ImageManager(Paths.get(file.getPath()));
         this.listOfImageManagers.add(temp);
+        this.saveProgram();
         return temp;
     }
 

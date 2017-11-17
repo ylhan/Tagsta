@@ -5,12 +5,16 @@ import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.util.converter.LocalDateTimeStringConverter;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class ImageManager {
+public class ImageManager implements Serializable{
     private ObservableList<String> tags;
     private ObservableList<ObservableList<String>> previousTags;
     private ObservableList<String> previousNames;
@@ -137,5 +141,29 @@ public class ImageManager {
 
     public ObservableList<String> getPrevNames() {
         return previousNames;
+    }
+
+    private void writeObject(ObjectOutputStream stream) throws IOException{
+        stream.writeObject(new ArrayList<String>(this.tags));
+        stream.writeObject(new ArrayList<String>(this.previousNames));
+        stream.writeObject(this.name);
+        stream.writeObject(this.imagePath.toString());
+        ArrayList<ArrayList<String>> pastTags = new ArrayList<ArrayList<String>>();
+        for (ObservableList<String> list : this.previousTags){
+            pastTags.add(new ArrayList<>(list));
+        }
+        stream.writeObject(pastTags);
+    }
+
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException{
+        tags = FXCollections.observableArrayList((ArrayList<String>)stream.readObject());
+        previousNames = FXCollections.observableArrayList((ArrayList<String>)stream.readObject());
+        name = (String)stream.readObject();
+        imagePath = Paths.get((String)stream.readObject());
+        ArrayList<ObservableList<String>> pastTags = new ArrayList<>();
+        for (ArrayList<String> list : (ArrayList<ArrayList<String>>)stream.readObject()){
+            pastTags.add(FXCollections.observableArrayList(list));
+        }
+        this.previousTags = FXCollections.observableArrayList(pastTags);
     }
 }
