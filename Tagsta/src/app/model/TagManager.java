@@ -75,7 +75,6 @@ public class TagManager {
         }
         ImageManager temp = new ImageManager(Paths.get(file.getPath()));
         this.listOfImageManagers.add(temp);
-        this.saveProgram();
         return temp;
     }
 
