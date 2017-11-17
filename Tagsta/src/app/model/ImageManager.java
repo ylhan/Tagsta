@@ -125,6 +125,9 @@ public class ImageManager implements Serializable {
     return new Image("file:" + imagePath.toString());
   }
 
+  public File getFile() {
+    return new File(imagePath.toString());
+  }
   /**
    * public void revert(String name) { int index = previousNames.indexOf(name);
    * LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter(); String current =

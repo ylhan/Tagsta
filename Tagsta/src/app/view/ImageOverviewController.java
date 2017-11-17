@@ -2,7 +2,6 @@ package app.view;
 
 import app.Tagsta;
 import app.model.ImageManager;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -19,6 +18,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import sun.reflect.generics.tree.Tree;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +43,9 @@ public class ImageOverviewController {
 
   @FXML private TextField tf;
 
+  private TreeItem<File> selectedItemParent;
+  private TreeItem<File> selectedItem;
+
   private Tagsta main;
 
   private ImageManager im;
@@ -61,6 +64,14 @@ public class ImageOverviewController {
    * @param item updated file view
    */
   public void updateFileView(TreeItem<File> item) {
+    if (selectedItemParent != null) {
+      int index = selectedItemParent.getChildren().indexOf(selectedItem);
+      selectedItemParent.getChildren().remove(index);
+      selectedItemParent.getChildren().add(index, item);
+      directoryView.getSelectionModel().select(item);
+      selectedItem = item;
+      directoryView.refresh();
+    }
     fileView.refresh();
     this.fileView.setRoot(item);
   }
@@ -73,6 +84,7 @@ public class ImageOverviewController {
   public void updateDirectoryView(TreeItem<File> item) {
     directoryView.refresh();
     this.directoryView.setRoot(item);
+    selectedItemParent = null;
   }
 
   /**
@@ -110,6 +122,7 @@ public class ImageOverviewController {
         tagView.getChildren().add(createTag(tag));
         im.addTag(tag);
         tf.clear();
+        updateFileView(new TreeItem<>(im.getFile()));
       }
     }
   }
@@ -117,7 +130,7 @@ public class ImageOverviewController {
   @FXML
   private void addTagOnEnter(KeyEvent keyPressed) {
     if (keyPressed.getCode().equals(KeyCode.ENTER)) {
-        addTag();
+      addTag();
     }
   }
   /** Zooms in to the image */
@@ -149,18 +162,20 @@ public class ImageOverviewController {
     list.setPrefSize(800, 600);
     root.getChildren().add(list);
 
-    list.setOnMouseClicked(new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-            if(event.getButton().equals(MouseButton.PRIMARY)) {
-                if (event.getClickCount() == 2) {
-                    String listItem = list.getSelectionModel().getSelectedItem();
-                    im.revert(listItem);
-                    newTagView(im.getTags());
-                }
+    list.setOnMouseClicked(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+              if (event.getClickCount() == 2) {
+                String listItem = list.getSelectionModel().getSelectedItem();
+                im.revert(listItem);
+                newTagView(im.getTags());
+                updateFileView(new TreeItem<>(im.getFile()));
+              }
             }
-        }
-    });
+          }
+        });
     historyWindow.show();
   }
 
@@ -176,7 +191,8 @@ public class ImageOverviewController {
     if (mouseEvent.getClickCount() == 2) {
       // Get the selected item
       TreeItem<File> item = directoryView.getSelectionModel().getSelectedItem();
-
+      selectedItemParent = item.getParent();
+      selectedItem = item;
       // Make sure the item isn't a directory
       if (!item.getValue().isDirectory()) {
         // Update the Image
@@ -206,6 +222,7 @@ public class ImageOverviewController {
   private void removeTag(HBox tag, String tagString) {
     tagView.getChildren().remove(tag);
     im.removeTag(tagString);
+    updateFileView(new TreeItem<>(im.getFile()));
   }
   /** Initializes the directory view controller */
   @FXML
