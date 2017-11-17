@@ -2,7 +2,9 @@ package app.view;
 
 import app.Tagsta;
 import app.model.ImageManager;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -11,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -145,6 +148,18 @@ public class ImageOverviewController {
     list.setItems(this.im.getPrevNames());
     list.setPrefSize(800, 600);
     root.getChildren().add(list);
+
+    list.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            if(event.getButton().equals(MouseButton.PRIMARY)) {
+                if (event.getClickCount() == 2) {
+                    String listItem = list.getSelectionModel().getSelectedItem();
+                    im.revert(listItem);
+                }
+            }
+        }
+    });
     historyWindow.show();
   }
 
