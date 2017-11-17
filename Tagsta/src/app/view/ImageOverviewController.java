@@ -18,7 +18,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import sun.reflect.generics.tree.Tree;
 
 import java.io.File;
 import java.io.IOException;
@@ -203,24 +202,22 @@ public class ImageOverviewController {
     }
   }
 
-    /**
-     * Handles user selecting/pressing ENTER on keyboard for an item from a tree view
-     */
-    @FXML
-    private void handleKeyEnterItem(KeyEvent keyPressed) {
-        // Check for key ENTER
-        if (keyPressed.getCode().equals(KeyCode.ENTER)) {
-            // Get the selected item
-            TreeItem<File> item = directoryView.getSelectionModel().getSelectedItem();
-            // Make sure the item isn't a directory
-            if (!item.getValue().isDirectory()) {
-                // Update the Image
-                main.updateImage(main.getTagManager().getImageManager(item.getValue()));
-                // Update the file view
-                updateFileView(item);
-            }
-        }
+  /** Handles user selecting/pressing ENTER on keyboard for an item from a tree view */
+  @FXML
+  private void handleKeyEnterItem(KeyEvent keyPressed) {
+    // Check for key ENTER
+    if (keyPressed.getCode().equals(KeyCode.ENTER)) {
+      // Get the selected item
+      TreeItem<File> item = directoryView.getSelectionModel().getSelectedItem();
+      // Make sure the item isn't a directory
+      if (!item.getValue().isDirectory()) {
+        // Update the Image
+        main.updateImage(main.getTagManager().getImageManager(item.getValue()));
+        // Update the file view
+        updateFileView(item);
+      }
     }
+  }
 
   private HBox createTag(String tagString) {
     try {

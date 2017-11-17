@@ -15,6 +15,6 @@ public class Tag {
   }
 
   public void handleDeleteTag(EventHandler<? super MouseEvent> action) {
-      deleteTag.setOnMouseClicked(action);
+    deleteTag.setOnMouseClicked(action);
   }
 }

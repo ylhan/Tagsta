@@ -38,8 +38,7 @@ public class ImageManager implements Serializable {
 
   public void revert(String revertedName) {
     int nameIndex = previousNames.indexOf(revertedName);
-    if (tags.equals(FXCollections.observableArrayList(previousTags.get(nameIndex))))
-        return;
+    if (tags.equals(FXCollections.observableArrayList(previousTags.get(nameIndex)))) return;
     tags = FXCollections.observableArrayList(previousTags.get(nameIndex));
     String parsedRevertedName = revertedName.substring(revertedName.indexOf("M") + 3);
     String temp = imagePath.toString();
