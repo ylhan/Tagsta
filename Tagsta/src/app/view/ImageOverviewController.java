@@ -100,9 +100,9 @@ public class ImageOverviewController {
 
   @FXML
   private void addTag() {
-    if (im != null && im != "" ) {
+    if (im != null) {
       String tag = tf.getText();
-      if (tag != null) {
+      if (tag != null && tag != "") {
         tagView.getChildren().add(createTag(tag));
         im.addTag(tag);
         tf.clear();
