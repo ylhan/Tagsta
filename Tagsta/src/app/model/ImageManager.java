@@ -40,14 +40,15 @@ public class ImageManager {
       String parsedRevertedName = revertedName.substring(revertedName.indexOf("M")+3);
       String temp = imagePath.toString();
       int index = temp.lastIndexOf("\\");
-      temp = temp.substring(0, index+name.length() + 1) + parsedRevertedName + temp.substring(temp.length() - 4);
+      temp = temp.substring(0, index+1) + parsedRevertedName + temp.substring(temp.length() - 4);
       FileManager.moveImage(imagePath, Paths.get(temp));
       imagePath = Paths.get(temp);
       LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
       String current = converter.toString(LocalDateTime.now());
+      name = parsedRevertedName;
       String nameAndDate = current + ", " + name;
       previousNames.add(nameAndDate);
-      name = parsedRevertedName;
+
   }
 
   /**
