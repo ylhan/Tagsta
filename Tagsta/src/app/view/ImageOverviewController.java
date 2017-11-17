@@ -154,30 +154,32 @@ public class ImageOverviewController {
 
   @FXML
   private void handleShowHistory() {
-    Stage historyWindow = new Stage();
-    historyWindow.setTitle("History of names");
-    Group root = new Group();
-    historyWindow.setScene(new Scene(root, 800, 600));
-    ListView<String> list = new ListView<String>();
-    list.setItems(this.im.getPrevNames());
-    list.setPrefSize(800, 600);
-    root.getChildren().add(list);
+    if (im != null) {
+        Stage historyWindow = new Stage();
+        historyWindow.setTitle("History of names");
+        Group root = new Group();
+        historyWindow.setScene(new Scene(root, 800, 600));
+        ListView<String> list = new ListView<String>();
+        list.setItems(this.im.getPrevNames());
+        list.setPrefSize(800, 600);
+        root.getChildren().add(list);
 
-    list.setOnMouseClicked(
-        new EventHandler<MouseEvent>() {
-          @Override
-          public void handle(MouseEvent event) {
-            if (event.getButton().equals(MouseButton.PRIMARY)) {
-              if (event.getClickCount() == 2) {
-                String listItem = list.getSelectionModel().getSelectedItem();
-                im.revert(listItem);
-                newTagView(im.getTags());
-                updateFileView(new TreeItem<>(im.getFile()));
-              }
-            }
-          }
-        });
-    historyWindow.show();
+        list.setOnMouseClicked(
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if (event.getButton().equals(MouseButton.PRIMARY)) {
+                            if (event.getClickCount() == 2) {
+                                String listItem = list.getSelectionModel().getSelectedItem();
+                                im.revert(listItem);
+                                newTagView(im.getTags());
+                                updateFileView(new TreeItem<>(im.getFile()));
+                            }
+                        }
+                    }
+                });
+        historyWindow.show();
+    }
   }
 
   /**
