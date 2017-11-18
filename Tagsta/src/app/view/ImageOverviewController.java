@@ -135,21 +135,13 @@ public class ImageOverviewController {
       tag = tag.trim();
       if (im.getTags().contains(tag)) {
           tf.clear();
-          Alert sameNameAlert = new Alert(ERROR);
-          sameNameAlert.setTitle("Add tag");
-          sameNameAlert.setHeaderText("Error Alert");
-          sameNameAlert.setContentText("Image already contains this tag!");
-          sameNameAlert.showAndWait();
+          ExceptionDialog.createExceptionPopup("Error adding tag", "Image already contains this tag!");
       } else if (tag.length() >= 1) {
           String invalidChar = "/\\:*?|<>\"";
           for (char c: invalidChar.toCharArray()) {
               if (tag.contains(Character.toString(c))) {
                   tf.clear();
-                  Alert sameNameAlert = new Alert(ERROR);
-                  sameNameAlert.setTitle("Add tag");
-                  sameNameAlert.setHeaderText("Error Alert");
-                  sameNameAlert.setContentText("Tag cannot contain the following characters: \n / \\ : * ? | < > \"");
-                  sameNameAlert.showAndWait();
+                  ExceptionDialog.createExceptionPopup("Error adding tag", "Tag cannot contain the following characters: \n / \\ : * ? | < > \"");
                   return;
               }
           }
@@ -207,11 +199,7 @@ public class ImageOverviewController {
                                 String listItem = list.getSelectionModel().getSelectedItem();
                                 int nameIndex = im.getPrevNames().indexOf(listItem);
                                 if (im.getTags().equals(FXCollections.observableArrayList(im.getPreviousTags().get(nameIndex)))) {
-                                    Alert sameNameAlert = new Alert(INFORMATION);
-                                    sameNameAlert.setTitle("Revert name");
-                                    sameNameAlert.setHeaderText("Information Alert");
-                                    sameNameAlert.setContentText("Image already has this name!");
-                                    sameNameAlert.showAndWait();
+                                    ExceptionDialog.createExceptionPopup("Error reverting tags", "Image already has this name!");
                                 } else {
                                     im.revert(listItem);
                                     newTagView(im.getTags());

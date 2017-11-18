@@ -57,9 +57,7 @@ public class RootLayoutController {
       main.updateFileView(new TreeItem<>(file));
     } else {
       // Show an error if the file is invalid
-      Alert alert = new Alert(Alert.AlertType.ERROR);
-      alert.setHeaderText("IMAGE INVALID");
-      alert.setContentText("COULD NOT OPEN IMAGE FILE");
+      ExceptionDialog.createExceptionPopup("Image Invalid", "Could not open image.");
     }
   }
 
@@ -76,10 +74,7 @@ public class RootLayoutController {
     File choice = dc.showDialog(main.getPrimaryStage());
     // Alert if directory is not valid
     if (choice == null || !choice.isDirectory()) {
-      Alert alert = new Alert(Alert.AlertType.ERROR);
-      alert.setHeaderText("DIRECTORY INVALID");
-      alert.setContentText("COULD NOT OPEN DIRECTORY");
-      alert.showAndWait();
+      ExceptionDialog.createExceptionPopup("Directory Invalid", "Could not open directory.");
     } else {
       // Update the directory tree view
       TreeItem<File> root = getNodesForDirectory(choice);
