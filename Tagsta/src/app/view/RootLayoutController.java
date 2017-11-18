@@ -1,6 +1,7 @@
 package app.view;
 
 import app.Tagsta;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -106,6 +107,15 @@ public class RootLayoutController {
     alert.showAndWait();
   }
 
+  @FXML
+  private void setDarkTheme() {
+    main.setDarkTheme();
+  }
+
+  @FXML
+  private void setLightTheme() {
+    main.setLightTheme();
+  }
   /**
    * Creates a TreeItem representation of the given directory Modified
    * https://stackoverflow.com/questions/35070310/javafx-representing-directories
