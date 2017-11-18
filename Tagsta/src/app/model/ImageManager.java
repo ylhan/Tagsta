@@ -24,8 +24,11 @@ public class ImageManager implements Serializable {
         previousNames = FXCollections.observableArrayList(new ArrayList<String>());
         name = imagePath.getFileName().toString();
         name = name.substring(0, name.length() - 4);
+        LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
+        String current = converter.toString(LocalDateTime.now());
+        previousNames.add(current + ", " + name);
         this.log = FXCollections.observableArrayList(new ArrayList<>());
-        tags = FXCollections.observableArrayList(new ArrayList<>());
+        tags = parseTags(name);
     }
 
     /***
