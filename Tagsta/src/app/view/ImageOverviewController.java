@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -63,6 +64,15 @@ public class ImageOverviewController {
    */
   public void setMainApp(Tagsta mainApp) {
     this.main = mainApp;
+      ImageView zoomInIcon = new ImageView(new Image("app\\icons\\zoomIn.png"));
+      zoomInIcon.setFitHeight(20);
+      zoomInIcon.setFitWidth(20);
+      zoomIn.setGraphic(zoomInIcon);
+
+      ImageView zoomOutIcon = new ImageView(new Image("app\\icons\\zoomOut.png"));
+      zoomOutIcon.setFitHeight(20);
+      zoomOutIcon.setFitWidth(20);
+      zoomOut.setGraphic(zoomOutIcon);
   }
 
   /**
