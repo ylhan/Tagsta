@@ -23,7 +23,8 @@ public class ImageManager implements Serializable {
         imagePath = path;
         previousNames = FXCollections.observableArrayList(new ArrayList<String>());
         name = imagePath.getFileName().toString();
-        name = name.substring(0, name.length() - 4);
+        int periodIndex = name.indexOf(".");
+        name = name.substring(0, periodIndex);
         LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
         String current = converter.toString(LocalDateTime.now());
         previousNames.add(current + ", " + name);
@@ -40,7 +41,8 @@ public class ImageManager implements Serializable {
         String parsedRevertedName = revertedName.substring(revertedName.indexOf("M") + 3);
         String temp = imagePath.toString();
         int index = temp.lastIndexOf(File.separator);
-        temp = temp.substring(0, index + 1) + parsedRevertedName + temp.substring(temp.length() - 4);
+        int periodIndex = temp.indexOf(".");
+        temp = temp.substring(0, index + 1) + parsedRevertedName + temp.substring(periodIndex);
         FileManager.moveImage(imagePath, Paths.get(temp));
         imagePath = Paths.get(temp);
         LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
@@ -62,11 +64,7 @@ public class ImageManager implements Serializable {
         tags.add(tag);
         String temp = imagePath.toString();
         int index = temp.lastIndexOf(File.separator);
-        temp =
-                temp.substring(0, index + name.length() + 1)
-                        + " @"
-                        + tag
-                        + temp.substring(temp.length() - 4);
+        temp = temp.substring(0, index + name.length() + 1) + " @" + tag + temp.substring(temp.length() - 4);
         FileManager.moveImage(imagePath, Paths.get(temp));
         imagePath = Paths.get(temp);
         name = name + " @" + tag;
@@ -128,7 +126,7 @@ public class ImageManager implements Serializable {
      * @return A list of all previous tags. (2D array)
      */
     public ObservableList<ObservableList<String>> getPreviousTags() {
-        ArrayList<ObservableList<String>> returnList = new ArrayList<ObservableList<String>>();
+        ArrayList<ObservableList<String>> returnList = new ArrayList<>();
         for (String s : previousNames) {
             returnList.add(parseTags(s));
         }
@@ -169,11 +167,11 @@ public class ImageManager implements Serializable {
      * @throws IOException
      */
     private void writeObject(ObjectOutputStream stream) throws IOException {
-        stream.writeObject(new ArrayList<String>(this.tags));
-        stream.writeObject(new ArrayList<String>(this.previousNames));
+        stream.writeObject(new ArrayList<>(this.tags));
+        stream.writeObject(new ArrayList<>(this.previousNames));
         stream.writeObject(this.name);
         stream.writeObject(this.imagePath.toString());
-        stream.writeObject(new ArrayList<String>(this.log));
+        stream.writeObject(new ArrayList<>(this.log));
     }
 
 
@@ -220,5 +218,10 @@ public class ImageManager implements Serializable {
 
     public ObservableList<String> getLog() {
         return log;
+    }
+
+    public String returnExtension() {
+        int periodIndex = imagePath.toString().indexOf(".");
+        return imagePath.toString().substring(periodIndex);
     }
 }
