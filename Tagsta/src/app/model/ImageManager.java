@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class ImageManager implements Serializable {
     private ObservableList<String> tags;
     private ObservableList<String> previousNames;
+    private static final long serialVersionUID = 123456789;
     private String name;
     private Path imagePath;
 
