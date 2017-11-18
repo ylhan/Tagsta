@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class ImageManager implements Serializable {
     private ObservableList<String> tags;
     private ObservableList<String> previousNames;
+    private ObservableList<String> log;
     private static final long serialVersionUID = 123456789;
     private String name;
     private Path imagePath;
@@ -23,6 +24,7 @@ public class ImageManager implements Serializable {
         previousNames = FXCollections.observableArrayList(new ArrayList<String>());
         name = imagePath.getFileName().toString();
         name = name.substring(0, name.length() - 4);
+        this.log = FXCollections.observableArrayList(new ArrayList<>());
         tags = FXCollections.observableArrayList(new ArrayList<String>());
     }
 
@@ -47,6 +49,7 @@ public class ImageManager implements Serializable {
         String current = converter.toString(LocalDateTime.now());
         name = parsedRevertedName;
         String nameAndDate = current + ", " + name;
+        this.log.add("Reverted to name" + " " + revertedName + " at " + current);
         previousNames.add(nameAndDate);
     }
 
@@ -72,6 +75,7 @@ public class ImageManager implements Serializable {
         LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
         String current = converter.toString(LocalDateTime.now());
         String nameAndDate = current + ", " + name;
+        this.log.add("Added the tag " + tag + " at " + current);
         previousNames.add(nameAndDate);
     }
 
@@ -99,6 +103,7 @@ public class ImageManager implements Serializable {
         LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
         String current = converter.toString(LocalDateTime.now());
         String nameAndDate = current + ", " + name;
+        this.log.add("Removed the tag " + tag + " at " + current);
         previousNames.add(nameAndDate);
     }
 
@@ -133,6 +138,7 @@ public class ImageManager implements Serializable {
     private void writeObject(ObjectOutputStream stream) throws IOException {
         stream.writeObject(new ArrayList<String>(this.tags));
         stream.writeObject(new ArrayList<String>(this.previousNames));
+        stream.writeObject(new ArrayList<String>(this.log));
         stream.writeObject(this.name);
         stream.writeObject(this.imagePath.toString());
     }
@@ -140,6 +146,7 @@ public class ImageManager implements Serializable {
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         tags = FXCollections.observableArrayList((ArrayList<String>) stream.readObject());
         previousNames = FXCollections.observableArrayList((ArrayList<String>) stream.readObject());
+        this.log = FXCollections.observableArrayList((ArrayList<String>) stream.readObject());
         name = (String) stream.readObject();
         imagePath = Paths.get((String) stream.readObject());
     }
