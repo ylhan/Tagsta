@@ -25,18 +25,13 @@ public class ImageManager implements Serializable {
         name = imagePath.getFileName().toString();
         name = name.substring(0, name.length() - 4);
         this.log = FXCollections.observableArrayList(new ArrayList<>());
-        tags = FXCollections.observableArrayList(new ArrayList<String>());
+        tags = FXCollections.observableArrayList(new ArrayList<>());
     }
 
-    /**
-     * * Returns the file name of the image (currently without extension)
-     *
-     * @return the file name of the image without file extension.
+    /***
+     * Changes the name of the file to a previous name in previousNames.
+     * @param revertedName The String to which the name of the file will be changed to.
      */
-    public String getName() {
-        return name;
-    }
-
     public void revert(String revertedName) {
         tags = parseTags(revertedName);
         String parsedRevertedName = revertedName.substring(revertedName.indexOf("M") + 3);
@@ -107,34 +102,69 @@ public class ImageManager implements Serializable {
         previousNames.add(nameAndDate);
     }
 
+    /***
+     * Returns the path of the file this ImageManager is holding.
+     * @return A path to to the image for this ImageManager.
+     */
     public Path returnPath() {
         return imagePath;
     }
 
+
+    /***
+     * Returns a list of current tags of this ImageManager.
+     * @return The list of current tags.
+     */
     public ObservableList<String> getTags() {
         return tags;
     }
 
+
+    /***
+     * Returns a list of all previous tags of this ImageManager based on the previousNames list.
+     * @return A list of all previous tags. (2D array)
+     */
     public ObservableList<ObservableList<String>> getPreviousTags() {
         ArrayList<ObservableList<String>> returnList = new ArrayList<ObservableList<String>>();
-        for(String s: previousNames) {
+        for (String s : previousNames) {
             returnList.add(parseTags(s));
         }
         return FXCollections.observableArrayList(returnList);
     }
 
+
+    /***
+     * Returns the image for this ImageManager.
+     * @return Image of this ImageManager.
+     */
     public Image getImage() {
         return new Image("file:" + imagePath.toString());
     }
 
+
+    /***
+     * Returns the File class representation of the image stored in this ImageManager.
+     * @return File object representation of this image.
+     */
     public File getFile() {
         return new File(imagePath.toString());
     }
 
+
+    /***
+     * Returns a list of previous names of this image.
+     * @return List of previous names.
+     */
     public ObservableList<String> getPrevNames() {
         return previousNames;
     }
 
+
+    /***
+     * Helper method used to save data.
+     * @param stream
+     * @throws IOException
+     */
     private void writeObject(ObjectOutputStream stream) throws IOException {
         stream.writeObject(new ArrayList<String>(this.tags));
         stream.writeObject(new ArrayList<String>(this.previousNames));
@@ -143,6 +173,13 @@ public class ImageManager implements Serializable {
         stream.writeObject(this.imagePath.toString());
     }
 
+
+    /***
+     * Helper method used to load data.
+     * @param stream
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         tags = FXCollections.observableArrayList((ArrayList<String>) stream.readObject());
         previousNames = FXCollections.observableArrayList((ArrayList<String>) stream.readObject());
@@ -151,14 +188,19 @@ public class ImageManager implements Serializable {
         imagePath = Paths.get((String) stream.readObject());
     }
 
+    /***
+     * Helper method used to generate a list of tags from a name String.
+     * @param s The string to be parsed.
+     * @return A list of tags from a name String.
+     */
     private ObservableList<String> parseTags(String s) {
         int index = s.lastIndexOf(File.separator);
         String fileName = s.substring(index + 1);
         int tagIndex = fileName.indexOf(" @");
         ArrayList<String> tempList = new ArrayList<String>();
-        while(tagIndex != -1) {
+        while (tagIndex != -1) {
             int blankSpaceIndex = fileName.substring(tagIndex + 2).indexOf(" ");
-            if(blankSpaceIndex == -1) {
+            if (blankSpaceIndex == -1) {
                 tempList.add(fileName.substring(tagIndex + 2));
                 tagIndex = -1;
                 continue;
@@ -167,5 +209,9 @@ public class ImageManager implements Serializable {
             tagIndex = fileName.substring(tagIndex + 2).indexOf(" @") + tagIndex + 2;
         }
         return FXCollections.observableArrayList(tempList);
+    }
+
+    public void updateDirectory(Path path) {
+        imagePath = path;
     }
 }

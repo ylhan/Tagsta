@@ -416,6 +416,7 @@ public class ImageOverviewController {
                     treeCell.getTreeItem().getChildren().add(0,newTreeItem);
                     directoryView.getSelectionModel().select(newTreeItem);
                     success = true;
+                    im.updateDirectory(target);
                     directoryView.refresh();
                 }
                 event.setDropCompleted(success);
