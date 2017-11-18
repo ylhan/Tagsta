@@ -415,6 +415,8 @@ public class ImageOverviewController {
                     TreeItem<File> newTreeItem = new TreeItem<>(new File(target.toString()));
                     treeCell.getTreeItem().getChildren().add(0,newTreeItem);
                     directoryView.getSelectionModel().select(newTreeItem);
+                    selectedItem = newTreeItem;
+                    selectedItemParent = newTreeItem.getParent();
                     success = true;
                     im.updateDirectory(target);
                     directoryView.refresh();
