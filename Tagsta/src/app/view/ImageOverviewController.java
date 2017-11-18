@@ -297,8 +297,6 @@ public class ImageOverviewController {
   /** Initializes the directory view controller */
   @FXML
   private void initialize() {
-    tagView.setVgap(10);
-    tagView.setHgap(10);
     // https://stackoverflow.com/questions/44210453/how-to-display-only-the-filename-in-a-javafx-treeview
     // Display only the directory name (folder2 instead of /home/user/folder2)
     directoryView.setCellFactory(new Callback<TreeView<File>, TreeCell<File>>() {
