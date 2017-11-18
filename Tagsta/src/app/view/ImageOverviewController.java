@@ -133,7 +133,7 @@ public class ImageOverviewController {
 
   @FXML
   private void handleTagListClick(MouseEvent event) {
-      if (event.getClickCount() == 2) {
+      if (im != null && event.getClickCount() == 2 && tagListView.getSelectionModel().getSelectedItem() != null) {
           String tagItem = tagListView.getSelectionModel().getSelectedItem();
           tagView.getChildren().add(createTag(tagItem));
           im.addTag(tagItem);
