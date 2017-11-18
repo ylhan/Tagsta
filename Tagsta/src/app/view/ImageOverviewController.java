@@ -44,6 +44,10 @@ public class ImageOverviewController {
 
   @FXML private Button zoomOut;
 
+  @FXML private Button addTag;
+
+  @FXML private Button showHistory;
+
   @FXML private FlowPane tagView;
 
   @FXML private TextField tf;
@@ -118,6 +122,19 @@ public class ImageOverviewController {
       image.setFitHeight(image.getImage().getHeight());
     }
     newTagView(im.getTags());
+    enableImageControls();
+  }
+
+    /**
+     * Used to enable button/text-fields that are disabled by default (only enable when there is an image)
+     */
+  private void enableImageControls(){
+      // Enable all
+      addTag.setDisable(false);
+      showHistory.setDisable(false);
+      tf.setDisable(false);
+      zoomIn.setDisable(false);
+      zoomOut.setDisable(false);
   }
 
   private void newTagView(ObservableList<String> tags) {
