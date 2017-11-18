@@ -64,12 +64,12 @@ public class ImageOverviewController {
    */
   public void setMainApp(Tagsta mainApp) {
     this.main = mainApp;
-      ImageView zoomInIcon = new ImageView(new Image("app\\icons\\zoomIn.png"));
+      ImageView zoomInIcon = new ImageView(new Image("app/icons/zoomIn.png"));
       zoomInIcon.setFitHeight(20);
       zoomInIcon.setFitWidth(20);
       zoomIn.setGraphic(zoomInIcon);
 
-      ImageView zoomOutIcon = new ImageView(new Image("app\\icons\\zoomOut.png"));
+      ImageView zoomOutIcon = new ImageView(new Image("app/icons/zoomOut.png"));
       zoomOutIcon.setFitHeight(20);
       zoomOutIcon.setFitWidth(20);
       zoomOut.setGraphic(zoomOutIcon);
