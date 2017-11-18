@@ -125,7 +125,6 @@ public class FileManager {
       Properties properties = new Properties();
       properties.load(reader);
       configMap.put("displayExtensions", properties.getProperty("displayExtensions"));
-      configMap.put("showsThumbnails", properties.getProperty("showsThumbnails"));
       reader.close();
     } catch (IOException ex) {
       System.out.println("IO error in getConfigDetails");
