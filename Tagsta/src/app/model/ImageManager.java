@@ -168,9 +168,9 @@ public class ImageManager implements Serializable {
     private void writeObject(ObjectOutputStream stream) throws IOException {
         stream.writeObject(new ArrayList<String>(this.tags));
         stream.writeObject(new ArrayList<String>(this.previousNames));
-        stream.writeObject(new ArrayList<String>(this.log));
         stream.writeObject(this.name);
         stream.writeObject(this.imagePath.toString());
+        stream.writeObject(new ArrayList<String>(this.log));
     }
 
 
@@ -183,9 +183,9 @@ public class ImageManager implements Serializable {
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         tags = FXCollections.observableArrayList((ArrayList<String>) stream.readObject());
         previousNames = FXCollections.observableArrayList((ArrayList<String>) stream.readObject());
-        this.log = FXCollections.observableArrayList((ArrayList<String>) stream.readObject());
         name = (String) stream.readObject();
         imagePath = Paths.get((String) stream.readObject());
+        log = FXCollections.observableArrayList((ArrayList<String>) stream.readObject());
     }
 
     /***
