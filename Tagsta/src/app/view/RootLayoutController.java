@@ -28,12 +28,12 @@ public class RootLayoutController {
    */
   public void setMainApp(Tagsta mainApp) {
     this.main = mainApp;
-      ImageView folderIcon = new ImageView(new Image("app\\icons\\folderIcon.png"));
+      ImageView folderIcon = new ImageView(new Image("/resources/folderIcon.png"));
       folderIcon.setFitHeight(15);
       folderIcon.setFitWidth(15);
       openFolder.setGraphic(folderIcon);
 
-      ImageView imageIcon = new ImageView(new Image("app\\icons\\imageIcon.png"));
+      ImageView imageIcon = new ImageView(new Image("/resources/pictureIcon.png"));
       imageIcon.setFitHeight(15);
       imageIcon.setFitWidth(15);
       openImage.setGraphic(imageIcon);
