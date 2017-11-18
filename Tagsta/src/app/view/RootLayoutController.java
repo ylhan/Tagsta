@@ -2,16 +2,15 @@ package app.view;
 
 import app.Tagsta;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TreeItem;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 /** Root element of the UI (menu bar and border pane) */
 public class RootLayoutController {
@@ -87,6 +86,29 @@ public class RootLayoutController {
       root.setExpanded(true);
       main.updateDirectoryView(root);
     }
+  }
+
+  @FXML
+  private void handleAbout(){
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle("About");
+    alert.setHeaderText("CSC207 PROJECT");
+    String aboutInfo = "A program for managing and tagging images.\n\nCreated by YiLun (Allen) Han, Samin Khan, George Ly, & Amritpal Aujla\n";
+    TextArea textArea = new TextArea(aboutInfo);
+    textArea.setEditable(false);
+    textArea.setWrapText(true);
+
+    textArea.setMaxWidth(Double.MAX_VALUE);
+    textArea.setMaxHeight(Double.MAX_VALUE);
+    GridPane.setVgrow(textArea, Priority.ALWAYS);
+    GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+    GridPane expContent = new GridPane();
+    expContent.setMaxWidth(Double.MAX_VALUE);
+    expContent.add(textArea, 0, 1);
+
+    alert.getDialogPane().setContent(expContent);
+    alert.showAndWait();
   }
 
   /**
