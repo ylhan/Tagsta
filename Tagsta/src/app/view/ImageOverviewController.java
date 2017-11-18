@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 
+import static javafx.scene.control.Alert.AlertType.ERROR;
 import static javafx.scene.control.Alert.AlertType.INFORMATION;
 
 /** Controller for the directory viewer (file/directory tree) */
@@ -124,10 +125,7 @@ public class ImageOverviewController {
   private void updateTagList() {
       HashSet<String> tagList = new HashSet<>();
       for (ObservableList<String> list: im.getPreviousTags()) {
-          for (String tag: list) {
-              tag = tag.substring(1);
-              tagList.add(tag);
-          }
+          tagList.addAll(list);
       }
       ObservableList<String> uniqueTags = FXCollections.observableArrayList(tagList);
       tagListView.setItems(uniqueTags.sorted());
@@ -149,7 +147,26 @@ public class ImageOverviewController {
     if (im != null) {
       String tag = tf.getText();
       tag = tag.trim();
-      if (tag != null && tag.length() >= 1) {
+      if (im.getTags().contains(tag)) {
+          tf.clear();
+          Alert sameNameAlert = new Alert(ERROR);
+          sameNameAlert.setTitle("Add tag");
+          sameNameAlert.setHeaderText("Error Alert");
+          sameNameAlert.setContentText("Image already contains this tag!");
+          sameNameAlert.showAndWait();
+      } else if (tag.length() >= 1) {
+          String invalidChar = "/\\:*?|<>\"";
+          for (char c: invalidChar.toCharArray()) {
+              if (tag.contains(Character.toString(c))) {
+                  tf.clear();
+                  Alert sameNameAlert = new Alert(ERROR);
+                  sameNameAlert.setTitle("Add tag");
+                  sameNameAlert.setHeaderText("Error Alert");
+                  sameNameAlert.setContentText("Tag cannot contain the following characters: \n / \\ : * ? | < > \"");
+                  sameNameAlert.showAndWait();
+                  return;
+              }
+          }
         tagView.getChildren().add(createTag(tag));
         im.addTag(tag);
         tf.clear();
