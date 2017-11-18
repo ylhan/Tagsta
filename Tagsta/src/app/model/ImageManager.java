@@ -63,7 +63,7 @@ public class ImageManager implements Serializable {
    * @param tag String to be added to the file name of the image.
    */
   public void addTag(String tag) {
-    tags.add("@" + tag);
+    tags.add(tag);
     String temp = imagePath.toString();
     int index = temp.lastIndexOf(File.separator);
     temp =
@@ -103,7 +103,7 @@ public class ImageManager implements Serializable {
     temp = temp.substring(0, index) + temp.substring(index + tagName.length());
     FileManager.moveImage(imagePath, Paths.get(temp));
     imagePath = Paths.get(temp);
-    tags.remove(tagName.substring(1));
+    tags.remove(tag);
     LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
     String current = converter.toString(LocalDateTime.now());
     String nameAndDate = current + ", " + name;
