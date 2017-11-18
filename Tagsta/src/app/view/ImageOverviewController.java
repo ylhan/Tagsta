@@ -46,11 +46,7 @@ public class ImageOverviewController {
 
   @FXML private FlowPane tagView;
 
-  @FXML private Button showHistory;
-
   @FXML private TextField tf;
-
-  @FXML private ListView<String> tagListView;
 
   private TreeItem<File> selectedItemParent;
   private TreeItem<File> selectedItem;
@@ -130,17 +126,6 @@ public class ImageOverviewController {
       tagView.getChildren().add(createTag(tag));
     }
     main.getTagManager().saveProgram();
-  }
-
-  @FXML
-  private void handleTagListClick(MouseEvent event) {
-      if (im != null && event.getClickCount() == 2 && tagListView.getSelectionModel().getSelectedItem() != null) {
-          String tagItem = tagListView.getSelectionModel().getSelectedItem();
-          tagView.getChildren().add(createTag(tagItem));
-          im.addTag(tagItem);
-          updateFileView(new TreeItem<>(im.getFile()));
-          main.getTagManager().saveProgram();
-      }
   }
 
   @FXML
