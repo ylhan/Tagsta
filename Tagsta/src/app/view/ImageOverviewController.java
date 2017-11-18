@@ -122,7 +122,6 @@ public class ImageOverviewController {
       image.setFitHeight(image.getImage().getHeight());
     }
     newTagView(im.getTags());
-    updateTagList();
   }
 
   private void newTagView(ObservableList<String> tags) {
@@ -131,15 +130,6 @@ public class ImageOverviewController {
       tagView.getChildren().add(createTag(tag));
     }
     main.getTagManager().saveProgram();
-  }
-
-  private void updateTagList() {
-      HashSet<String> tagList = new HashSet<>();
-      for (ObservableList<String> list: im.getPreviousTags()) {
-          tagList.addAll(list);
-      }
-      ObservableList<String> uniqueTags = FXCollections.observableArrayList(tagList);
-      tagListView.setItems(uniqueTags.sorted());
   }
 
   @FXML
@@ -183,7 +173,6 @@ public class ImageOverviewController {
         tf.clear();
         updateFileView(new TreeItem<>(im.getFile()));
         main.getTagManager().saveProgram();
-        updateTagList();
       }
     }
   }
