@@ -80,6 +80,9 @@
 	-fx-dark-text-color: white;
 }
 
+.background {
+    -fx-background-color: #1d1d1d;
+}
 /*******************************************************************************
  *                                                                             *
  * Material Design - Cards 				                       				   *
