@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
@@ -71,7 +72,7 @@
                                 </AnchorPane>
                                 <AnchorPane minHeight="200.0" minWidth="-Infinity" prefWidth="366.0">
                                     <children>
-                                        <BorderPane layoutX="206.0" layoutY="-31.0" prefHeight="100.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <BorderPane layoutX="198.0" layoutY="-31.0" prefHeight="200.0" prefWidth="492.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="198.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <top>
                                                 <Label text="Tags" BorderPane.alignment="CENTER" />
                                             </top>
@@ -92,6 +93,8 @@
                                                 </FlowPane>
                                             </center>
                                         </BorderPane>
+                              <ListView fx:id="tagListView" layoutX="1.0" layoutY="20.0" onMouseClicked="#handleTagListClick" prefHeight="181.0" prefWidth="200.0" />
+                              <Label layoutX="64.0" text="Previous Tags" />
                                     </children>
                                 </AnchorPane>
                             </items>

@@ -4,6 +4,7 @@ import app.Tagsta;
 import app.model.ImageManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,8 +23,8 @@ import javafx.util.Callback;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 
-import static javafx.scene.control.Alert.AlertType.ERROR;
 import static javafx.scene.control.Alert.AlertType.INFORMATION;
 
 /** Controller for the directory viewer (file/directory tree) */
@@ -45,6 +46,8 @@ public class ImageOverviewController {
   @FXML private Button showHistory;
 
   @FXML private TextField tf;
+
+  @FXML private ListView<String> tagListView;
 
   private TreeItem<File> selectedItemParent;
   private TreeItem<File> selectedItem;
@@ -107,6 +110,7 @@ public class ImageOverviewController {
       image.setFitHeight(image.getImage().getHeight());
     }
     newTagView(im.getTags());
+    updateTagList();
   }
 
   private void newTagView(ObservableList<String> tags) {
@@ -115,6 +119,29 @@ public class ImageOverviewController {
       tagView.getChildren().add(createTag(tag));
     }
     main.getTagManager().saveProgram();
+  }
+
+  private void updateTagList() {
+      HashSet<String> tagList = new HashSet<>();
+      for (ObservableList<String> list: im.getPreviousTags()) {
+          for (String tag: list) {
+              tag = tag.substring(1);
+              tagList.add(tag);
+          }
+      }
+      ObservableList<String> uniqueTags = FXCollections.observableArrayList(tagList);
+      tagListView.setItems(uniqueTags.sorted());
+  }
+
+  @FXML
+  private void handleTagListClick(MouseEvent event) {
+      if (event.getClickCount() == 2) {
+          String tagItem = tagListView.getSelectionModel().getSelectedItem();
+          tagView.getChildren().add(createTag(tagItem));
+          im.addTag(tagItem);
+          updateFileView(new TreeItem<>(im.getFile()));
+          main.getTagManager().saveProgram();
+      }
   }
 
   @FXML
@@ -128,6 +155,7 @@ public class ImageOverviewController {
         tf.clear();
         updateFileView(new TreeItem<>(im.getFile()));
         main.getTagManager().saveProgram();
+        updateTagList();
       }
     }
   }
