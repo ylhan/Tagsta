@@ -217,4 +217,8 @@ public class ImageManager implements Serializable {
     public void updateDirectory(Path path) {
         imagePath = path;
     }
+
+    public ObservableList<String> getLog() {
+        return log;
+    }
 }
