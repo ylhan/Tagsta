@@ -1,6 +1,7 @@
 package app.view;
 
 import app.Tagsta;
+import app.model.FileManager;
 import app.model.ImageManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,10 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -24,6 +22,9 @@ import javafx.util.Callback;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashSet;
 
 import static javafx.scene.control.Alert.AlertType.ERROR;
@@ -64,12 +65,12 @@ public class ImageOverviewController {
    */
   public void setMainApp(Tagsta mainApp) {
     this.main = mainApp;
-      ImageView zoomInIcon = new ImageView(new Image("app/icons/zoomIn.png"));
+      ImageView zoomInIcon = new ImageView(new Image("/resources/zoomIn.png"));
       zoomInIcon.setFitHeight(20);
       zoomInIcon.setFitWidth(20);
       zoomIn.setGraphic(zoomInIcon);
 
-      ImageView zoomOutIcon = new ImageView(new Image("app/icons/zoomOut.png"));
+      ImageView zoomOutIcon = new ImageView(new Image("/resources/zoomOut.png"));
       zoomOutIcon.setFitHeight(20);
       zoomOutIcon.setFitWidth(20);
       zoomOut.setGraphic(zoomOutIcon);
@@ -321,21 +322,110 @@ public class ImageOverviewController {
     tagView.setHgap(10);
     // https://stackoverflow.com/questions/44210453/how-to-display-only-the-filename-in-a-javafx-treeview
     // Display only the directory name (folder2 instead of /home/user/folder2)
-    directoryView.setCellFactory(
-        new Callback<TreeView<File>, TreeCell<File>>() {
+    directoryView.setCellFactory(new Callback<TreeView<File>, TreeCell<File>>() {
+        @Override
+        public TreeCell<File> call(TreeView<File> stringTreeView) {
+            TreeCell<File> treeCell = new TreeCell<File>() {
+                private final ImageView FOLDER_ICON = new ImageView(new Image(getClass().getResourceAsStream("/resources/folderIcon.png")));
+                private final ImageView PICTURE_ICON = new ImageView(new Image(getClass().getResourceAsStream("/resources/pictureIcon.png")));
+                protected void updateItem(File item, boolean empty) {
+                    super.updateItem(item, empty);
 
-          public TreeCell<File> call(TreeView<File> tv) {
-            return new TreeCell<File>() {
-
-              @Override
-              protected void updateItem(File item, boolean empty) {
-                super.updateItem(item, empty);
-
-                setText((empty || item == null) ? "" : item.getName());
-              }
+                    if (!empty && item != null) {
+                        setText(item.getName());
+                        if (item.isDirectory()) {
+                            setGraphic(FOLDER_ICON);
+                        }else{
+                            setGraphic(PICTURE_ICON);
+                        }
+                    } else {
+                        setText(null);
+                        setGraphic(null);
+                    }
+                }
             };
-          }
-        });
+
+            treeCell.setOnDragDetected(event -> {
+                TreeItem<File> item = treeCell.getTreeItem();
+                // Only drag and drop files
+                if (item != null && !item.getValue().isDirectory()) {
+                    Dragboard db = treeCell.startDragAndDrop(TransferMode.MOVE);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putFiles(Arrays.asList(item.getValue()));
+                    db.setContent(content);
+                    event.consume();
+                }
+            });
+
+            treeCell.setOnDragOver(event -> {
+                TreeItem<File> item = treeCell.getTreeItem();
+                if ((item != null && item.getValue().isDirectory()) &&
+                        event.getGestureSource() != treeCell &&
+                        event.getDragboard().hasFiles()) {
+                    Path targetPath = treeCell.getTreeItem().getValue().toPath();
+                    TreeCell<File> sourceCell = (TreeCell<File>) event.getGestureSource();
+                    final Path sourceParentPath = sourceCell.getTreeItem().getValue().getParentFile().toPath();
+                    if (sourceParentPath.compareTo(targetPath) != 0) {
+                        event.acceptTransferModes(TransferMode.ANY);
+                    }
+                }
+                event.consume();
+            });
+
+            treeCell.setOnDragEntered(event -> {
+                TreeItem<File> item = treeCell.getTreeItem();
+                if ((item != null && item.getValue().isDirectory()) &&
+                        event.getGestureSource() != treeCell &&
+                        event.getDragboard().hasFiles()) {
+                    Path targetPath = treeCell.getTreeItem().getValue().toPath();
+                    TreeCell<File> sourceCell = (TreeCell<File>) event.getGestureSource();
+                    final Path sourceParentPath = sourceCell.getTreeItem().getValue().getParentFile().toPath();
+                    if (sourceParentPath.compareTo(targetPath) != 0) {
+                        treeCell.updateSelected(true);
+                    }
+                }
+                event.consume();
+            });
+
+            treeCell.setOnDragExited(event -> {
+                TreeItem<File> item = treeCell.getTreeItem();
+                if ((item != null && item.getValue().isDirectory()) &&
+                        event.getGestureSource() != treeCell &&
+                        event.getDragboard().hasFiles()) {
+                    Path targetPath = treeCell.getTreeItem().getValue().toPath();
+                    TreeCell<File> sourceCell = (TreeCell<File>) event.getGestureSource();
+                    final Path sourceParentPath = sourceCell.getTreeItem().getValue().getParentFile().toPath();
+                    if (sourceParentPath.compareTo(targetPath) != 0) {
+                        treeCell.updateSelected(false);
+                    }
+                }
+                event.consume();
+            });
+
+            treeCell.setOnDragDropped(event -> {
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                if (db.hasFiles()) {
+                    final Path source = db.getFiles().get(0).toPath();
+                    final Path target = Paths.get(treeCell.getTreeItem().getValue().getPath() + File.separator+source.getFileName());
+                    FileManager.moveImage(source, target);
+                    // update directory view
+                    TreeCell<File> t =((TreeCell<File>)event.getGestureSource());
+                    t.getTreeItem().getParent().getChildren().remove(t.getTreeItem());
+                    TreeItem<File> newTreeItem = new TreeItem<>(new File(target.toString()));
+                    treeCell.getTreeItem().getChildren().add(0,newTreeItem);
+                    directoryView.getSelectionModel().select(newTreeItem);
+                    success = true;
+                    directoryView.refresh();
+                }
+                event.setDropCompleted(success);
+                event.consume();
+            });
+
+
+            return treeCell;
+        }
+    });
 
     fileView.setCellFactory(
         new Callback<TreeView<File>, TreeCell<File>>() {
@@ -343,12 +433,18 @@ public class ImageOverviewController {
           public TreeCell<File> call(TreeView<File> tv) {
             return new TreeCell<File>() {
 
-              @Override
-              protected void updateItem(File item, boolean empty) {
-                super.updateItem(item, empty);
+                private final ImageView PICTURE_ICON = new ImageView(new Image(getClass().getResourceAsStream("/resources/pictureIcon.png")));
+                protected void updateItem(File item, boolean empty) {
+                    super.updateItem(item, empty);
 
-                setText((empty || item == null) ? "" : item.getName());
-              }
+                    if (!empty && item != null) {
+                        setText(item.getName());
+                            setGraphic(PICTURE_ICON);
+                    } else {
+                        setText(null);
+                        setGraphic(null);
+                    }
+                }
             };
           }
         });
