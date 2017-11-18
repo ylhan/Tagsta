@@ -3,7 +3,10 @@ package app.view;
 import app.Tagsta;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
@@ -15,13 +18,25 @@ public class RootLayoutController {
   // Reference to the main application
   private Tagsta main;
 
-  /**
+  @FXML private MenuItem openFolder;
+  @FXML private MenuItem openImage;
+    
+    /**
    * Give directory viewer a reference to the main application
    *
    * @param mainApp the main app
    */
   public void setMainApp(Tagsta mainApp) {
     this.main = mainApp;
+      ImageView folderIcon = new ImageView(new Image("app\\icons\\folderIcon.png"));
+      folderIcon.setFitHeight(15);
+      folderIcon.setFitWidth(15);
+      openFolder.setGraphic(folderIcon);
+
+      ImageView imageIcon = new ImageView(new Image("app\\icons\\imageIcon.png"));
+      imageIcon.setFitHeight(15);
+      imageIcon.setFitWidth(15);
+      openImage.setGraphic(imageIcon);
   }
 
   /** Opens a FileChooser to let the user select an image to load. */
@@ -97,5 +112,10 @@ public class RootLayoutController {
       }
     }
     return root;
+  }
+
+  @FXML
+    private void exit() {
+      System.exit(0);
   }
 }
