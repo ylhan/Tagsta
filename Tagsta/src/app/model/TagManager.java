@@ -12,7 +12,6 @@ import java.util.HashMap;
  */
 public class TagManager {
   private boolean showExtensions;
-  private boolean usesThumbnails;
   private ArrayList<ImageManager> listOfImageManagers;
   private boolean isFirstTime;
 
@@ -25,7 +24,6 @@ public class TagManager {
   public TagManager() {
     if (FileManager.isFirstTime()) {
       this.showExtensions = false;
-      this.usesThumbnails = false;
       this.listOfImageManagers = new ArrayList<>();
       FileManager.saveFiles(this.listOfImageManagers, this.getConfigMap());
     } else {
@@ -41,7 +39,6 @@ public class TagManager {
   private void setConfigOptions() {
     HashMap<String, String> configMap = FileManager.getConfigDetails();
     this.showExtensions = Boolean.parseBoolean(configMap.get("showExtensions"));
-    this.usesThumbnails = Boolean.parseBoolean(configMap.get("usesThumbnails"));
   }
 
   /** Saves the configuration details and ImageManagers to disk using FileManager */
@@ -58,7 +55,6 @@ public class TagManager {
   private HashMap<String, String> getConfigMap() {
     HashMap<String, String> configMap = new HashMap<>();
     configMap.put("showExtensions", ((Boolean) this.showExtensions).toString());
-    configMap.put("usesThumbnails", ((Boolean) this.usesThumbnails).toString());
     return configMap;
   }
 
@@ -115,17 +111,4 @@ public class TagManager {
    *
    * @return Whether the view displays images in a directory in a classic thumbnail style
    */
-  public boolean isUsesThumbnails() {
-    return usesThumbnails;
-  }
-
-  /**
-   * Sets whether the view displays images in a directory in a classic thumbnail style
-   *
-   * @param usesThumbnails Whether the view displays images in a directory in a classic thumbnail
-   *     style
-   */
-  public void setUsesThumbnails(boolean usesThumbnails) {
-    this.usesThumbnails = usesThumbnails;
-  }
 }
