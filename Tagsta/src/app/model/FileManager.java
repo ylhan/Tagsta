@@ -156,15 +156,21 @@ public class FileManager {
     }
 
     /**
-     * Moves an image from the current location to a new location, replacing a file if one is already
-     * there in the nnew location
+     * Moves an image from the current location to a new location. If there is a file at the new path already, it
+     * gives the user an error
      *
      * @param currentPath The current path of the image
      * @param newPath     The new path to move the image to
      */
     public static void moveImage(Path currentPath, Path newPath) {
         try {
-            Files.move(currentPath, newPath, StandardCopyOption.REPLACE_EXISTING);
+            if (!newPath.toFile().exists()){
+                Files.move(currentPath, newPath, StandardCopyOption.REPLACE_EXISTING);
+            }
+            else{
+                ExceptionDialogPopup.createExceptionPopup("An error occurred while moving the image",
+                        "There is already an image of the same name in the new directory");
+            }
         } catch (IOException ex) {
             ExceptionDialogPopup.createExceptionPopup("An error occurred while moving the image",
                     "The image could not be moved");
