@@ -35,7 +35,7 @@
                                 <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="ALWAYS" />
                             </rowConstraints>
                             <children>
-                                <TreeView fx:id="directoryView" onKeyPressed="#handleKeyEnterItem" onMouseClicked="#handleDoubleClickItem" prefHeight="468.0" prefWidth="188.0" GridPane.rowIndex="3" />
+                                <TreeView fx:id="directoryView" onMouseClicked="#handleDoubleClickItem" prefHeight="468.0" prefWidth="188.0" GridPane.rowIndex="3" />
                                 <Label text="Open Images" />
                                 <Label text="Open Folders" GridPane.rowIndex="2" />
                                 <TreeView fx:id="fileView" prefHeight="48.0" prefWidth="188.0" GridPane.rowIndex="1" />

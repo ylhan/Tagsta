@@ -194,6 +194,10 @@ public class ImageOverviewController {
         }
     }
 
+    /**
+     * Add the tag currently in the text-field when the user presses Enter
+     * @param keyPressed the key that was pressed
+     */
     @FXML
     private void addTagOnEnter(KeyEvent keyPressed) {
         if (keyPressed.getCode().equals(KeyCode.ENTER)) {
@@ -206,7 +210,9 @@ public class ImageOverviewController {
      */
     @FXML
     private void handleZoomIn() {
+        // Make sure the image doesn't get too big
         if (image.getFitHeight() < 10000 && image.getFitWidth() < 10000) {
+            // Zoom by 10% each time
             image.setFitHeight(image.getFitHeight() * 1.1);
             image.setFitWidth(image.getFitWidth() * 1.1);
         }
@@ -217,7 +223,9 @@ public class ImageOverviewController {
      */
     @FXML
     private void handleZoomOut() {
+        // Make sure the image doesn't get too small
         if (image.getFitHeight() > 50 && image.getFitWidth() > 50) {
+            // Zoom out by 10% each time
             image.setFitHeight(image.getFitHeight() * 0.9);
             image.setFitWidth(image.getFitWidth() * 0.9);
         }
@@ -261,7 +269,7 @@ public class ImageOverviewController {
 
     /**
      * Handles user selecting/double clicking an item from a tree view
-     * https://stackoverflow.com/questions/17348357/how-to-trigger-event-when-double-click-on-a-tree-node
+     * Modified https://stackoverflow.com/questions/17348357/how-to-trigger-event-when-double-click-on-a-tree-node
      *
      * @param mouseEvent the user's click
      */
@@ -271,45 +279,35 @@ public class ImageOverviewController {
         if (mouseEvent.getClickCount() == 2) {
             // Get the selected item
             TreeItem<File> item = directoryView.getSelectionModel().getSelectedItem();
-            // Make sure the item isn't a directory
+            // Make sure the item isn't a directory (directory is not an image)
             if (!item.getValue().isDirectory()) {
+                // Update the selected item/parent
                 selectedItemParent = item.getParent();
                 selectedItem = item;
-                // Update the Image
+                // Update the Image and the file view
                 main.updateImage(main.getTagManager().getImageManager(item.getValue()));
-                // Update the file view
                 updateFileView(item);
             }
         }
     }
 
     /**
-     * Handles user selecting/pressing ENTER on keyboard for an item from a tree view
+     * Creates a tag element with the given String. A "tag" is really a styled HBox with labels inside.
+     * @param tagString the string the tag will display
+     * @return the new tag
      */
-    @FXML
-    private void handleKeyEnterItem(KeyEvent keyPressed) {
-        // Check for key ENTER
-        if (keyPressed.getCode().equals(KeyCode.ENTER)) {
-            // Get the selected item
-            TreeItem<File> item = directoryView.getSelectionModel().getSelectedItem();
-            // Make sure the item isn't a directory
-            if (!item.getValue().isDirectory()) {
-                // Update the Image
-                main.updateImage(main.getTagManager().getImageManager(item.getValue()));
-                // Update the file view
-                updateFileView(item);
-            }
-        }
-    }
-
     private HBox createTag(String tagString) {
         try {
-            // Load root layout from fxml file.
+            // Load tag from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("TagController.fxml"));
+            loader.setLocation(getClass().getResource("Tag.fxml"));
             HBox h = loader.load();
+
+            // Get the controller for the tag
             TagController t = loader.getController();
+            // Set the string for the tag
             t.setTag(tagString);
+            // Define what happens when the tag is closed
             t.handleDeleteTag(event -> removeTag(h, tagString));
             return h;
         } catch (IOException e) {
@@ -318,9 +316,18 @@ public class ImageOverviewController {
         return null;
     }
 
+    /**
+     * Removes a tag from the tag view
+     * @param tag the tag to be removed
+     * @param tagString  the string of the tag
+     */
     private void removeTag(HBox tag, String tagString) {
+        // Remove the tag from the tag view
         tagView.getChildren().remove(tag);
+        // Remove the tag from the image's manager
         im.removeTag(tagString);
+
+        // Update view of the file and save it
         updateFileView(new TreeItem<>(im.getFile()));
         main.getTagManager().saveProgram();
     }
@@ -344,8 +351,10 @@ public class ImageOverviewController {
         - Enables the dragging and dropping of files inside the directory view.
         The following is necessary since TreeItem does not have event listeners. So we have to override/implement
         the following methods to enable the features above.
-        Modified https://stackoverflow.com/questions/44210453/how-to-display-only-the-filename-in-a-javafx-treeview
-        Modified http://d.hatena.ne.jp/tomoTaka/20131205/1386199115
+
+        I used the following as references:
+        https://stackoverflow.com/questions/44210453/how-to-display-only-the-filename-in-a-javafx-treeview
+        http://d.hatena.ne.jp/tomoTaka/20131205/1386199115
        */
         directoryView.setCellFactory(new Callback<TreeView<File>, TreeCell<File>>() {
             @Override
