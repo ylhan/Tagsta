@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" style="-fx-background-color: rgb(250, 250, 250); -fx-background-radius: 10 10 10 10; -fx-border-color: #2196F3; -fx-border-radius: 10;" styleClass="Tag" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.view.Tag">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5.0" style="-fx-background-color: rgb(250, 250, 250); -fx-background-radius: 10 10 10 10; -fx-border-color: #2196F3; -fx-border-radius: 10;" styleClass="Tag" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.view.TagController">
     <children>
         <Label fx:id="tag" text="Label" textFill="#2196f3">
          <font>

@@ -19,11 +19,16 @@ import java.io.IOException;
 public class Tagsta extends Application {
   private Stage primaryStage;
   private BorderPane rootLayout;
+  private AnchorPane imageOverview;
   private ImageOverviewController imc;
   private TagManager tm;
 
+  private final String DARK_THEME = Tagsta.class.getResource("view/materialDarkFX.css").toString();
+  private final String LIGHT_THEME = Tagsta.class.getResource("view/materialLightFX.css").toString();
+
   @Override
   public void start(Stage primaryStage) throws Exception {
+    // This will manage all the tags for each image
     tm = new TagManager();
     this.primaryStage = primaryStage;
     this.primaryStage.setTitle("Tagsta");
@@ -64,11 +69,9 @@ public class Tagsta extends Application {
       // Load person overview.
       FXMLLoader loader = new FXMLLoader();
       loader.setLocation(getClass().getResource("view/ImageOverview.fxml"));
-      AnchorPane imageOverview = loader.load();
-
+      imageOverview = loader.load();
       // Set person overview into the center of root layout.
       rootLayout.setCenter(imageOverview);
-
       // Initialize the directory controller and give it a reference to this app
       imc = loader.getController();
       imc.setMainApp(this);
@@ -77,11 +80,30 @@ public class Tagsta extends Application {
     }
   }
 
+  /**
+   * Sets the theme to dark
+   */
+  public void setDarkTheme(){
+    rootLayout.getStylesheets().clear();
+    rootLayout.getStylesheets().add(DARK_THEME);
+    imageOverview.getStylesheets().clear();
+    imageOverview.getStylesheets().add(DARK_THEME);
+  }
+
+  /**
+   * Sets the theme to light
+   */
+  public void setLightTheme(){
+    rootLayout.getStylesheets().clear();
+    rootLayout.getStylesheets().add(LIGHT_THEME);
+    imageOverview.getStylesheets().clear();
+    imageOverview.getStylesheets().add(LIGHT_THEME);
+  }
   public static void main(String[] args) {
     launch(args);
   }
 
-  /** @return the stages for this application */
+  /** @return the stage for this application */
   public Stage getPrimaryStage() {
     return primaryStage;
   }
