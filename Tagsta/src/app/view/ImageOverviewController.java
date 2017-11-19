@@ -168,31 +168,28 @@ public class ImageOverviewController {
         main.getTagManager().saveProgram();
     }
 
+    /**
+     * Add a tag to the image
+     */
     @FXML
     private void addTag() {
         if (im != null) {
+            // Get the text from the text-field
             String tag = tf.getText();
+            // Trim off whitespace
             tag = tag.trim();
-            if (im.getTags().contains(tag)) {
-                tf.clear();
-                ExceptionDialogPopup.createExceptionPopup("Error adding tag", "Image already contains this tag!");
-            } else if (tag.length() >= 1) {
-                String invalidChar = "/\\:*?|<>\"";
-                for (char c : invalidChar.toCharArray()) {
-                    if (tag.contains(Character.toString(c))) {
-                        tf.clear();
-                        ExceptionDialogPopup.createExceptionPopup("Error adding tag", "TagController cannot contain the following characters: \n / \\ : * ? | < > \"");
-                        return;
-                    }
-                }
-                tagView.getChildren().add(createTag(tag));
-                im.addTag(tag);
-                tf.clear();
-                updateFileView(new TreeItem<>(im.getFile()));
-                main.getTagManager().saveProgram();
-            }
+            // Add the tag to the image manager and reload the tags in the tag view
+            im.addTag(tag);
+            newTagView(im.getTags());
+            // Clear the text from the text-field
+            tf.clear();
+
+            // Update the file view and save the tags
+            updateFileView(new TreeItem<>(im.getFile()));
+            main.getTagManager().saveProgram();
         }
     }
+
 
     /**
      * Add the tag currently in the text-field when the user presses Enter
