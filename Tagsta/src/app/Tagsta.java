@@ -25,8 +25,10 @@ public class Tagsta extends Application {
 
   private final String DARK_THEME = Tagsta.class.getResource("view/materialDarkFX.css").toString();
   private final String LIGHT_THEME = Tagsta.class.getResource("view/materialLightFX.css").toString();
+
   @Override
   public void start(Stage primaryStage) throws Exception {
+    // This will manage all the tags for each image
     tm = new TagManager();
     this.primaryStage = primaryStage;
     this.primaryStage.setTitle("Tagsta");
@@ -101,7 +103,7 @@ public class Tagsta extends Application {
     launch(args);
   }
 
-  /** @return the stages for this application */
+  /** @return the stage for this application */
   public Stage getPrimaryStage() {
     return primaryStage;
   }
