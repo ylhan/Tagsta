@@ -25,3 +25,8 @@ hs_err_pid*
 .idea
 *.iml
 out/
+
+# Ignore config files
+config.properties
+firstFile
+ImageManagers.ser
