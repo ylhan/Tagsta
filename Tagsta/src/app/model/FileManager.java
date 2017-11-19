@@ -1,6 +1,6 @@
 package app.model;
 
-import app.view.ExceptionDialog;
+import app.view.ExceptionDialogPopup;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -61,7 +61,7 @@ public class FileManager {
             output.writeObject(imageManagers);
             output.close();
         } catch (IOException ex) {
-            ExceptionDialog.createExceptionPopup("An error occurred while saving Image File metadata",
+            ExceptionDialogPopup.createExceptionPopup("An error occurred while saving Image File metadata",
                     "The file imageManagers.ser could not be saved");
         }
     }
@@ -82,12 +82,12 @@ public class FileManager {
             imageManagers = (ArrayList<ImageManager>) input.readObject();
             input.close();
         } catch (IOException ex) {
-            ExceptionDialog.createExceptionPopup("An error occurred while loading Image metadata",
+            ExceptionDialogPopup.createExceptionPopup("An error occurred while loading Image metadata",
                     "The changes made to images in past sessions could not be loaded");
             imageManagers = new ArrayList<>();
             FileManager.storeImageManagers(imageManagers);
         } catch (ClassNotFoundException ex) {
-            ExceptionDialog.createExceptionPopup("An error occurred while finding saved Image metadata",
+            ExceptionDialogPopup.createExceptionPopup("An error occurred while finding saved Image metadata",
                     "The changes made to images in past sessions could not be loaded");
             imageManagers = new ArrayList<>();
             FileManager.storeImageManagers(imageManagers);
@@ -109,7 +109,7 @@ public class FileManager {
             properties.store(writer, "configuration settings");
             writer.close();
         } catch (IOException ex) {
-            ExceptionDialog.createExceptionPopup("An error occurred while saving user settings",
+            ExceptionDialogPopup.createExceptionPopup("An error occurred while saving user settings",
                     "The changes made to user settings could not be saved");
         }
     }
@@ -129,7 +129,7 @@ public class FileManager {
             configMap.put("displayExtensions", properties.getProperty("displayExtensions"));
             reader.close();
         } catch (IOException ex) {
-            ExceptionDialog.createExceptionPopup("An error occurred while loading user settings",
+            ExceptionDialogPopup.createExceptionPopup("An error occurred while loading user settings",
                     "All configuration details are set to default values");
         }
         return configMap;
@@ -147,7 +147,7 @@ public class FileManager {
             try {
                 firstFile.createNewFile();
             } catch (IOException ex) {
-                ExceptionDialog.createExceptionPopup("An error occurred while creating a file",
+                ExceptionDialogPopup.createExceptionPopup("An error occurred while creating a file",
                         "Any changes made to images in past sessions could not be loaded");
             }
             return true;
@@ -166,7 +166,7 @@ public class FileManager {
         try {
             Files.move(currentPath, newPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ex) {
-            ExceptionDialog.createExceptionPopup("An error occurred while moving the image",
+            ExceptionDialogPopup.createExceptionPopup("An error occurred while moving the image",
                     "The image could not be moved");
         }
     }
