@@ -2,6 +2,7 @@ package app.model;
 
 import app.view.ExceptionDialogPopup;
 
+import java.awt.Desktop;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -179,6 +180,28 @@ public class FileManager {
     } catch (IOException ex) {
       ExceptionDialogPopup.createExceptionPopup("An error occurred while moving the image",
           "The image could not be moved");
+    }
+  }
+
+  /**
+   * Opens the folder of an image in the Operating System's default file explorer and gives an error
+   * if the actions are not able to be done
+   * http://www.rgagnon.com/javadetails/java-open-default-os-file-explorer.html
+   *
+   * @param file The folder to open
+   */
+  public static void openInExplorer(File file){
+    try {
+      if (Desktop.isDesktopSupported()) {
+        Desktop.getDesktop().open(file);
+      }
+      else{
+        ExceptionDialogPopup.createExceptionPopup("An error occurred while opening the folder",
+            "The file explorer could not be opened on this OS");
+      }
+    } catch (IOException e) {
+      ExceptionDialogPopup.createExceptionPopup("An error occurred while opening the folder",
+          "The folder could not be found");
     }
   }
 }
