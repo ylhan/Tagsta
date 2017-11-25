@@ -1,0 +1,8 @@
+(Assuming user has navigated to group_0537 in cmd)
+(Linux Instructions)
+1. cd phase1/Tagsta/src
+2. javac app/model/*.java
+3. javac app/view/*.java
+4. javac app/Tagsta.java
+5. java app.Tagsta
+Replace all "/" with "\" when using Windows instead of Linux.

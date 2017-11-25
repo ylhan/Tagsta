@@ -1,0 +1,11 @@
+George Ly: Worked on the Model portion of the application. Main contributor of ImageManager class, partial contributor of FileManager & TagManager. Created help.txt. Contributor in 
+planning of interaction of model & initial design of UI.
+
+Amritpal Aujla: 
+- Proposed and contributed to planning initial model plan and UML diagrams, ways to use MVC, serialization, config, and helped design UI. 
+- Main contributor to TagManager.java (structure of model, independent tags list). 
+- Main contributor to FileManager.java (all methods, serialization, config, opening folders in file explorer).
+- Partial contributor to ImageManager.java (readObject, writeObject, and logging)./
+
+Yilun (Allen) Han: Contributed to the planning of the program and the design of the UI. Major contributor to Tagsta, and all view related classes and files (choosing/displaying directory/image, dragging & dropping files, theming, add tag, remove tag, etc). Created design.pdf
+Samin Khan: Contributed to design of UI and program planning. Handled front end development by programming view related classes. Mainly dealt with how the image is viewed and how tags are entered. Created methods for reverting to old names of image. Loaded icons and contributed programming of the MenuBar and its options. Partial contributor to ImageManager. Assisted with facilitating UI changes to name and tags, and for creating checks for valid tags.
