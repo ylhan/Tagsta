@@ -57,7 +57,7 @@ public class FileManager {
    */
   private static void storeImageManagers(ArrayList<ImageManager> imageManagers) {
     try {
-      OutputStream file = new FileOutputStream("imageManagers.ser");
+      OutputStream file = new FileOutputStream("image-managers.ser");
       OutputStream buffer = new BufferedOutputStream(file);
       ObjectOutput output = new ObjectOutputStream(buffer);
 
@@ -131,7 +131,7 @@ public class FileManager {
   static ArrayList<ImageManager> loadImageManagers() {
     ArrayList<ImageManager> imageManagers;
     try {
-      InputStream file = new FileInputStream("imageManagers.ser");
+      InputStream file = new FileInputStream("image-managers.ser");
       InputStream buffer = new BufferedInputStream(file);
       ObjectInput input = new ObjectInputStream(buffer);
 
@@ -201,7 +201,7 @@ public class FileManager {
    * @return Whether this is the first time running the program
    */
   static boolean isFirstTime() {
-    File firstFile = Paths.get("firstFile").toFile();
+    File firstFile = Paths.get("first-file").toFile();
     if (!firstFile.exists()) {
       try {
         if (!firstFile.createNewFile()) {
