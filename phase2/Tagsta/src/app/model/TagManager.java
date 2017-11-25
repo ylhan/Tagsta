@@ -4,38 +4,61 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * TagManager has a collection of ImageManagers and uses FileManager to do the various functions
  * related to those ImageManagers. It stores configuration setting details that a view can use and
- * can give the view a ImageManager it needs
+ * can give the view a ImageManager it needs. It also has a list of independent tags not associated
+ * to any one image.
  */
 public class TagManager {
 
   private HashMap<String, String> configOptions;
   private ArrayList<ImageManager> listOfImageManagers;
+  private ArrayList<String> listOfTags;
 
   /**
    * Creates a TagManager. First checks whether this is the first time a TagManager has been created
    * or this program has been run. If so, it sets the configuration settings to some defaults and
-   * makes an empty list of ImageManagers. If not, it gets the configuration details and
-   * ImageManagers from storage using FileManager
+   * makes an empty list of ImageManagers and tags. If not, it gets the configuration details,
+   * ImageManagers, and tags list from storage using FileManager
    */
   public TagManager() {
     this.configOptions = FileManager.getConfigDetails();
     if (FileManager.isFirstTime()) {
       this.listOfImageManagers = new ArrayList<>();
-      FileManager.saveFiles(this.listOfImageManagers, this.configOptions);
+      this.listOfTags = new ArrayList<>();
+      FileManager.saveFiles(this.listOfImageManagers, this.configOptions, this.listOfTags);
     } else {
       this.listOfImageManagers = FileManager.loadImageManagers();
+      this.listOfTags = FileManager.loadTagsList();
     }
   }
 
   /**
-   * Saves the configuration details and ImageManagers to disk using FileManager
+   * Adds a tag to the independent tags list
+   * @param tag The tag to add
+   */
+  public void addIndependentTag(String tag){
+    this.listOfTags.add(tag);
+  }
+
+  /**
+   * Returns the list of independent tags as an ObservableList
+   * @return The list of independent tags
+   */
+  public ObservableList<String> getTagsList(){
+    return FXCollections.observableArrayList(this.listOfTags);
+  }
+
+  /**
+   * Saves the configuration details, the tags list, and ImageManagers to disk using FileManager
    */
   public void saveProgram() {
-    FileManager.saveFiles(this.listOfImageManagers, this.configOptions);
+    FileManager.saveFiles(this.listOfImageManagers, this.configOptions,
+                          this.listOfTags);
   }
 
   /**

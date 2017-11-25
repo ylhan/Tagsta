@@ -19,15 +19,18 @@ import java.util.Properties;
 public class FileManager {
 
   /**
-   * Saves the the list of given ImageManagers and the program's configuration files to the working
-   * directory
+   * Saves the the list of given ImageManagers, the list of tags, and the program's configuration
+   * files to the working directory
    *
    * @param imageManagers The list of ImageManagers from TagManager that are to be saved
    * @param configMap The HashMap corresponding to config options to be put in the config file
+   * @param litsOfTags The list of independent tags to be stored
    */
-  static void saveFiles(ArrayList<ImageManager> imageManagers, HashMap<String, String> configMap) {
+  static void saveFiles(ArrayList<ImageManager> imageManagers, HashMap<String, String> configMap,
+                        ArrayList<String> litsOfTags) {
     FileManager.storeConfig(configMap);
     FileManager.storeImageManagers(imageManagers);
+    FileManager.storeTagsList(litsOfTags);
   }
 
   /**
@@ -68,8 +71,59 @@ public class FileManager {
   }
 
   /**
-   * Finds the serialized ImageManagers into the working directory, and creates an empty serialized
-   * list if there are none, and returns them
+   * Stores the list of independent tags from TagManager by serializing them in the working directory
+   *
+   * @param listOfTags The list of tags to be saved
+   */
+  private static void storeTagsList(ArrayList<String> listOfTags) {
+    try {
+      OutputStream file = new FileOutputStream("tags-list.ser");
+      OutputStream buffer = new BufferedOutputStream(file);
+      ObjectOutput output = new ObjectOutputStream(buffer);
+
+      output.writeObject(listOfTags);
+      output.close();
+    } catch (IOException ex) {
+      ExceptionDialogPopup
+          .createExceptionPopup("An error occurred while saving the independent tags list",
+              "The file listOfTags.ser could not be saved");
+    }
+  }
+
+  /**
+   * Finds the serialized independent tags list in the working directory, and creates an
+   * empty serialized list if there is none, and returns it
+   *
+   * @return The list of independent tags stored
+   */
+  @SuppressWarnings("unchecked")
+  static ArrayList<String> loadTagsList() {
+    ArrayList<String> listOfTags;
+    try {
+      InputStream file = new FileInputStream("tags-list.ser");
+      InputStream buffer = new BufferedInputStream(file);
+      ObjectInput input = new ObjectInputStream(buffer);
+
+      listOfTags = (ArrayList<String>) input.readObject();
+      input.close();
+    } catch (IOException ex) {
+      ExceptionDialogPopup.createExceptionPopup("An error occurred while loading the independent tags list",
+          "The changes made to the tags list in past sessions could not be loaded");
+      listOfTags = new ArrayList<>();
+      FileManager.storeTagsList(listOfTags);
+    } catch (ClassNotFoundException ex) {
+      ExceptionDialogPopup
+          .createExceptionPopup("An error occurred while finding the saved list of independent tags",
+              "The changes made to the tags list in past sessions could not be loaded");
+      listOfTags = new ArrayList<>();
+      FileManager.storeTagsList(listOfTags);
+    }
+    return listOfTags;
+  }
+
+  /**
+   * Finds the serialized ImageManagers in the working directory, and creates an empty serialized
+   * list if there are none, and returns it
    *
    * @return The list of ImageManagers stored
    */
