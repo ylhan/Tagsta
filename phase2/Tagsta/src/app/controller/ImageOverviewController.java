@@ -39,8 +39,8 @@ public class ImageOverviewController {
   private void enableImageControls() {
     tagViewController.enableControls();
     imageViewController.enableControls();
-    // Enable the show log menu item when there is an image
-    main.getRootLayoutController().enableShowLog();
+    // Enable the menu items that are disabled by default
+    main.getRootLayoutController().enableMenuItems();
   }
 
   /** Loads the image view of the program */

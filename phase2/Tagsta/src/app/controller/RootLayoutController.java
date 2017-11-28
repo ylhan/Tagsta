@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.Tagsta;
+import app.model.FileManager;
 import app.model.ImageManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +31,7 @@ public class RootLayoutController {
   @FXML private MenuItem openImage;
   @FXML private RadioMenuItem darkTheme;
   @FXML private MenuItem showLog;
+  @FXML private MenuItem showImageFolder;
 
   /**
    * Give directory viewer a reference to the main application
@@ -136,12 +138,19 @@ public class RootLayoutController {
     }
   }
 
+  /** Handle the menu item "Show Image Folder" which opens the current image's folder in the file explorer*/
+  @FXML
+  private void handleShowImageFolder() {
+    FileManager.openInExplorer(main.getImageOverviewController().getImageManager().getFile().getParentFile());
+  }
+
   /**
-   * By default (i.e. start of the program) there is no image displayed so the show log menu item is
-   * disabled. This method will enable the item.
+   * By default (i.e. start of the program) there is no image displayed so the show log menu item, and the show image
+   * folder are disabled. This method will enable the item.
    */
-  void enableShowLog() {
+  void enableMenuItems() {
     showLog.setDisable(false);
+    showImageFolder.setDisable(false);
   }
 
   /** Sets the theme to a dark theme when the user selected the Dark theme option in the menu */

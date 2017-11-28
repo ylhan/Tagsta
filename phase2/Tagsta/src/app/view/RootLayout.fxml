@@ -35,6 +35,7 @@
             <Menu mnemonicParsing="false" text="View">
               <items>
                 <MenuItem fx:id="showLog" disable="true" mnemonicParsing="false" onAction="#handleShowLog" text="Show Log" />
+                  <MenuItem fx:id="showImageFolder" disable="true" mnemonicParsing="false" onAction="#handleShowImageFolder" text="Show Image Folder" />
               </items>
             </Menu>
                 <Menu mnemonicParsing="false" text="Help">
