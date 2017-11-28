@@ -1,12 +1,10 @@
-package app.view;
+package app.controller;
 
 import app.Tagsta;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
-/**
- * A dialog that popups when an error occurs to inform the user
- */
+/** A dialog that popups when an error occurs to inform the user */
 public class ExceptionDialogPopup {
 
   /**

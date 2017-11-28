@@ -2,8 +2,8 @@ package app;
 
 import app.model.ImageManager;
 import app.model.TagManager;
-import app.view.ImageOverviewController;
-import app.view.RootLayoutController;
+import app.controller.ImageOverviewController;
+import app.controller.RootLayoutController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -24,25 +24,25 @@ public class Tagsta extends Application {
   private Stage primaryStage;
   private BorderPane rootLayout;
   private AnchorPane imageOverview;
-  private ImageOverviewController imc;
-  private RootLayoutController rlc;
-  private TagManager tm;
+  private ImageOverviewController imageOverviewController;
+  private RootLayoutController rootLayoutController;
+  private TagManager tagManager;
 
   private final String DARK_THEME = Tagsta.class.getResource("/resources/materialDarkFX.css")
       .toString();
   private final String LIGHT_THEME = Tagsta.class.getResource("/resources/materialLightFX.css")
       .toString();
-  private static final Image icon = new Image(
+  private static final Image ICON = new Image(
       Tagsta.class.getResourceAsStream("/resources/icon.png"));
 
   @Override
   public void start(Stage primaryStage) throws Exception {
     // This will manage all the tags for each image
-    tm = new TagManager();
+    tagManager = new TagManager();
     this.primaryStage = primaryStage;
     this.primaryStage.setTitle("Tagsta");
     this.primaryStage.setMaximized(true);
-    this.primaryStage.getIcons().add(icon);
+    this.primaryStage.getIcons().add(ICON);
 
     // Initializes the root elements of the application (border pane, and menu bar)
     initRootLayout();
@@ -69,8 +69,8 @@ public class Tagsta extends Application {
       primaryStage.show();
 
       // Initialize the root controller and give it a reference to this app
-      rlc = loader.getController();
-      rlc.setMainApp(this);
+      rootLayoutController = loader.getController();
+      rootLayoutController.setMainApp(this);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -88,10 +88,10 @@ public class Tagsta extends Application {
       // Set person overview into the center of root layout.
       rootLayout.setCenter(imageOverview);
       // Initialize the directory controller and give it a reference to this app
-      imc = loader.getController();
-      imc.setMainApp(this);
+      imageOverviewController = loader.getController();
+      imageOverviewController.setMainApp(this);
       // Load in the previous theme
-      rlc.loadTheme(tm.getConfigOption("theme"));
+      rootLayoutController.loadTheme(tagManager.getConfigOption("theme"));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -105,7 +105,7 @@ public class Tagsta extends Application {
     rootLayout.getStylesheets().add(DARK_THEME);
     imageOverview.getStylesheets().clear();
     imageOverview.getStylesheets().add(DARK_THEME);
-    tm.setConfigOption("theme", "dark");
+    tagManager.setConfigOption("theme", "dark");
   }
 
   /**
@@ -117,7 +117,7 @@ public class Tagsta extends Application {
     imageOverview.getStylesheets().clear();
     imageOverview.getStylesheets().add(LIGHT_THEME);
     // Store the theme in the configs
-    tm.setConfigOption("theme", "light");
+    tagManager.setConfigOption("theme", "light");
   }
 
   public static void main(String[] args) {
@@ -137,7 +137,7 @@ public class Tagsta extends Application {
    * @param im the updated image
    */
   public void updateImage(ImageManager im) {
-    imc.updateImage(im);
+    imageOverviewController.updateImage(im);
   }
 
   /**
@@ -146,7 +146,7 @@ public class Tagsta extends Application {
    * @param item the updated directory view
    */
   public void updateDirectoryView(TreeItem<File> item) {
-    imc.updateDirectoryView(item);
+    imageOverviewController.updateDirectoryView(item);
   }
 
   /**
@@ -155,34 +155,34 @@ public class Tagsta extends Application {
    * @param item the updated file view
    */
   public void updateFileView(TreeItem<File> item) {
-    imc.updateFileView(item);
+    imageOverviewController.updateFileView(item);
   }
 
   /**
    * @return the tag manager for this program
    */
   public TagManager getTagManager() {
-    return tm;
+    return tagManager;
   }
 
   /**
    * @return the image overview controller for this application
    */
   public ImageOverviewController getImageOverviewController() {
-    return imc;
+    return imageOverviewController;
   }
 
   /**
    * @return the root layout controller for this application
    */
   public RootLayoutController getRootLayoutController() {
-    return rlc;
+    return rootLayoutController;
   }
 
   /**
    * @return this program's icon
    */
   public static Image getIcon() {
-    return icon;
+    return ICON;
   }
 }

@@ -1,20 +1,16 @@
-package app.view;
+package app.controller;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
-/**
- * Controller for a Tag
- */
+/** Controller for a Tag */
 public class TagController {
 
-  @FXML
-  private Label tag;
+  @FXML private Label tag;
 
-  @FXML
-  private Label deleteTag;
+  @FXML private Label deleteTag;
 
   /**
    * Sets the tag to be displayed in the tag view

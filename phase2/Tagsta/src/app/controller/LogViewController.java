@@ -1,16 +1,13 @@
-package app.view;
+package app.controller;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
-/**
- * Controller class for the log view window
- */
+/** Controller class for the log view window */
 public class LogViewController {
 
-  @FXML
-  private ListView<String> log;
+  @FXML private ListView<String> log;
 
   /**
    * Set the logs to be displayed

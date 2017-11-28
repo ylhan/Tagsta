@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+
+<BorderPane prefHeight="200.0" prefWidth="688.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.TagViewController">
+   <top>
+      <Label text="Tags" BorderPane.alignment="CENTER" />
+   </top>
+   <bottom>
+      <AnchorPane prefHeight="40.0" prefWidth="712.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="revertName" disable="true" mnemonicParsing="false" onMouseClicked="#handleRevertName" text="Revert Name" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0" />
+            <TextField fx:id="addTagTextField" disable="true" layoutX="138.0" layoutY="1.0" onKeyPressed="#addTagOnEnter" prefHeight="26.0" prefWidth="262.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="105.0" AnchorPane.topAnchor="15.0" />
+            <Button fx:id="addTag" disable="true" mnemonicParsing="false" onAction="#addTag" onMouseClicked="#addTag" prefHeight="26.0" prefWidth="88.0" text="Add Tag" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="15.0" />
+         </children>
+      </AnchorPane>
+   </bottom>
+   <center>
+      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <content>
+            <FlowPane fx:id="tagView" hgap="10.0" vgap="10.0" />
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

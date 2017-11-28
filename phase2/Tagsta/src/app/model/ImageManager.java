@@ -1,6 +1,6 @@
 package app.model;
 
-import app.view.ExceptionDialogPopup;
+import app.controller.ExceptionDialogPopup;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;

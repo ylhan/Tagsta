@@ -29,4 +29,4 @@ out/
 # Ignore config files
 config.properties
 firstFile
-ImageManagers.ser
+*.ser

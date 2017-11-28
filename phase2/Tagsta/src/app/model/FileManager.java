@@ -1,6 +1,6 @@
 package app.model;
 
-import app.view.ExceptionDialogPopup;
+import app.controller.ExceptionDialogPopup;
 
 import java.awt.Desktop;
 import java.io.*;

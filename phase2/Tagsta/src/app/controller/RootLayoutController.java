@@ -1,4 +1,4 @@
-package app.view;
+package app.controller;
 
 import app.Tagsta;
 import app.model.ImageManager;
@@ -11,13 +11,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
-/**
- * Controller for the root element of the UI (menu bar and border pane)
- */
+/** Controller for the root element of the UI (menu bar and border pane) */
 public class RootLayoutController {
 
   // Reference to the main application
@@ -26,14 +26,10 @@ public class RootLayoutController {
   private final ImageView FOLDER_ICON = new ImageView(new Image("/resources/folderIcon.png"));
   private final ImageView PICTURE_ICON = new ImageView(new Image("/resources/pictureIcon.png"));
 
-  @FXML
-  private MenuItem openFolder;
-  @FXML
-  private MenuItem openImage;
-  @FXML
-  private RadioMenuItem darkTheme;
-  @FXML
-  private MenuItem showLog;
+  @FXML private MenuItem openFolder;
+  @FXML private MenuItem openImage;
+  @FXML private RadioMenuItem darkTheme;
+  @FXML private MenuItem showLog;
 
   /**
    * Give directory viewer a reference to the main application
@@ -44,9 +40,7 @@ public class RootLayoutController {
     this.main = mainApp;
   }
 
-  /**
-   * Opens a FileChooser to let the user select an image to load.
-   */
+  /** Opens a FileChooser to let the user select an image to load. */
   @FXML
   private void handleOpenImage() throws IOException {
     FileChooser fileChooser = new FileChooser();
@@ -91,16 +85,15 @@ public class RootLayoutController {
     }
   }
 
-  /**
-   * Pops up an information dialog when the user selects the about option in the menu
-   */
+  /** Pops up an information dialog when the user selects the about option in the menu */
   @FXML
   private void handleAbout() {
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     // Set the description for the project
     alert.setTitle("About");
     alert.setHeaderText("CSC207 PROJECT");
-    String aboutInfo = "A program for managing and tagging images.\n\nCreated by YiLun (Allen) Han, Samin Khan, George Ly, & Amritpal Aujla\n";
+    String aboutInfo =
+        "A program for managing and tagging images.\n\nCreated by YiLun (Allen) Han, Samin Khan, George Ly, & Amritpal Aujla\n";
 
     // Add the about dialog info to a text area
     TextArea textArea = new TextArea(aboutInfo);
@@ -112,9 +105,7 @@ public class RootLayoutController {
     alert.showAndWait();
   }
 
-  /**
-   * Handle show log menu item
-   */
+  /** Handle show log menu item */
   @FXML
   private void handleShowLog() {
     // Get the currently opened image's manager
@@ -123,7 +114,7 @@ public class RootLayoutController {
     if (im != null) {
       try {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("LogView.fxml"));
+        loader.setLocation(getClass().getResource("/app/view/LogView.fxml"));
         BorderPane showLog = loader.load();
 
         // Create the new window and show it
@@ -131,6 +122,10 @@ public class RootLayoutController {
         logWindow.setTitle("Log for " + im.getFile().getName());
         logWindow.setScene(new Scene(showLog, 800, 600));
         logWindow.getIcons().add(Tagsta.getIcon());
+        // Set the focus on this stage
+        logWindow.initOwner(main.getPrimaryStage());
+        logWindow.initModality(Modality.WINDOW_MODAL);
+
         logWindow.show();
         // Add the logs to be displayed
         LogViewController lvc = loader.getController();
@@ -149,20 +144,33 @@ public class RootLayoutController {
     showLog.setDisable(false);
   }
 
-  /**
-   * Sets the theme to a dark theme when the user selected the Dark theme option in the menu
-   */
+  /** Sets the theme to a dark theme when the user selected the Dark theme option in the menu */
   @FXML
   private void setDarkTheme() {
     main.setDarkTheme();
   }
 
-  /**
-   * Sets the theme to a light theme when the user selected the Light theme option in the menu
-   */
+  /** Sets the theme to a light theme when the user selected the Light theme option in the menu */
   @FXML
   private void setLightTheme() {
     main.setLightTheme();
+  }
+
+  /**
+   * Loads the given theme
+   *
+   * @param theme the theme to load
+   */
+  public void loadTheme(String theme) {
+    if (theme != null) {
+      if (theme.equals("light")) {
+        setLightTheme();
+      } else {
+        setDarkTheme();
+        // Toggle the selected theme
+        darkTheme.setSelected(true);
+      }
+    }
   }
 
   /**
@@ -193,9 +201,7 @@ public class RootLayoutController {
     return root;
   }
 
-  /**
-   * Initializes the the menu bar
-   */
+  /** Initializes the the menu bar */
   @FXML
   private void initialize() {
     // Set icons for the menu items
@@ -206,29 +212,9 @@ public class RootLayoutController {
     PICTURE_ICON.setFitHeight(15);
     PICTURE_ICON.setFitWidth(15);
     openImage.setGraphic(PICTURE_ICON);
-
   }
 
-  /**
-   * Loads the given theme
-   *
-   * @param theme the theme to load
-   */
-  public void loadTheme(String theme) {
-    if (theme != null) {
-      if (theme.equals("light")) {
-        setLightTheme();
-      } else {
-        setDarkTheme();
-        // Toggle the selected theme
-        darkTheme.setSelected(true);
-      }
-    }
-  }
-
-  /**
-   * Exits option in menu bar that will exit the program
-   */
+  /** Exit option in menu bar that will exit the program */
   @FXML
   private void exit() {
     System.exit(0);

@@ -1,5 +1,6 @@
-package app.view;
+package app.controller;
 
+import app.model.ImageManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,27 +10,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
+/** Controller for the revert name window */
 public class RevertNameViewController {
 
-  @FXML
-  private ListView<String> prevTags;
+  @FXML private ListView<String> prevTags;
 
-  private ImageOverviewController ioc;
-
-  /**
-   * Sets ImageOverviewController associated to this object
-   */
-  void setImageOverviewController(ImageOverviewController ioc) {
-    this.ioc = ioc;
-  }
-
-  /**
-   * Sets list of previous tags associated to this object's ImageManager
-   */
-  void setPrevTags(ObservableList<String> pt) {
-    prevTags.setItems(pt);
-    prevTags.refresh();
-  }
+  private TagViewController tagViewController;
+  private ImageManager imageManager;
 
   /**
    * Handles double-clicking of old name items to revert name of ImageManager or popup error if
@@ -64,13 +51,34 @@ public class RevertNameViewController {
    * @param listItem selected old name
    */
   private void tryRevert(String listItem) {
-    int nameIndex = ioc.getImageManager().getPrevNames().indexOf(listItem);
-    if (ioc.getImageManager().getTags().equals(FXCollections
-        .observableArrayList(ioc.getImageManager().getPreviousTags().get(nameIndex)))) {
+    int nameIndex = imageManager.getPrevNames().indexOf(listItem);
+    if (imageManager
+        .getTags()
+        .equals(FXCollections.observableArrayList(imageManager.getPreviousTags().get(nameIndex)))) {
       ExceptionDialogPopup.createExceptionPopup(
           "Error reverting tags", "Image already has this name!");
     } else {
-      ioc.revert(listItem);
+      tagViewController.revert(listItem);
     }
+  }
+
+  /** Sets TagViewController associated to this object */
+  void setTagViewController(TagViewController tvc) {
+    this.tagViewController = tvc;
+  }
+
+  /**
+   * Sets the image manager (holds the current image and it's meta data
+   *
+   * @param im the image manager to be set
+   */
+  void setImageManager(ImageManager im) {
+    this.imageManager = im;
+  }
+
+  /** Sets list of previous tags associated to this object's ImageManager */
+  void setPrevTags(ObservableList<String> pt) {
+    prevTags.setItems(pt);
+    prevTags.refresh();
   }
 }
