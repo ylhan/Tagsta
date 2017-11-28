@@ -37,6 +37,9 @@ public class DirectoryViewController {
   void updateFileView(TreeItem<File> item) {
     this.fileView.setRoot(item);
     fileView.refresh();
+
+    // Update the title of the program with the opened image
+    imageOverviewController.updateTitle();
   }
 
   /**
