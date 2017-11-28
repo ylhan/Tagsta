@@ -136,6 +136,9 @@ public class ImageOverviewController {
     // Update the tag view with the new tags of this image
     tagViewController.newTagView(im);
 
+    // Show the file's absolute path at the top of the window
+    main.getPrimaryStage().setTitle("Tagsta " + im.getFile().getAbsolutePath());
+
     // Since there is an image now we can enable the buttons (e.g. zoom in & out, show log, revert
     // history)
     enableImageControls();
