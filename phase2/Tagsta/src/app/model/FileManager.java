@@ -146,19 +146,25 @@ public class FileManager {
   @SuppressWarnings("unchecked")
   static ArrayList<ImageManager> loadImageManagers() {
     ArrayList<ImageManager> imageManagers = new ArrayList<>();
-    File file = new File("imagemanagers");
-    File[] fileList = file.listFiles();
-    int numberOfFiles;
-    if (fileList == null){
-      numberOfFiles = 0;
-    }
-    else {
-      numberOfFiles = fileList.length;
-    }
-    for(int i = 0; i < numberOfFiles; i++){
+    for(long i = 1; i <= FileManager.getNumberOfImageManagers(); i++){
       imageManagers.add(FileManager.loadImageManager(i));
     }
     return imageManagers;
+  }
+
+  /**
+   * Gets the number of saved ImageManagers
+   * @return The number of saved ImageManagers
+   */
+  public static long getNumberOfImageManagers(){
+    File file = new File("imagemanagers");
+    File[] fileList = file.listFiles();
+    if (fileList == null){
+      return 0;
+    }
+    else {
+      return fileList.length;
+    }
   }
 
   /**

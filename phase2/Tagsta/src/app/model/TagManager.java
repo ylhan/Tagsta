@@ -56,12 +56,20 @@ public class TagManager {
     FileManager.storeTagsList(this.listOfTags);
   }
 
+  /**
+   * Returns the ImageManagers in TagManager
+   * @return The list of ImageManagers
+   */
   public ObservableList<ImageManager> getImageManagers() {
     return FXCollections.observableArrayList(listOfImageManagers);
   }
 
-  public void deleteIndependentTag(String s) {
-    listOfTags.remove(s);
+  /**
+   * Deletes the given tag from the list of independent tags
+   * @param tag The tag to delete
+   */
+  public void deleteIndependentTag(String tag) {
+    listOfTags.remove(tag);
     FileManager.storeTagsList(this.listOfTags);
   }
 
@@ -116,7 +124,6 @@ public class TagManager {
   public ImageManager getImageManager(File file) {
     for (ImageManager imageManager : this.listOfImageManagers) {
       if (imageManager.returnPath().toString().equals(file.getPath())) {
-        FileManager.storeImageManager(imageManager);
         return imageManager;
       }
     }
