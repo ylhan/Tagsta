@@ -33,7 +33,7 @@ public class TagManager {
   }
 
   /**
-   * Adds a tag to the independent tags list
+   * Adds all tags from a given file name into the independent tags list
    * @param file The file name with tags to add
    */
   public void addIndependentTag(File file){
@@ -41,10 +41,18 @@ public class TagManager {
     ObservableList<String> tagList;
     tagList = ImageManager.parseTags(fileName);
     for(String tag: tagList) {
-      if(!listOfTags.contains(tag)) {
+      this.addIndependentTag(tag);
+    }
+  }
+
+  /**
+   * Adds a tag to the independent tags list, without repeating tags in the independent tags list
+   * @param tag The file name with tags to add
+   */
+  public void addIndependentTag(String tag){
+    if(!listOfTags.contains(tag)) {
         listOfTags.add(tag);
       }
-    }
     FileManager.storeTagsList(this.listOfTags);
   }
 
