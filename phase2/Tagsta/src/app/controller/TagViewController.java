@@ -60,7 +60,6 @@ public class TagViewController {
       tagView.getChildren().add(createTag(tagItem));
       imageManager.addTag(tagItem);
       // updateFileName(new TreeItem<>(imageManager.getFile()));
-      main.getTagManager().saveProgram();
     }
   }
 
@@ -76,7 +75,6 @@ public class TagViewController {
     for (String tag : im.getTags()) {
       tagView.getChildren().add(createTag(tag));
     }
-    main.getTagManager().saveProgram();
   }
 
   /**
@@ -135,7 +133,6 @@ public class TagViewController {
       addTagTextField.clear();
       // Update the directory and file view and save the tags
       directoryViewController.updateFileName(oldFile, imageManager.getFile());
-      main.getTagManager().saveProgram();
     }
   }
 
@@ -154,7 +151,6 @@ public class TagViewController {
 
     // Update view of the file and save it
     directoryViewController.updateFileName(oldFile, imageManager.getFile());
-    main.getTagManager().saveProgram();
   }
 
   /** Enables the add tag, revert name, and text field (disabled by default) */

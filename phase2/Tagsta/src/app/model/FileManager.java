@@ -19,21 +19,6 @@ import java.util.Properties;
 public class FileManager {
 
   /**
-   * Saves the the list of given ImageManagers, the list of tags, and the program's configuration
-   * files to the working directory
-   *
-   * @param imageManagers The list of ImageManagers from TagManager that are to be saved
-   * @param configMap The HashMap corresponding to config options to be put in the config file
-   * @param litsOfTags The list of independent tags to be stored
-   */
-  static void saveFiles(ArrayList<ImageManager> imageManagers, HashMap<String, String> configMap,
-                        ArrayList<String> litsOfTags) {
-    FileManager.storeConfig(configMap);
-    FileManager.storeImageManagers(imageManagers);
-    FileManager.storeTagsList(litsOfTags);
-  }
-
-  /**
    * Finds and returns the configuration file from the working directory
    *
    * @return The config file
@@ -55,7 +40,7 @@ public class FileManager {
    *
    * @param imageManager The ImageManagers to be saved
    */
-  static void saveImageManager(ImageManager imageManager){
+  static void storeImageManager(ImageManager imageManager){
     try{
       Path path = Paths.get("imagemanagers");
       Files.createDirectories(path);
@@ -83,7 +68,7 @@ public class FileManager {
    * @return The ImageManager corresponding to the given id and null if no such ImageManager exists
    */
   @SuppressWarnings("unchecked")
-  static ImageManager loadImageManager(long fileNumber) {
+  private static ImageManager loadImageManager(long fileNumber) {
     ImageManager imageManager;
     try {
       InputStream file = new FileInputStream("imagemanagers" + File.separator +
@@ -107,31 +92,11 @@ public class FileManager {
   }
 
   /**
-   * Stores the ImageManagers from TagManager by serializing them in the working directory
-   *
-   * @param imageManagers The list of ImageManagers to be saved
-   */
-  static void storeImageManagers(ArrayList<ImageManager> imageManagers) {
-    try {
-      OutputStream file = new FileOutputStream("image-managers.ser");
-      OutputStream buffer = new BufferedOutputStream(file);
-      ObjectOutput output = new ObjectOutputStream(buffer);
-
-      output.writeObject(imageManagers);
-      output.close();
-    } catch (IOException ex) {
-      ExceptionDialogPopup
-          .createExceptionPopup("An error occurred while saving Image File metadata",
-              "The file imageManagers.ser could not be saved");
-    }
-  }
-
-  /**
    * Stores the list of independent tags from TagManager by serializing them in the working directory
    *
    * @param listOfTags The list of tags to be saved
    */
-  private static void storeTagsList(ArrayList<String> listOfTags) {
+  static void storeTagsList(ArrayList<String> listOfTags) {
     try {
       OutputStream file = new FileOutputStream("tags-list.ser");
       OutputStream buffer = new BufferedOutputStream(file);
@@ -185,25 +150,18 @@ public class FileManager {
    */
   @SuppressWarnings("unchecked")
   static ArrayList<ImageManager> loadImageManagers() {
-    ArrayList<ImageManager> imageManagers;
-    try {
-      InputStream file = new FileInputStream("image-managers.ser");
-      InputStream buffer = new BufferedInputStream(file);
-      ObjectInput input = new ObjectInputStream(buffer);
-
-      imageManagers = (ArrayList<ImageManager>) input.readObject();
-      input.close();
-    } catch (IOException ex) {
-      ExceptionDialogPopup.createExceptionPopup("An error occurred while loading Image metadata",
-          "The changes made to images in past sessions could not be loaded");
-      imageManagers = new ArrayList<>();
-      FileManager.storeImageManagers(imageManagers);
-    } catch (ClassNotFoundException ex) {
-      ExceptionDialogPopup
-          .createExceptionPopup("An error occurred while finding saved Image metadata",
-              "The changes made to images in past sessions could not be loaded");
-      imageManagers = new ArrayList<>();
-      FileManager.storeImageManagers(imageManagers);
+    ArrayList<ImageManager> imageManagers = new ArrayList<>();
+    File file = new File("imagemanagers");
+    File[] fileList = file.listFiles();
+    int numberOfFiles;
+    if (fileList == null){
+      numberOfFiles = 0;
+    }
+    else {
+      numberOfFiles = fileList.length;
+    }
+    for(int i = 0; i < numberOfFiles; i++){
+      imageManagers.add(FileManager.loadImageManager(i));
     }
     return imageManagers;
   }
@@ -211,7 +169,7 @@ public class FileManager {
   /**
    * Stores the config file into the working directory
    */
-  private static void storeConfig(HashMap<String, String> configMap) {
+  static void storeConfig(HashMap<String, String> configMap) {
     File configFile = new File("config.properties");
     try {
       Properties properties = new Properties();
@@ -248,19 +206,6 @@ public class FileManager {
           "All configuration details are set to default values");
     }
     return configMap;
-  }
-
-  /**
-   * Checks if this is the first time running the program by looking for whether any of the data
-   * files exist
-   *
-   * @return Whether this is the first time running the program
-   */
-  static boolean isFirstTime() {
-    File imageManagers = Paths.get("imagemanagers" + File.separator + "0.ser").toFile();
-    File tagsList = Paths.get("tags-list.ser").toFile();
-    File config = Paths.get("config.properties").toFile();
-    return !(imageManagers.exists() || tagsList.exists() || config.exists());
   }
 
   /**

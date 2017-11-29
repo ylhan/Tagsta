@@ -24,9 +24,7 @@ public class ImageManager implements Serializable {
   private Path imagePath;
 
   ImageManager(Path path) {
-    fileNumber = fileTrack++;
-    System.out.println("File number" + fileNumber);
-    System.out.println(fileTrack);
+    this.fileNumber = fileTrack++;
     imagePath = path;
     previousNames = FXCollections.observableArrayList(new ArrayList<String>());
     name = imagePath.getFileName().toString();
@@ -52,7 +50,6 @@ public class ImageManager implements Serializable {
       }
       this.log.add(builder.toString());
     }
-    FileManager.saveImageManager(this);
   }
 
   /**
@@ -76,7 +73,7 @@ public class ImageManager implements Serializable {
     String nameAndDate = current + ", " + name;
 
     previousNames.add(nameAndDate);
-    FileManager.saveImageManager(this);
+    FileManager.storeImageManager(this);
   }
 
   /**
@@ -124,7 +121,7 @@ public class ImageManager implements Serializable {
         previousNames.add(nameAndDate);
       }
     }
-    FileManager.saveImageManager(this);
+    FileManager.storeImageManager(this);
   }
 
   /**
@@ -153,7 +150,7 @@ public class ImageManager implements Serializable {
     String nameAndDate = current + ", " + name;
     this.log.add("Removed the tag: " + tag + " at " + current);
     previousNames.add(nameAndDate);
-    FileManager.saveImageManager(this);
+    FileManager.storeImageManager(this);
   }
 
   /**
@@ -284,7 +281,7 @@ public class ImageManager implements Serializable {
    */
   public void updateDirectory(Path path) {
     imagePath = path;
-    FileManager.saveImageManager(this);
+    FileManager.storeImageManager(this);
   }
 
   /***

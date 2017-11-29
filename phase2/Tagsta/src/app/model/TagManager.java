@@ -4,12 +4,8 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import java.util.logging.Logger;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 
 
 /**
@@ -32,14 +28,8 @@ public class TagManager {
    */
   public TagManager() {
     this.configOptions = FileManager.getConfigDetails();
-    if (FileManager.isFirstTime()) {
-      this.listOfImageManagers = new ArrayList<>();
-      this.listOfTags = new ArrayList<>();
-      FileManager.saveFiles(this.listOfImageManagers, this.configOptions, this.listOfTags);
-    } else {
-      this.listOfImageManagers = FileManager.loadImageManagers();
-      this.listOfTags = FileManager.loadTagsList();
-    }
+    this.listOfImageManagers = FileManager.loadImageManagers();
+    this.listOfTags = FileManager.loadTagsList();
   }
 
   /**
@@ -55,6 +45,7 @@ public class TagManager {
         listOfTags.add(tag);
       }
     }
+    FileManager.storeTagsList(this.listOfTags);
   }
 
   public ObservableList<ImageManager> getImageManagers() {
@@ -63,6 +54,7 @@ public class TagManager {
 
   public void deleteIndependentTag(String s) {
     listOfTags.remove(s);
+    FileManager.storeTagsList(this.listOfTags);
   }
 
   /**
@@ -71,14 +63,6 @@ public class TagManager {
    */
   public ObservableList<String> getTagsList(){
     return FXCollections.observableArrayList(this.listOfTags);
-  }
-
-  /**
-   * Saves the configuration details, the tags list, and ImageManagers to disk using FileManager
-   */
-  public void saveProgram() {
-    FileManager.saveFiles(this.listOfImageManagers, this.configOptions,
-                          this.listOfTags);
   }
 
   /**
@@ -111,7 +95,7 @@ public class TagManager {
         this.configOptions.put(key, value);
       }
     }
-    this.saveProgram();
+    FileManager.storeConfig(this.configOptions);
   }
 
   /**
@@ -124,13 +108,13 @@ public class TagManager {
   public ImageManager getImageManager(File file) {
     for (ImageManager imageManager : this.listOfImageManagers) {
       if (imageManager.returnPath().toString().equals(file.getPath())) {
-        this.saveProgram();
+        FileManager.storeImageManager(imageManager);
         return imageManager;
       }
     }
     ImageManager temp = new ImageManager(Paths.get(file.getPath()));
     this.listOfImageManagers.add(temp);
-    this.saveProgram();
+    FileManager.storeImageManager(temp);
     return temp;
   }
 
