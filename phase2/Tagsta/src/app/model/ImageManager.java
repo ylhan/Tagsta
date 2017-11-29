@@ -1,6 +1,7 @@
 package app.model;
 
 import app.controller.ExceptionDialogPopup;
+import java.util.logging.Level;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
@@ -47,6 +48,7 @@ public class ImageManager implements Serializable {
           firstTime = false;
         }
       }
+      TagManager.getLogger().info("Started the logging of " + name + ".");
       this.log.add(builder.toString());
     }
   }
@@ -67,6 +69,7 @@ public class ImageManager implements Serializable {
     imagePath = Paths.get(temp);
     LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
     String current = converter.toString(LocalDateTime.now());
+    TagManager.getLogger().info("Reverted from the name: " + parsedRevertedName + " to " + name);
     this.log.add("Reverted to name: " + parsedRevertedName + ", from: " + name + ", at " + current);
     name = parsedRevertedName;
     String nameAndDate = current + ", " + name;
@@ -105,17 +108,20 @@ public class ImageManager implements Serializable {
         tags.add(tag);
         String temp = imagePath.toString();
         int index = temp.lastIndexOf(File.separator);
+        int extensionIndex = temp.lastIndexOf(".");
         temp =
             temp.substring(0, index + name.length() + 1)
                 + " @"
                 + tag
-                + temp.substring(temp.length() - 4);
+                + temp.substring(extensionIndex);
         FileManager.moveImage(imagePath, Paths.get(temp));
         imagePath = Paths.get(temp);
+        TagManager.getLogger().info("Changed name from: " + name + " to: " + name + " @" + tag + ". By adding tag: " + tag);
         name = name + " @" + tag;
         LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
         String current = converter.toString(LocalDateTime.now());
         String nameAndDate = current + ", " + name;
+
         this.log.add("Added the tag: " + tag + " at " + current);
         previousNames.add(nameAndDate);
       }
@@ -132,12 +138,14 @@ public class ImageManager implements Serializable {
    */
   public void removeTag(String tag) {
     String tagName = " @" + tag;
+    String previousName = name;
     int index = name.indexOf(tagName);
     if (index + tagName.length() + 1 < name.length()) {
       name = name.substring(0, index) + name.substring(index + tagName.length());
     } else {
       name = name.substring(0, index);
     }
+    TagManager.getLogger().info("Changed name from: " + previousName + " to: " + name + ". By removing tag: " + tag);
     String temp = imagePath.toString();
     index = temp.indexOf(tagName);
     temp = temp.substring(0, index) + temp.substring(index + tagName.length());
