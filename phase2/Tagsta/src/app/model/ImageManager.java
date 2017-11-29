@@ -242,7 +242,7 @@ public class ImageManager implements Serializable {
    * @param s The string to be parsed.
    * @return A list of tags from a name String.
    */
-  private ObservableList<String> parseTags(String s) {
+  static ObservableList<String> parseTags(String s) {
     int index = s.lastIndexOf(File.separator);
     String fileName = s.substring(index + 1);
     int tagIndex = fileName.indexOf(" @");

@@ -39,10 +39,25 @@ public class TagManager {
 
   /**
    * Adds a tag to the independent tags list
-   * @param tag The tag to add
+   * @param file The file name with tags to add
    */
-  public void addIndependentTag(String tag){
-    this.listOfTags.add(tag);
+  public void addIndependentTag(File file){
+    String fileName = file.getPath();
+    ObservableList<String> tagList;
+    tagList = ImageManager.parseTags(fileName);
+    for(String tag: tagList) {
+      if(!listOfTags.contains(tag)) {
+        listOfTags.add(tag);
+      }
+    }
+  }
+
+  public ArrayList<ImageManager> getImageManager() {
+    return listOfImageManagers;
+  }
+
+  public void deleteIndependentTag(String s) {
+    listOfTags.remove(s);
   }
 
   /**
@@ -113,4 +128,5 @@ public class TagManager {
     this.saveProgram();
     return temp;
   }
+
 }
