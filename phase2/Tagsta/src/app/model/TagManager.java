@@ -4,8 +4,13 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import java.util.logging.Logger;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+
 
 /**
  * TagManager has a collection of ImageManagers and uses FileManager to do the various functions
@@ -52,8 +57,8 @@ public class TagManager {
     }
   }
 
-  public ArrayList<ImageManager> getImageManager() {
-    return listOfImageManagers;
+  public ObservableList<ImageManager> getImageManagers() {
+    return FXCollections.observableArrayList(listOfImageManagers);
   }
 
   public void deleteIndependentTag(String s) {
