@@ -245,17 +245,19 @@ public class FileManager {
    * @param file The folder to open
    */
   public static void openInExplorer(File file){
-    try {
-      if (Desktop.isDesktopSupported()) {
-        Desktop.getDesktop().open(file);
-      }
-      else{
-        ExceptionDialogPopup.createExceptionPopup("An error occurred while opening the folder",
-            "The file explorer could not be opened on this OS");
-      }
-    } catch (IOException e) {
+    if(Desktop.isDesktopSupported()){
+      new Thread(() -> {
+        try {
+          Desktop.getDesktop().open(file);
+        } catch (IOException e1) {
+          ExceptionDialogPopup.createExceptionPopup("An error occurred while opening the folder",
+                  "The folder could not be found");
+        }
+      }).start();
+    }
+    else{
       ExceptionDialogPopup.createExceptionPopup("An error occurred while opening the folder",
-          "The folder could not be found");
+              "The file explorer could not be opened on this OS");
     }
   }
 }
