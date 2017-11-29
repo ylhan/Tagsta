@@ -1,5 +1,6 @@
 package app;
 
+import app.controller.ExceptionDialogPopup;
 import app.controller.ImageOverviewController;
 import app.controller.RootLayoutController;
 import app.model.ImageManager;
@@ -69,7 +70,8 @@ public class Tagsta extends Application {
       rootLayoutController = loader.getController();
       rootLayoutController.setMainApp(this);
     } catch (IOException e) {
-      e.printStackTrace();
+      ExceptionDialogPopup.createExceptionPopup("The layout of the program could not be made",
+              "The program could not be ran");
     }
   }
 
@@ -90,7 +92,8 @@ public class Tagsta extends Application {
       // Load the previous session
       rootLayoutController.loadLastSession();
     } catch (IOException e) {
-      e.printStackTrace();
+      ExceptionDialogPopup.createExceptionPopup("The layout of the program could not be made",
+              "The program could not be ran");
     }
   }
 
