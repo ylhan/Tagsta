@@ -17,14 +17,13 @@ public class ImageManager implements Serializable {
   private ObservableList<String> tags;
   private ObservableList<String> previousNames;
   private ObservableList<String> log;
-  private static long fileTrack;
   private long fileNumber;
   private static final long serialVersionUID = 123456789;
   private String name;
   private Path imagePath;
 
   ImageManager(Path path) {
-    this.fileNumber = fileTrack++;
+    this.fileNumber = FileManager.getNumberOfImageManagers() + 1;
     imagePath = path;
     previousNames = FXCollections.observableArrayList(new ArrayList<String>());
     name = imagePath.getFileName().toString();
