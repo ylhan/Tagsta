@@ -80,12 +80,12 @@ public class FileManager {
       input.close();
     } catch (IOException ex) {
       ExceptionDialogPopup.createExceptionPopup("An error occurred while loading Image data",
-          "The desired image could not be found or loaded");
+          "Image " + fileNumber + " could not be found or loaded");
       return null;
     } catch (ClassNotFoundException ex) {
       ExceptionDialogPopup
           .createExceptionPopup("An error occurred while finding saved Image data",
-              "The changes made to the image in the past could not be loaded");
+              "The changes made to the image " + fileNumber + " in the past could not be loaded");
       return null;
     }
     return imageManager;
