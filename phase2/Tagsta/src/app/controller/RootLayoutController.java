@@ -202,6 +202,9 @@ public class RootLayoutController {
           // Only add image files
           String ext = f.getName().substring(f.getName().lastIndexOf('.') + 1);
           if (ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("png")) {
+            // Populate the independent tag list
+            main.getTagManager().addIndependentTag(f);
+            // Add the file to the tree
             root.getChildren().add(new TreeItem<>(f));
           }
         }
