@@ -8,7 +8,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +48,7 @@ public class ImageOverviewController {
       // Load image view from fxml file.
       FXMLLoader loader = new FXMLLoader();
       loader.setLocation(getClass().getResource("/app/view/ImageView.fxml"));
-      StackPane iv = loader.load();
+      AnchorPane iv = loader.load();
 
       // Make the image view component anchor to the size of the pane
       AnchorPane.setBottomAnchor(iv, 0.0);
