@@ -302,8 +302,7 @@ public class ImageManager implements Serializable {
    */
   @Override
   public String toString(){
-    String s = imagePath.toString();
-    int index = s.lastIndexOf(".");
-    return name + s.substring(index + 1);
+    File file = new File(imagePath.toString());
+    return file.getName();
   }
 }
