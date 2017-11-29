@@ -249,12 +249,12 @@ public class RootLayoutController {
       String lastImagePath = main.getTagManager().getConfigOption("LAST_IMAGE_PATH");
       String lastDirectoryPath = main.getTagManager().getConfigOption("LAST_DIRECTORY_PATH");
       // Make sure there is an actual image path saved
-      if (lastImagePath != "") {
+      if (lastImagePath.isEmpty()) {
         // Loads the previously opened image
         openSelectedImage(main.getTagManager().getImageManager(new File(lastImagePath)));
       }
       // Make sure there is an actual directory path saved
-      if (lastDirectoryPath != "") {
+      if (lastDirectoryPath.isEmpty()) {
         // Loads the previously opened directory
         openSelectedFolder(getNodesForDirectory(new File(lastDirectoryPath)));
       }
