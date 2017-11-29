@@ -51,11 +51,65 @@ public class FileManager {
   }
 
   /**
+   * Stores the given ImageManager by serializing them in a folder in the working directory
+   *
+   * @param imageManager The ImageManagers to be saved
+   */
+  static void saveImageManager(ImageManager imageManager){
+    try{
+      OutputStream file = new FileOutputStream("imagemanagers" + File.separator +
+                                                imageManager.getFileNumber() + ".ser");
+      OutputStream buffer = new BufferedOutputStream(file);
+      ObjectOutput output = new ObjectOutputStream(buffer);
+
+      output.writeObject(imageManager);
+      output.close();
+    }
+    catch (IOException ex){
+      ExceptionDialogPopup
+          .createExceptionPopup("An error occurred while saving Image File data",
+              //"The file could not be saved");
+          ex.getMessage());
+    }
+  }
+
+  /**
+   * Finds the serialized ImageManager corresponding to the given file number and returns it. if
+   * there is no such ImageManager, returns null
+   *
+   * @param fileNumber The number of the ImageManager to be gotten
+   * @return The ImageManager corresponding to the given id and null if no such ImageManager exists
+   */
+  @SuppressWarnings("unchecked")
+  static ImageManager loadImageManager(long fileNumber) {
+    ImageManager imageManager;
+    try {
+      InputStream file = new FileInputStream("imagemanagers" + File.separator +
+          fileNumber + ".ser");
+      InputStream buffer = new BufferedInputStream(file);
+      ObjectInput input = new ObjectInputStream(buffer);
+
+      imageManager = (ImageManager) input.readObject();
+      input.close();
+    } catch (IOException ex) {
+      ExceptionDialogPopup.createExceptionPopup("An error occurred while loading Image data",
+          "The desired image could not be found or loaded");
+      return null;
+    } catch (ClassNotFoundException ex) {
+      ExceptionDialogPopup
+          .createExceptionPopup("An error occurred while finding saved Image data",
+              "The changes made to the image in the past could not be loaded");
+      return null;
+    }
+    return imageManager;
+  }
+
+  /**
    * Stores the ImageManagers from TagManager by serializing them in the working directory
    *
    * @param imageManagers The list of ImageManagers to be saved
    */
-  private static void storeImageManagers(ArrayList<ImageManager> imageManagers) {
+  static void storeImageManagers(ArrayList<ImageManager> imageManagers) {
     try {
       OutputStream file = new FileOutputStream("image-managers.ser");
       OutputStream buffer = new BufferedOutputStream(file);

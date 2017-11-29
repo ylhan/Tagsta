@@ -17,11 +17,16 @@ public class ImageManager implements Serializable {
   private ObservableList<String> tags;
   private ObservableList<String> previousNames;
   private ObservableList<String> log;
+  private static long fileTrack;
+  private long fileNumber;
   private static final long serialVersionUID = 123456789;
   private String name;
   private Path imagePath;
 
   ImageManager(Path path) {
+    fileNumber = fileTrack++;
+    System.out.println("File number" + fileNumber);
+    System.out.println(fileTrack);
     imagePath = path;
     previousNames = FXCollections.observableArrayList(new ArrayList<String>());
     name = imagePath.getFileName().toString();
@@ -47,6 +52,7 @@ public class ImageManager implements Serializable {
       }
       this.log.add(builder.toString());
     }
+    FileManager.saveImageManager(this);
   }
 
   /**
@@ -70,6 +76,7 @@ public class ImageManager implements Serializable {
     String nameAndDate = current + ", " + name;
 
     previousNames.add(nameAndDate);
+    FileManager.saveImageManager(this);
   }
 
   /**
@@ -117,6 +124,7 @@ public class ImageManager implements Serializable {
         previousNames.add(nameAndDate);
       }
     }
+    FileManager.saveImageManager(this);
   }
 
   /**
@@ -145,6 +153,7 @@ public class ImageManager implements Serializable {
     String nameAndDate = current + ", " + name;
     this.log.add("Removed the tag: " + tag + " at " + current);
     previousNames.add(nameAndDate);
+    FileManager.saveImageManager(this);
   }
 
   /**
@@ -194,6 +203,14 @@ public class ImageManager implements Serializable {
    */
   public File getFile() {
     return new File(imagePath.toString());
+  }
+
+  /**
+   * Returns the number that this imageManager will have if turned into a file
+   * @return The number of this imageManager
+   */
+  long getFileNumber(){
+    return this.fileNumber;
   }
 
   /**
@@ -267,6 +284,7 @@ public class ImageManager implements Serializable {
    */
   public void updateDirectory(Path path) {
     imagePath = path;
+    FileManager.saveImageManager(this);
   }
 
   /***
@@ -278,4 +296,12 @@ public class ImageManager implements Serializable {
     return log;
   }
 
+  /**
+   * Returns the name of this ImageManager
+   * @return the name of this ImageManager
+   */
+  @Override
+  public String toString(){
+    return this.name;
+  }
 }
