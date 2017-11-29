@@ -11,21 +11,21 @@
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
-                <Menu mnemonicParsing="false" text="File">
+                <Menu mnemonicParsing="true" text="_File">
                     <items>
                         <MenuItem fx:id="openImage" mnemonicParsing="false" onAction="#handleOpenImage" text="Open Image" />
                         <MenuItem fx:id="openFolder" mnemonicParsing="false" onAction="#handleOpenFolder" text="Open Folder" />
                         <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="View">
+                <Menu mnemonicParsing="true" text="_View">
                     <items>
                         <MenuItem fx:id="showLog" disable="true" mnemonicParsing="false" onAction="#handleShowLog" text="Show Log" />
                         <MenuItem fx:id="showImageFolder" disable="true" mnemonicParsing="false" onAction="#handleShowImageFolder" text="Show Image Folder" />
                         <MenuItem mnemonicParsing="false" onAction="#handleShowSearch" text="Show Search" />
                     </items>
                 </Menu>
-                  <Menu mnemonicParsing="false" text="Settings">
+                  <Menu mnemonicParsing="true" text="_Settings">
                       <items>
                   <RadioMenuItem fx:id="loadLastSession" mnemonicParsing="false" onAction="#setLoadLastSession" selected="true" text="Load Last Session" />
                           <Menu mnemonicParsing="false" text="Theme">
@@ -40,7 +40,7 @@
                           </Menu>
                       </items>
                   </Menu>
-                <Menu mnemonicParsing="false" text="Help">
+                <Menu mnemonicParsing="true" text="_Help">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#handleAbout" text="About" />
                     </items>

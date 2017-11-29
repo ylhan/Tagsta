@@ -30,3 +30,4 @@ out/
 config.properties
 firstFile
 *.ser
+log.txt
