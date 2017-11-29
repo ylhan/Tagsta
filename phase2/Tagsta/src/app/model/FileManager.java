@@ -127,15 +127,7 @@ public class FileManager {
 
       listOfTags = (ArrayList<String>) input.readObject();
       input.close();
-    } catch (IOException ex) {
-      ExceptionDialogPopup.createExceptionPopup("An error occurred while loading the independent tags list",
-          "The changes made to the tags list in past sessions could not be loaded");
-      listOfTags = new ArrayList<>();
-      FileManager.storeTagsList(listOfTags);
-    } catch (ClassNotFoundException ex) {
-      ExceptionDialogPopup
-          .createExceptionPopup("An error occurred while finding the saved list of independent tags",
-              "The changes made to the tags list in past sessions could not be loaded");
+    } catch (IOException | ClassNotFoundException ex) {
       listOfTags = new ArrayList<>();
       FileManager.storeTagsList(listOfTags);
     }
