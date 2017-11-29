@@ -302,6 +302,8 @@ public class ImageManager implements Serializable {
    */
   @Override
   public String toString(){
-    return this.name;
+    String s = imagePath.toString();
+    int index = s.lastIndexOf(".");
+    return name + s.substring(index + 1);
   }
 }
