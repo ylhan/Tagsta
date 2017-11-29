@@ -34,6 +34,7 @@ public class RootLayoutController {
   @FXML private RadioMenuItem darkTheme;
   @FXML private MenuItem showLog;
   @FXML private MenuItem showImageFolder;
+  @FXML private RadioMenuItem loadLastSession;
 
   /**
    * Give directory viewer a reference to the main application
@@ -68,13 +69,14 @@ public class RootLayoutController {
 
   /**
    * Opens the given image in the file view and the image view (held by the image manager)
+   *
    * @param image the image held by the image manager
    */
   void openSelectedImage(ImageManager image) {
     main.updateImage(image);
     main.updateFileView(new TreeItem<>(image.getFile()));
     // Close the search window if it's opened
-    if (searchWindow != null){
+    if (searchWindow != null) {
       searchWindow.close();
     }
   }
@@ -95,10 +97,18 @@ public class RootLayoutController {
       ExceptionDialogPopup.createExceptionPopup("Directory Invalid", "Could not open directory.");
     } else {
       // Update the directory tree view
-      TreeItem<File> root = getNodesForDirectory(choice);
-      root.setExpanded(true);
-      main.updateDirectoryView(root);
+      openSelectedFolder(getNodesForDirectory(choice));
     }
+  }
+
+  /**
+   * Opens the selected folder in the directory view
+   *
+   * @param root the root tree item that holds the root folder
+   */
+  void openSelectedFolder(TreeItem<File> root) {
+    root.setExpanded(true);
+    main.updateDirectoryView(root);
   }
 
   /** Pops up an information dialog when the user selects the about option in the menu */
@@ -152,9 +162,7 @@ public class RootLayoutController {
     }
   }
 
-  /**
-   * Handle the show search menu item
-   */
+  /** Handle the show search menu item */
   @FXML
   private void handleShowSearch() {
     try {
@@ -228,6 +236,38 @@ public class RootLayoutController {
         darkTheme.setSelected(true);
       }
     }
+  }
+
+  /**
+   * Loads the previous session of the program (previously opened image and previous opened
+   * directory) if the option to do so is enabled in the settings
+   */
+  public void loadLastSession() {
+    // Get the stored config of whether or not to load the previous session
+    if (Boolean.valueOf(main.getTagManager().getConfigOption("OPEN_LAST_SESSION"))) {
+      loadLastSession.setSelected(true);
+      String lastImagePath = main.getTagManager().getConfigOption("LAST_IMAGE_PATH");
+      String lastDirectoryPath = main.getTagManager().getConfigOption("LAST_DIRECTORY_PATH");
+      // Make sure there is an actual image path saved
+      if (lastImagePath != "") {
+        // Loads the previously opened image
+        openSelectedImage(main.getTagManager().getImageManager(new File(lastImagePath)));
+      }
+      // Make sure there is an actual directory path saved
+      if (lastDirectoryPath != "") {
+        // Loads the previously opened directory
+        openSelectedFolder(getNodesForDirectory(new File(lastDirectoryPath)));
+      }
+    } else {
+      loadLastSession.setSelected(false);
+    }
+  }
+
+  /** Sets the config option of whether or not to load the last session */
+  @FXML
+  private void setLoadLastSession() {
+    main.getTagManager()
+        .setConfigOption("OPEN_LAST_SESSION", String.valueOf(loadLastSession.isSelected()));
   }
 
   /**

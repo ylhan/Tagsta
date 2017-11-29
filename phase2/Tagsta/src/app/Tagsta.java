@@ -87,6 +87,8 @@ public class Tagsta extends Application {
       imageOverviewController.setMainApp(this);
       // Load in the previous theme
       rootLayoutController.loadTheme(tagManager.getConfigOption("THEME"));
+      // Load the previous session
+      rootLayoutController.loadLastSession();
     } catch (IOException e) {
       e.printStackTrace();
     }

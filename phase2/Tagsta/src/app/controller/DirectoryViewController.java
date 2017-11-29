@@ -40,6 +40,9 @@ public class DirectoryViewController {
 
     // Update the title of the program with the opened image
     imageOverviewController.updateTitle();
+
+    // Save the opened image
+    tagManager.setConfigOption("LAST_IMAGE_PATH", item.getValue().getAbsolutePath());
   }
 
   /**
@@ -50,6 +53,9 @@ public class DirectoryViewController {
   void updateDirectoryView(TreeItem<File> item) {
     directoryView.setRoot(item);
     directoryView.refresh();
+
+    // Save the opened directory
+    tagManager.setConfigOption("LAST_DIRECTORY_PATH", item.getValue().getAbsolutePath());
   }
 
   /**
