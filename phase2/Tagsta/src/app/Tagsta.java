@@ -1,10 +1,11 @@
 package app;
 
-import app.model.ImageManager;
-import app.model.TagManager;
 import app.controller.ImageOverviewController;
 import app.controller.RootLayoutController;
+import app.model.ImageManager;
+import app.model.TagManager;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TreeItem;
@@ -16,9 +17,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * An Image Tagging application
- */
+/** An Image Tagging application */
 public class Tagsta extends Application {
 
   private Stage primaryStage;
@@ -28,12 +27,12 @@ public class Tagsta extends Application {
   private RootLayoutController rootLayoutController;
   private TagManager tagManager;
 
-  private final String DARK_THEME = Tagsta.class.getResource("/resources/materialDarkFX.css")
-      .toString();
-  private final String LIGHT_THEME = Tagsta.class.getResource("/resources/materialLightFX.css")
-      .toString();
-  private static final Image ICON = new Image(
-      Tagsta.class.getResourceAsStream("/resources/icon.png"));
+  private final String DARK_THEME =
+      Tagsta.class.getResource("/resources/materialDarkFX.css").toString();
+  private final String LIGHT_THEME =
+      Tagsta.class.getResource("/resources/materialLightFX.css").toString();
+  private static final Image ICON =
+      new Image(Tagsta.class.getResourceAsStream("/resources/icon.png"));
 
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -48,12 +47,10 @@ public class Tagsta extends Application {
     initRootLayout();
     // Initializes and adds the image view to the root UI
     showImageOverview();
-    primaryStage.setOnCloseRequest(t -> System.exit(0));
+    primaryStage.setOnCloseRequest(t -> Platform.exit());
   }
 
-  /**
-   * Initializes the root layout (border pane, and menu bar)
-   */
+  /** Initializes the root layout (border pane, and menu bar) */
   private void initRootLayout() {
     try {
       // Load root layout from fxml file.
@@ -76,9 +73,7 @@ public class Tagsta extends Application {
     }
   }
 
-  /**
-   * Shows the Image overview inside the root layout.
-   */
+  /** Shows the Image overview inside the root layout. */
   private void showImageOverview() {
     try {
       // Load person overview.
@@ -97,9 +92,7 @@ public class Tagsta extends Application {
     }
   }
 
-  /**
-   * Sets the theme to dark
-   */
+  /** Sets the theme to dark */
   public void setDarkTheme() {
     rootLayout.getStylesheets().clear();
     rootLayout.getStylesheets().add(DARK_THEME);
@@ -108,9 +101,7 @@ public class Tagsta extends Application {
     tagManager.setConfigOption("theme", "dark");
   }
 
-  /**
-   * Sets the theme to light
-   */
+  /** Sets the theme to light */
   public void setLightTheme() {
     rootLayout.getStylesheets().clear();
     rootLayout.getStylesheets().add(LIGHT_THEME);
@@ -124,9 +115,7 @@ public class Tagsta extends Application {
     launch(args);
   }
 
-  /**
-   * @return the stage for this application
-   */
+  /** @return the stage for this application */
   public Stage getPrimaryStage() {
     return primaryStage;
   }
@@ -158,30 +147,22 @@ public class Tagsta extends Application {
     imageOverviewController.updateFileView(item);
   }
 
-  /**
-   * @return the tag manager for this program
-   */
+  /** @return the tag manager for this program */
   public TagManager getTagManager() {
     return tagManager;
   }
 
-  /**
-   * @return the image overview controller for this application
-   */
+  /** @return the image overview controller for this application */
   public ImageOverviewController getImageOverviewController() {
     return imageOverviewController;
   }
 
-  /**
-   * @return the root layout controller for this application
-   */
+  /** @return the root layout controller for this application */
   public RootLayoutController getRootLayoutController() {
     return rootLayoutController;
   }
 
-  /**
-   * @return this program's icon
-   */
+  /** @return this program's icon */
   public static Image getIcon() {
     return ICON;
   }

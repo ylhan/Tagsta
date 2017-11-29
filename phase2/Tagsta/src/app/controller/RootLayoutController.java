@@ -24,6 +24,8 @@ public class RootLayoutController {
   // Reference to the main application
   private Tagsta main;
 
+  private Stage searchWindow;
+
   private final ImageView FOLDER_ICON = new ImageView(new Image("/resources/folderIcon.png"));
   private final ImageView PICTURE_ICON = new ImageView(new Image("/resources/pictureIcon.png"));
 
@@ -57,11 +59,23 @@ public class RootLayoutController {
 
     // Updates the image and the file view if the file isn't null
     if (file != null) {
-      main.updateImage(main.getTagManager().getImageManager(file));
-      main.updateFileView(new TreeItem<>(file));
+      openSelectedImage(main.getTagManager().getImageManager(file));
     } else {
       // Show an error if the file is invalid
       ExceptionDialogPopup.createExceptionPopup("Image Invalid", "Could not open image.");
+    }
+  }
+
+  /**
+   * Opens the given image in the file view and the image view (held by the image manager)
+   * @param image the image held by the image manager
+   */
+  void openSelectedImage(ImageManager image) {
+    main.updateImage(image);
+    main.updateFileView(new TreeItem<>(image.getFile()));
+    // Close the search window if it's opened
+    if (searchWindow != null){
+      searchWindow.close();
     }
   }
 
@@ -138,15 +152,49 @@ public class RootLayoutController {
     }
   }
 
-  /** Handle the menu item "Show Image Folder" which opens the current image's folder in the file explorer*/
+  /**
+   * Handle the show search menu item
+   */
   @FXML
-  private void handleShowImageFolder() {
-    FileManager.openInExplorer(main.getImageOverviewController().getImageManager().getFile().getParentFile());
+  private void handleShowSearch() {
+    try {
+      FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(getClass().getResource("/app/view/SearchView.fxml"));
+      BorderPane showSearch = loader.load();
+
+      // Create the new window and show it
+      searchWindow = new Stage();
+      searchWindow.setTitle("Search");
+      searchWindow.setScene(new Scene(showSearch, 800, 600));
+      searchWindow.getIcons().add(Tagsta.getIcon());
+      // Set the focus on this stage
+      searchWindow.initOwner(main.getPrimaryStage());
+      searchWindow.initModality(Modality.WINDOW_MODAL);
+
+      searchWindow.show();
+      // Add image managers to the search window
+      SearchViewController svc = loader.getController();
+      svc.setImageList(main.getTagManager().getImageManagers());
+      // Give the controller a reference to this controller
+      svc.setRootLayoutController(this);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
-   * By default (i.e. start of the program) there is no image displayed so the show log menu item, and the show image
-   * folder are disabled. This method will enable the item.
+   * Handle the menu item "Show Image Folder" which opens the current image's folder in the file
+   * explorer
+   */
+  @FXML
+  private void handleShowImageFolder() {
+    FileManager.openInExplorer(
+        main.getImageOverviewController().getImageManager().getFile().getParentFile());
+  }
+
+  /**
+   * By default (i.e. start of the program) there is no image displayed so the show log menu item,
+   * and the show image folder are disabled. This method will enable the item.
    */
   void enableMenuItems() {
     showLog.setDisable(false);
