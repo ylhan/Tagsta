@@ -195,25 +195,16 @@ public class FileManager {
   }
 
   /**
-   * Checks if this is the first time running the program by looking for whether a first-time-file
-   * exists
+   * Checks if this is the first time running the program by looking for whether any of the data
+   * files exist
    *
    * @return Whether this is the first time running the program
    */
   static boolean isFirstTime() {
-    File firstFile = Paths.get("first-file").toFile();
-    if (!firstFile.exists()) {
-      try {
-        if (!firstFile.createNewFile()) {
-          throw new IOException();
-        }
-      } catch (IOException ex) {
-        ExceptionDialogPopup.createExceptionPopup("An error occurred while creating a file",
-            "Any changes made to images in past sessions could not be loaded");
-      }
-      return true;
-    }
-    return false;
+    File imageManagers = Paths.get("imagemanagers" + File.separator + "0.ser").toFile();
+    File tagsList = Paths.get("tags-list.ser").toFile();
+    File config = Paths.get("config.properties").toFile();
+    return !(imageManagers.exists() || tagsList.exists() || config.exists());
   }
 
   /**
