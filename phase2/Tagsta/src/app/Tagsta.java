@@ -86,7 +86,7 @@ public class Tagsta extends Application {
       imageOverviewController = loader.getController();
       imageOverviewController.setMainApp(this);
       // Load in the previous theme
-      rootLayoutController.loadTheme(tagManager.getConfigOption("theme"));
+      rootLayoutController.loadTheme(tagManager.getConfigOption("THEME"));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -98,7 +98,7 @@ public class Tagsta extends Application {
     rootLayout.getStylesheets().add(DARK_THEME);
     imageOverview.getStylesheets().clear();
     imageOverview.getStylesheets().add(DARK_THEME);
-    tagManager.setConfigOption("theme", "dark");
+    tagManager.setConfigOption("THEME", "dark");
   }
 
   /** Sets the theme to light */
@@ -108,7 +108,7 @@ public class Tagsta extends Application {
     imageOverview.getStylesheets().clear();
     imageOverview.getStylesheets().add(LIGHT_THEME);
     // Store the theme in the configs
-    tagManager.setConfigOption("theme", "light");
+    tagManager.setConfigOption("THEME", "light");
   }
 
   public static void main(String[] args) {

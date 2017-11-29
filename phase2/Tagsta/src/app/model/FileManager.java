@@ -29,7 +29,10 @@ public class FileManager {
     File file = configPath.toFile();
     if (!file.exists()) {
       HashMap<String, String> configMap = new HashMap<>();
-      configMap.put("theme", "light");
+      configMap.put("THEME", "light");
+      configMap.put("OPEN_LAST_SESSION", "true");
+      configMap.put("LAST_IMAGE_PATH", "");
+      configMap.put("LAST_DIRECTORY_PATH", "");
       FileManager.storeConfig(configMap);
     }
     return file;
