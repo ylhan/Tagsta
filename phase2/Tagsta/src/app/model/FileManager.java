@@ -51,7 +51,7 @@ public class FileManager {
     if (!file.exists()) {
       HashMap<String, String> configMap = new HashMap<>();
       configMap.put("THEME", "light");
-      configMap.put("OPEN_LAST_SESSION", "true");
+      configMap.put("OPEN_LAST_SESSION", "false");
       configMap.put("LAST_IMAGE_PATH", "");
       configMap.put("LAST_DIRECTORY_PATH", "");
       FileManager.storeConfig(configMap);

@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 /** Controller for the root element of the UI (menu bar and border pane) */
 public class RootLayoutController {
@@ -245,19 +246,29 @@ public class RootLayoutController {
   public void loadLastSession() {
     // Get the stored config of whether or not to load the previous session
     if (Boolean.valueOf(main.getTagManager().getConfigOption("OPEN_LAST_SESSION"))) {
-      loadLastSession.setSelected(true);
-      String lastImagePath = main.getTagManager().getConfigOption("LAST_IMAGE_PATH");
-      String lastDirectoryPath = main.getTagManager().getConfigOption("LAST_DIRECTORY_PATH");
-      // Make sure there is an actual image path saved
-      if (!lastImagePath.isEmpty()) {
-        // Loads the previously opened image
-        openSelectedImage(main.getTagManager().getImageManager(new File(lastImagePath)));
+      // Popup a confirmation to make sure the user wants to opened the last session
+      Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+      alert.setTitle("Confirm Open Last Session");
+      alert.setHeaderText("Open Last Session");
+      alert.setContentText("Do you want to load the last session?");
+
+      Optional<ButtonType> result = alert.showAndWait();
+      if (result.get() == ButtonType.OK) {
+        loadLastSession.setSelected(true);
+        String lastImagePath = main.getTagManager().getConfigOption("LAST_IMAGE_PATH");
+        String lastDirectoryPath = main.getTagManager().getConfigOption("LAST_DIRECTORY_PATH");
+        // Make sure there is an actual image path saved
+        if (!lastImagePath.isEmpty()) {
+          // Loads the previously opened image
+          openSelectedImage(main.getTagManager().getImageManager(new File(lastImagePath)));
+        }
+        // Make sure there is an actual directory path saved
+        if (!lastDirectoryPath.isEmpty()) {
+          // Loads the previously opened directory
+          openSelectedFolder(getNodesForDirectory(new File(lastDirectoryPath)));
+        }
       }
-      // Make sure there is an actual directory path saved
-      if (!lastDirectoryPath.isEmpty()) {
-        // Loads the previously opened directory
-        openSelectedFolder(getNodesForDirectory(new File(lastDirectoryPath)));
-      }
+
     } else {
       loadLastSession.setSelected(false);
     }
