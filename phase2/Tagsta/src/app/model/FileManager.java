@@ -57,6 +57,8 @@ public class FileManager {
    */
   static void saveImageManager(ImageManager imageManager){
     try{
+      Path path = Paths.get("imagemanagers");
+      Files.createDirectories(path);
       OutputStream file = new FileOutputStream("imagemanagers" + File.separator +
                                                 imageManager.getFileNumber() + ".ser");
       OutputStream buffer = new BufferedOutputStream(file);
