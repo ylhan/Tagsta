@@ -11,12 +11,33 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.SimpleFormatter;
 
 /**
  * FileManager is responsible for the saving/loading of ImageManagers and the program's
  * configuration file. It is also responsive for moving images on the computer
  */
 public class FileManager {
+
+  private static FileHandler logHandler;
+
+  public static void createLogHandler(){
+    try{
+      FileManager.logHandler = new FileHandler("log.txt");
+      FileManager.logHandler.setLevel(Level.ALL);
+      FileManager.logHandler.setFormatter(new SimpleFormatter());
+    }
+    catch (IOException ex){
+      ExceptionDialogPopup.createExceptionPopup("The log could not be made",
+              "Changes to images" + "will not be logged");
+    }
+  }
+
+  public static FileHandler getLogHandler() {
+    return logHandler;
+  }
 
   /**
    * Finds and returns the configuration file from the working directory

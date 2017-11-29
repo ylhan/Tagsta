@@ -4,6 +4,9 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -19,6 +22,7 @@ public class TagManager {
   private HashMap<String, String> configOptions;
   private ArrayList<ImageManager> listOfImageManagers;
   private ArrayList<String> listOfTags;
+  private static Logger logger = Logger.getLogger("Tagsta");
 
   /**
    * Creates a TagManager. First checks whether this is the first time a TagManager has been created
@@ -30,6 +34,9 @@ public class TagManager {
     this.configOptions = FileManager.getConfigDetails();
     this.listOfImageManagers = FileManager.loadImageManagers();
     this.listOfTags = FileManager.loadTagsList();
+    FileManager.createLogHandler();
+    logger.addHandler(FileManager.getLogHandler());
+    logger.setLevel(Level.INFO);
   }
 
   /**
@@ -62,6 +69,10 @@ public class TagManager {
    */
   public ObservableList<ImageManager> getImageManagers() {
     return FXCollections.observableArrayList(listOfImageManagers);
+  }
+
+  public static Logger getLogger() {
+    return logger;
   }
 
   /**
