@@ -282,10 +282,11 @@ public class TagViewController {
     tagView.setOnDragOver(
         (DragEvent event) -> {
           // Make sure the source of the drag isn't this tagView, there are tags to move, and that
-          // the source of the event is not the directory view
+          // the source of the event is not the directory view and there is an opened image to add tags to
           if (!(event.getGestureSource() instanceof TreeCell)
               && event.getGestureSource() != tagView
-              && event.getDragboard().hasFiles()) {
+              && event.getDragboard().hasFiles()
+              && imageManager != null) {
             event.acceptTransferModes(TransferMode.MOVE);
           }
           event.consume();
