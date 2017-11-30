@@ -1,8 +1,15 @@
 (Assuming user has navigated to group_0537 in cmd)
 (Linux Instructions)
-1. cd phase1/Tagsta/src
+1. cd phase2/Tagsta/src
 2. javac app/model/*.java
-3. javac app/view/*.java
+3. javac app/controller/*.java
 4. javac app/Tagsta.java
 5. java app.Tagsta
 Replace all "/" with "\" when using Windows instead of Linux.
+
+Tips for running program:
+- Most main features of the program are accessed from the menu - like opening images, the log, opening file explorer, etc.
+- Files can be moved by dragging their name in the directory view to the name of the folder to move them to
+- The 'Load Last Session' setting gives the option of loading the last image and directory open before the program is closed at startup
+- Tags from the independent tags list (left box below image) can be added to the image by dragging them to the right where the image specific tags are, and multiple tags can be selected by using Shift and Ctrl as usual
+- Tags can be removed from the independent tags list via a right click menu from anywhere in the independent tags list box
