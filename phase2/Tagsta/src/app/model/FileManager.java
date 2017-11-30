@@ -18,17 +18,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- * FileManager is responsible for the saving/loading of ImageManagers and the program's
- * configuration file. It is also responsive for moving images on the computer
+ * FileManager is responsible for the saving/loading of files like the ImageManagers, the config,
+ * and the independent tags list. It is also responsive for moving images on the computer and handling
+ * the log's FileHandler.
  */
 public class FileManager {
 
   private static FileHandler logHandler;
 
   /**
-   * Creates a log handler that writes a log to a text file
+   * Creates a log handler that writes a log to a text file with some default properties
    */
-  public static void createLogHandler(){
+  static void createLogHandler(){
     try{
       FileManager.logHandler = new FileHandler("log.txt",true);
       FileManager.logHandler.setLevel(Level.ALL);
@@ -57,15 +58,15 @@ public class FileManager {
   }
 
   /**
-   * Returns the FileManager's logHandler
-   * @return the logHandler
+   * Returns the logger's handler
+   * @return the logger's handler
    */
-  public static FileHandler getLogHandler() {
+  static FileHandler getLogHandler() {
     return logHandler;
   }
 
   /**
-   * Closes the log handler
+   * Closes the logger's handler
    */
   public static void closeLogHandler(){
     FileManager.logHandler.close();
@@ -80,6 +81,8 @@ public class FileManager {
     Path configPath = Paths
         .get("config.properties");
     File file = configPath.toFile();
+
+    //Makes the file with some default properties if it does not exist
     if (!file.exists()) {
       HashMap<String, String> configMap = new HashMap<>();
       configMap.put("THEME", "light");
@@ -94,7 +97,7 @@ public class FileManager {
   /**
    * Stores the given ImageManager by serializing them in a folder in the working directory
    *
-   * @param imageManager The ImageManagers to be saved
+   * @param imageManager The ImageManager to be saved
    */
   static void storeImageManager(ImageManager imageManager){
     try{
@@ -115,11 +118,11 @@ public class FileManager {
   }
 
   /**
-   * Finds the serialized ImageManager corresponding to the given file number and returns it. if
+   * Finds the serialized ImageManager corresponding to the given file and returns it. if
    * there is no such ImageManager, returns null
    *
-   * @param serFile The number of the ImageManager to be gotten
-   * @return The ImageManager corresponding to the given id and null if no such ImageManager exists
+   * @param serFile The file of the ImageManager to be returned
+   * @return The ImageManager corresponding to the given file and null if no such file exists
    */
   @SuppressWarnings("unchecked")
   private static ImageManager loadImageManager(File serFile) {
@@ -131,11 +134,13 @@ public class FileManager {
 
       imageManager = (ImageManager) input.readObject();
       input.close();
-    } catch (IOException ex) {
+    }
+    catch (IOException ex) {
       ExceptionDialogPopup.createExceptionPopup("An error occurred while loading Image data",
           "Image " + serFile + " could not be found or loaded");
       return null;
-    } catch (ClassNotFoundException ex) {
+    }
+    catch (ClassNotFoundException ex) {
       ExceptionDialogPopup
           .createExceptionPopup("An error occurred while finding saved Image data",
               "The changes made to the image " + serFile + " in the past could not be loaded");
@@ -145,7 +150,7 @@ public class FileManager {
   }
 
   /**
-   * Stores the list of independent tags from TagManager by serializing them in the working directory
+   * Stores the given list of independent tags by serializing them in the working directory
    *
    * @param listOfTags The list of tags to be saved
    */
@@ -160,15 +165,15 @@ public class FileManager {
     } catch (IOException ex) {
       ExceptionDialogPopup
           .createExceptionPopup("An error occurred while saving the independent tags list",
-              "The file listOfTags.ser could not be saved");
+              "The file could not be saved");
     }
   }
 
   /**
-   * Finds the serialized independent tags list in the working directory, and creates an
-   * empty serialized list if there is none, and returns it
+   * Finds and returns the serialized independent tags list from the working directory, and
+   * serializes and returns an empty list if there is no such file
    *
-   * @return The list of independent tags stored
+   * @return The list of independent tags stored, or null if it is not found
    */
   @SuppressWarnings("unchecked")
   static ArrayList<String> loadTagsList() {
@@ -187,6 +192,9 @@ public class FileManager {
     return listOfTags;
   }
 
+  /**
+   * Creates the imagemanagers folder in the working directory
+   */
   private static void createImageManagersFolder(){
     try{
       Files.createDirectories(Paths.get("imagemanagers"));
@@ -198,8 +206,8 @@ public class FileManager {
   }
 
   /**
-   * Finds the serialized ImageManagers in the working directory, and creates an empty serialized
-   * list if there are none, and returns it
+   * Finds the serialized ImageManagers in the imagemanagers folder, creating an empty serialized
+   * list if there are none, and returns all of the ImageManagers
    *
    * @return The list of ImageManagers stored
    */
@@ -210,8 +218,9 @@ public class FileManager {
     if(!folder.exists()){
       FileManager.createImageManagersFolder();
     }
-    if (folder.listFiles() != null) {
-      for (File file : folder.listFiles()) {
+    File[] listOfFiles = folder.listFiles();
+    if (listOfFiles != null) {
+      for (File file : listOfFiles) {
         imageManagers.add(FileManager.loadImageManager(file));
       }
     }
@@ -222,7 +231,7 @@ public class FileManager {
    * Gets the number of saved ImageManagers
    * @return The number of saved ImageManagers
    */
-  public static long getNumberOfImageManagers(){
+  static long getNumberOfImageManagers(){
     File file = new File("imagemanagers");
     File[] fileList = file.listFiles();
     if (fileList == null){
@@ -235,14 +244,20 @@ public class FileManager {
 
   /**
    * Stores the config file into the working directory
+   *
+   * @param configMap The map with the settings to be saved in 'key = setting, value = choice' format
    */
   static void storeConfig(HashMap<String, String> configMap) {
     File configFile = new File("config.properties");
     try {
       Properties properties = new Properties();
+
+      //Takes the settings from the config map and puts them in the properties
       for (String key : configMap.keySet()) {
         properties.setProperty(key, configMap.get(key));
       }
+
+      //Writes the files
       FileWriter writer = new FileWriter(configFile);
       properties.store(writer, "configuration settings");
       writer.close();
@@ -255,7 +270,7 @@ public class FileManager {
   /**
    * Loads the config file from the system and returns a HashMap of its contents
    *
-   * @return The settings, each corresponding to a boolean value in String form
+   * @return The settings as a map in the format 'key: setting, value: choice'
    */
   static HashMap<String, String> getConfigDetails() {
     HashMap<String, String> configMap = new HashMap<>();
@@ -264,6 +279,8 @@ public class FileManager {
       FileReader reader = new FileReader(configFile);
       Properties properties = new Properties();
       properties.load(reader);
+
+      //Puts the read properties into the map to be returned
       for (String key : properties.stringPropertyNames()) {
         configMap.put(key, properties.getProperty(key));
       }
@@ -298,8 +315,8 @@ public class FileManager {
 
   /**
    * Opens the folder of an image in the Operating System's default file explorer and gives an error
-   * if the actions are not able to be done
-   * http://www.rgagnon.com/javadetails/java-open-default-os-file-explorer.html
+   * if it cannot be done
+   * https://stackoverflow.com/questions/23176624/javafx-freeze-on-desktop-openfile-desktop-browseuri
    *
    * @param file The folder to open
    */
