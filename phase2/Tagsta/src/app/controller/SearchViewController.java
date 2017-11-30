@@ -16,7 +16,7 @@ public class SearchViewController {
   @FXML private ListView<ImageManager> listOfImages;
   @FXML private TextField search;
 
-  private RootLayoutController rootLayoutController;
+  private MenuController menuController;
   private FilteredList<ImageManager> filteredImagesList;
 
   /**
@@ -55,7 +55,7 @@ public class SearchViewController {
     if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
       ImageManager selectedImage = listOfImages.getSelectionModel().getSelectedItem();
       if (selectedImage != null) {
-        rootLayoutController.openSelectedImage(selectedImage);
+        menuController.openSelectedImage(selectedImage);
       }
     }
   }
@@ -69,17 +69,17 @@ public class SearchViewController {
   @FXML
   private void handleKeyEnter(KeyEvent keyPressed) {
     if (keyPressed.getCode().equals(KeyCode.ENTER)) {
-      rootLayoutController.openSelectedImage(listOfImages.getSelectionModel().getSelectedItem());
+      menuController.openSelectedImage(listOfImages.getSelectionModel().getSelectedItem());
     }
   }
 
   /**
-   * Gives this controller a reference to the RootLayoutController (this is required to open the
+   * Gives this controller a reference to the MenuController (this is required to open the
    * image when the user selects one from the list)
    *
    * @param rlc the reference to the controller
    */
-  void setRootLayoutController(RootLayoutController rlc) {
-    this.rootLayoutController = rlc;
+  void setMenuController(MenuController rlc) {
+    this.menuController = rlc;
   }
 }

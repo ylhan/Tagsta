@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 /** Controller for the root element of the UI (menu bar and border pane) */
-public class RootLayoutController {
+public class MenuController {
 
   // Reference to the main application
   private Tagsta main;
@@ -192,7 +192,7 @@ public class RootLayoutController {
       SearchViewController svc = loader.getController();
       svc.setImageList(main.getTagManager().getImageManagers());
       // Give the controller a reference to this controller
-      svc.setRootLayoutController(this);
+      svc.setMenuController(this);
     } catch (IOException e) {
       e.printStackTrace();
     }

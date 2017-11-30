@@ -2,14 +2,14 @@ package app;
 
 import app.controller.ExceptionDialogPopup;
 import app.controller.ImageOverviewController;
-import app.controller.RootLayoutController;
+import app.controller.MenuController;
 import app.model.FileManager;
 import app.model.ImageManager;
 import app.model.TagManager;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -23,10 +23,11 @@ import java.io.IOException;
 public class Tagsta extends Application {
 
   private Stage primaryStage;
+  private MenuBar menuBar;
   private BorderPane rootLayout;
   private AnchorPane imageOverview;
   private ImageOverviewController imageOverviewController;
-  private RootLayoutController rootLayoutController;
+  private MenuController menuController;
   private TagManager tagManager;
 
   private final String DARK_THEME =
@@ -44,32 +45,31 @@ public class Tagsta extends Application {
     this.primaryStage.setTitle("Tagsta");
     this.primaryStage.setMaximized(true);
     this.primaryStage.getIcons().add(ICON);
-
-    // Initializes the root elements of the application (border pane, and menu bar)
-    initRootLayout();
+    rootLayout = new BorderPane();
+    // Show the scene containing the root layout.
+    Scene scene = new Scene(rootLayout);
+    primaryStage.setScene(scene);
+    primaryStage.setMinWidth(900);
+    primaryStage.setMinHeight(650);
+    primaryStage.show();
+    // Initializes the loadMenuBar bar of the application
+    loadMenuBar();
     // Initializes and adds the image view to the root UI
-    showImageOverview();
+    loadImageOverview();
     primaryStage.setOnCloseRequest(t -> FileManager.closeLogHandler());
   }
 
-  /** Initializes the root layout (border pane, and menu bar) */
-  private void initRootLayout() {
+  /** Initializes the root layout (border pane, and loadMenuBar bar) */
+  private void loadMenuBar() {
     try {
       // Load root layout from fxml file.
       FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(getClass().getResource("view/RootLayout.fxml"));
-      rootLayout = loader.load();
-
-      // Show the scene containing the root layout.
-      Scene scene = new Scene(rootLayout);
-      primaryStage.setScene(scene);
-      primaryStage.setMinWidth(900);
-      primaryStage.setMinHeight(650);
-      primaryStage.show();
-
+      loader.setLocation(getClass().getResource("view/Menu.fxml"));
+      menuBar = loader.load();
+      rootLayout.setTop(menuBar);
       // Initialize the root controller and give it a reference to this app
-      rootLayoutController = loader.getController();
-      rootLayoutController.setMainApp(this);
+      menuController = loader.getController();
+      menuController.setMainApp(this);
     } catch (IOException e) {
       ExceptionDialogPopup.createExceptionPopup("The layout of the program could not be made",
               "The program could not be ran");
@@ -77,7 +77,7 @@ public class Tagsta extends Application {
   }
 
   /** Shows the Image overview inside the root layout. */
-  private void showImageOverview() {
+  private void loadImageOverview() {
     try {
       // Load person overview.
       FXMLLoader loader = new FXMLLoader();
@@ -89,9 +89,9 @@ public class Tagsta extends Application {
       imageOverviewController = loader.getController();
       imageOverviewController.setMainApp(this);
       // Load in the previous theme
-      rootLayoutController.loadTheme(tagManager.getConfigOption("THEME"));
+      menuController.loadTheme(tagManager.getConfigOption("THEME"));
       // Load the previous session
-      rootLayoutController.loadLastSession();
+      menuController.loadLastSession();
     } catch (IOException e) {
       ExceptionDialogPopup.createExceptionPopup("The layout of the program could not be made",
               "The program could not be ran");
@@ -164,8 +164,8 @@ public class Tagsta extends Application {
   }
 
   /** @return the root layout controller for this application */
-  public RootLayoutController getRootLayoutController() {
-    return rootLayoutController;
+  public MenuController getMenuController() {
+    return menuController;
   }
 
   /** @return this program's icon */

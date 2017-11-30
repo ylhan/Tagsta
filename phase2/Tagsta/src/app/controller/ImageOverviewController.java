@@ -39,7 +39,7 @@ public class ImageOverviewController {
     tagViewController.enableControls();
     imageViewController.enableControls();
     // Enable the menu items that are disabled by default
-    main.getRootLayoutController().enableMenuItems();
+    main.getMenuController().enableMenuItems();
   }
 
   /** Loads the image view of the program */
