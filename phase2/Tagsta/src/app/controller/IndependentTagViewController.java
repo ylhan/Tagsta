@@ -3,18 +3,12 @@ package app.controller;
 import app.Tagsta;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 
-import javax.xml.soap.Text;
-import java.beans.EventHandler;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class IndependentTagViewController {
@@ -24,40 +18,39 @@ public class IndependentTagViewController {
   private Tagsta main;
 
   private void updateTagList() {
-    ObservableList<String> uniqueTagList = FXCollections.observableArrayList(
-            new HashSet<>(main.getTagManager().getTagsList()));
+    ObservableList<String> uniqueTagList =
+        FXCollections.observableArrayList(new HashSet<>(main.getTagManager().getTagsList()));
     tagList.setItems(uniqueTagList.sorted());
   }
 
-    /** Add a tag to the image */
-    @FXML
-    private void addTag() {
-      // Get the text from the text-field
-      String tag = tagListTextField.getText();
-      // Trim off whitespace
-      tag = tag.trim();
-      // Ensure there is currently and image and the text field has text
-      if (!tag.equals("")) {
-        boolean added = tag.matches("^[a-zA-Z0-9]*$");
-        if (!added) {
-          ExceptionDialogPopup
-                  .createExceptionPopup("Error adding tag", "That tag contains an illegal character");
-        }
-        //Checks whether or not the the tag has already been added to the current iteration of tags
-        if (main.getTagManager().getTagsList().contains(tag)) {
-          ExceptionDialogPopup
-                  .createExceptionPopup("Error adding tag",
-                          "Image already contains this tag!");
-          added = false;
-        }
-        if (added) {
-          main.getTagManager().addIndependentTag(tag);
-          updateTagList();
-        }
+  /** Add a tag to the image */
+  @FXML
+  private void addTag() {
+    // Get the text from the text-field
+    String tag = tagListTextField.getText();
+    // Trim off whitespace
+    tag = tag.trim();
+    // Ensure there is currently and image and the text field has text
+    if (!tag.equals("")) {
+      boolean added = tag.matches("^[a-zA-Z0-9]*$");
+      if (!added) {
+        ExceptionDialogPopup.createExceptionPopup(
+            "Error adding tag", "That tag contains an illegal character");
       }
-      // Clear the text from the text-field
-      tagListTextField.clear();
+      // Checks whether or not the the tag has already been added to the current iteration of tags
+      if (main.getTagManager().getTagsList().contains(tag)) {
+        ExceptionDialogPopup.createExceptionPopup(
+            "Error adding tag", "Image already contains this tag!");
+        added = false;
+      }
+      if (added) {
+        main.getTagManager().addIndependentTag(tag);
+        updateTagList();
+      }
     }
+    // Clear the text from the text-field
+    tagListTextField.clear();
+  }
 
   //
   //    private void addTagList(String tag) {
@@ -68,23 +61,22 @@ public class IndependentTagViewController {
   //        }
   //    }
 
-//      @FXML
-//      private void handleClick(MouseEvent event) {
-//        if (event.getButton().equals(MouseButton.SECONDARY))
-//          if (event.getClickCount() == 2) {
-//              String tagItem = tagListView.getSelectionModel().getSelectedItem();
-//              tagView.getChildren().add(createTag(tagItem));
-//              imageManager.addTag(tagItem);
-//              // updateFileName(new TreeItem<>(imageManager.getFile()));
-//          }
-//      }
+  //      @FXML
+  //      private void handleClick(MouseEvent event) {
+  //        if (event.getButton().equals(MouseButton.SECONDARY))
+  //          if (event.getClickCount() == 2) {
+  //              String tagItem = tagListView.getSelectionModel().getSelectedItem();
+  //              tagView.getChildren().add(createTag(tagItem));
+  //              imageManager.addTag(tagItem);
+  //              // updateFileName(new TreeItem<>(imageManager.getFile()));
+  //          }
+  //      }
 
   @FXML
   private void handleDelete() {
     System.out.println(tagList.getSelectionModel().getSelectedItems());
     ObservableList<String> tags = tagList.getSelectionModel().getSelectedItems();
-    for (String tag : tags)
-      main.getTagManager().deleteIndependentTag(tag);
+    for (String tag : tags) main.getTagManager().deleteIndependentTag(tag);
     updateTagList();
   }
 
@@ -104,5 +96,16 @@ public class IndependentTagViewController {
   @FXML
   private void initialize() {
     tagList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    // Define the appropriate action when dragging items from the tagList
+    tagList.setOnDragDetected(
+        (MouseEvent event) -> {
+          Dragboard db = tagList.startDragAndDrop(TransferMode.MOVE);
+          ClipboardContent content = new ClipboardContent();
+          // Put the selected items into the clipboard. Using putFilesByPath because it's the only
+          // way to add a list of string easily
+          content.putFilesByPath(tagList.getSelectionModel().getSelectedItems());
+          db.setContent(content);
+          event.consume();
+        });
   }
 }
