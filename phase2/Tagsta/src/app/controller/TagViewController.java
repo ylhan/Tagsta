@@ -196,10 +196,10 @@ public class TagViewController {
       BorderPane lv = loader.load();
 
       // Make the directory view component anchor to the size of the pane
-      AnchorPane.setBottomAnchor(lv, 0.0);
-      AnchorPane.setTopAnchor(lv, 0.0);
-      AnchorPane.setRightAnchor(lv, 0.0);
-      AnchorPane.setLeftAnchor(lv, 0.0);
+      AnchorPane.setBottomAnchor(lv, 5.0);
+      AnchorPane.setTopAnchor(lv, 10.0);
+      AnchorPane.setRightAnchor(lv, 10.0);
+      AnchorPane.setLeftAnchor(lv, 10.0);
 
       // Attach the directory view to the overview
       independentTagAnchor.getChildren().add(lv);
@@ -282,13 +282,18 @@ public class TagViewController {
     tagView.setOnDragOver(
         (DragEvent event) -> {
           // Make sure the source of the drag isn't this tagView, there are tags to move, and that
-          // the source of the event is not the directory view
+          // the source of the event is not the directory view and there is an opened image to add tags to
           if (!(event.getGestureSource() instanceof TreeCell)
               && event.getGestureSource() != tagView
-              && event.getDragboard().hasFiles()) {
+              && event.getDragboard().hasFiles()
+              && imageManager != null) {
             event.acceptTransferModes(TransferMode.MOVE);
           }
           event.consume();
         });
+  }
+
+  ImageManager getImageManager() {
+    return this.imageManager;
   }
 }
