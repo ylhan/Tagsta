@@ -158,14 +158,14 @@ public class TagManager {
     return temp;
   }
 
-  public static boolean isValidTag(ArrayList<String> list, String tag){
-    boolean valid = tag.matches("^[a-zA-Z0-9]*$");
+  static boolean isValidTag(ArrayList<String> list, String tag){
+    boolean valid = tag.matches("^[a-zA-Z0-9_ ]*$");
     if (!valid) {
       ExceptionDialogPopup
               .createExceptionPopup("Error adding tag", "That tag contains an illegal character");
     }
     //Checks whether or not the the tag has already been added to the current iteration of tags
-    if (list.contains(tag)) {
+    if (list.contains(tag) ) {
       ExceptionDialogPopup
               .createExceptionPopup("Error adding tag",
                       "The list of current tags already contains this tag!");
