@@ -3,6 +3,7 @@ package app;
 import app.controller.ExceptionDialogPopup;
 import app.controller.ImageOverviewController;
 import app.controller.RootLayoutController;
+import app.model.FileManager;
 import app.model.ImageManager;
 import app.model.TagManager;
 import javafx.application.Application;
@@ -48,7 +49,7 @@ public class Tagsta extends Application {
     initRootLayout();
     // Initializes and adds the image view to the root UI
     showImageOverview();
-    primaryStage.setOnCloseRequest(t -> Platform.exit());
+    primaryStage.setOnCloseRequest(t -> FileManager.closeLogHandler());
   }
 
   /** Initializes the root layout (border pane, and menu bar) */
