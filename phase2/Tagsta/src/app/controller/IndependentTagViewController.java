@@ -61,7 +61,7 @@ public class IndependentTagViewController {
    */
   @FXML
   private void handleClick(MouseEvent event) {
-    if (event.getButton().equals(MouseButton.PRIMARY))
+    if (this.tagViewController.getImageManager() != null && event.getButton().equals(MouseButton.PRIMARY))
       if (event.getClickCount() == 2) {
         List<String> tagItem = new ArrayList<>();
         tagItem.add(tagList.getSelectionModel().getSelectedItem());
@@ -77,7 +77,7 @@ public class IndependentTagViewController {
    */
   @FXML
   private void handleKeyEnter(KeyEvent keyPressed) {
-    if (keyPressed.getCode().equals(KeyCode.ENTER)) {
+    if (this.tagViewController.getImageManager() != null && keyPressed.getCode().equals(KeyCode.ENTER)) {
       List<String> tagItem = new ArrayList<>();
       tagItem.addAll(tagList.getSelectionModel().getSelectedItems());
       this.tagViewController.addTags(tagItem);
