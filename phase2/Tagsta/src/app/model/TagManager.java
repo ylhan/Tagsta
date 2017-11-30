@@ -36,6 +36,7 @@ public class TagManager {
     this.listOfImageManagers = FileManager.loadImageManagers();
     this.listOfTags = FileManager.loadTagsList();
     FileManager.createLogHandler();
+    //Sets the default config options.
     logger.setUseParentHandlers(false);
     logger.addHandler(FileManager.getLogHandler());
     logger.setLevel(Level.INFO);
@@ -46,22 +47,18 @@ public class TagManager {
    * @param file The file name with tags to add
    */
   public void addIndependentTag(File file){
+    //Removes the file extension from the file name
     String fileName = file.getPath();
     fileName = fileName.substring(0, fileName.lastIndexOf("."));
     ObservableList<String> tagList;
+    //Calls helper method to parse the tags
     tagList = ImageManager.parseTags(fileName);
 
+    //If the tags are already in tagList then do not add them to the list
     for(String tag: tagList) {
       if(!this.listOfTags.contains(tag))
         this.addIndependentTag(tag);
     }
-  }
-
-  /***
-   * Clears all tags from the independent tag list.
-   */
-  public void clearIndependentTagList() {
-    listOfTags = new ArrayList<String>();
   }
 
   /**
@@ -82,10 +79,11 @@ public class TagManager {
    * @return The list of ImageManagers
    */
   public ObservableList<ImageManager> getImageManagers() {
+    //JavaFX requires observable list to display
     return FXCollections.observableArrayList(listOfImageManagers);
   }
 
-  public static Logger getLogger() {
+  static Logger getLogger() {
     return logger;
   }
 
@@ -95,6 +93,7 @@ public class TagManager {
    */
   public void deleteIndependentTag(String tag) {
     listOfTags.remove(tag);
+    //Updates the list of tags save file
     FileManager.storeTagsList(this.listOfTags);
   }
 
@@ -103,6 +102,7 @@ public class TagManager {
    * @return The list of independent tags
    */
   public ObservableList<String> getTagsList(){
+    //JavaFX requires observableLists for displaying.
     return FXCollections.observableArrayList(this.listOfTags);
   }
 
@@ -115,11 +115,13 @@ public class TagManager {
    * settings
    */
   public String getConfigOption(String option) {
+    //Gets all config options.
     for (String key : this.configOptions.keySet()) {
       if (key.equals(option)) {
         return this.configOptions.get(key);
       }
     }
+    //If they do not exist yet return null so the program knows to create them.
     return null;
   }
 
@@ -131,6 +133,7 @@ public class TagManager {
    * @param value The value to be set
    */
   public void setConfigOption(String option, String value) {
+    //Stores all config options.
     for (String key : this.configOptions.keySet()) {
       if (key.equals(option)) {
         this.configOptions.put(key, value);
@@ -147,11 +150,13 @@ public class TagManager {
    * @return The ImageManager that corresponds to the given file's path
    */
   public ImageManager getImageManager(File file) {
+    //If the imageManager is already in the list of ImageMangers return it instead of creating new one.
     for (ImageManager imageManager : this.listOfImageManagers) {
       if (imageManager.returnPath().toString().equals(file.getPath())) {
         return imageManager;
       }
     }
+    //If imageManager doesn't exist yet, create new one.
     ImageManager temp = new ImageManager(Paths.get(file.getPath()));
     this.listOfImageManagers.add(temp);
     FileManager.storeImageManager(temp);
@@ -159,6 +164,7 @@ public class TagManager {
   }
 
   static boolean isValidTag(ArrayList<String> list, String tag){
+    //Only accepts non special characters for file name.
     boolean valid = tag.matches("^[a-zA-Z0-9_ ]*$");
     if (!valid) {
       ExceptionDialogPopup

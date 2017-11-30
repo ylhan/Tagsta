@@ -1,6 +1,4 @@
 package app.model;
-
-import app.controller.ExceptionDialogPopup;
 import java.util.logging.Level;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -181,7 +179,7 @@ public class ImageManager implements Serializable {
    *
    * @return The number of this imageManager
    */
-  long getFileNumber() {
+  public long getFileNumber() {
     return this.fileNumber;
   }
 
@@ -264,6 +262,7 @@ public class ImageManager implements Serializable {
    */
   @Override
   public String toString() {
+    //Creates a file to return the file name of
     File file = new File(imagePath.toString());
     return file.getName();
   }
