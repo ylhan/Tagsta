@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Optional;
 
 /** Controller for the root element of the UI (menu bar and border pane) */
@@ -53,7 +54,18 @@ public class RootLayoutController {
 
     // Set extension filter (only allow images)
     FileChooser.ExtensionFilter imageFilter =
-        new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png");
+        new FileChooser.ExtensionFilter(
+            "Image Files",
+            "*.jpg",
+            "*.png",
+            "*.jpeg",
+            "*.gif",
+            "*.bmp",
+            "*.JPG",
+            "*.PNG",
+            "*.JPEG",
+            "*.GIF",
+            "*.BMP");
     fileChooser.getExtensionFilters().add(imageFilter);
 
     // Show open file dialog
@@ -299,8 +311,9 @@ public class RootLayoutController {
           root.getChildren().add(getNodesForDirectory(f));
         } else {
           // Only add image files
+          final String[] validExtensions = {"jpg", "png", "jpeg", "gif", "bmp"};
           String ext = f.getName().substring(f.getName().lastIndexOf('.') + 1);
-          if (ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("png")) {
+          if (Arrays.asList(validExtensions).indexOf(ext.toLowerCase()) != -1) {
             // Populate the independent tag list
             main.getTagManager().addIndependentTag(f);
             // Add the file to the tree
