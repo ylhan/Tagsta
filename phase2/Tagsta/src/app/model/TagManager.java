@@ -49,8 +49,10 @@ public class TagManager {
     fileName = fileName.substring(0, fileName.lastIndexOf("."));
     ObservableList<String> tagList;
     tagList = ImageManager.parseTags(fileName);
+
     for(String tag: tagList) {
-      this.addIndependentTag(tag);
+      if(!this.listOfTags.contains(tag))
+        this.addIndependentTag(tag);
     }
   }
 
