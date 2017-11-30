@@ -102,6 +102,9 @@ public class TagViewController {
       addTagTextField.clear();
       // Update the directory and file view and save the tags
       directoryViewController.updateFileName(oldFile, imageManager.getFile());
+      // Update the independent tag list
+      main.getTagManager().addIndependentTag(imageManager.getFile());
+      setIndependentTagView(main.getTagManager().getTagsList());
     }
   }
 

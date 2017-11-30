@@ -163,6 +163,7 @@ public class ImageOverviewController {
    */
   public void updateDirectoryView(TreeItem<File> item) {
     directoryViewController.updateDirectoryView(item);
+    tagViewController.setIndependentTagView(main.getTagManager().getTagsList());
   }
 
   /**
