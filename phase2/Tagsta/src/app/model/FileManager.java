@@ -23,6 +23,9 @@ public class FileManager {
 
   private static FileHandler logHandler;
 
+  /**
+   * Creates a log handler that writes a log to a text file
+   */
   public static void createLogHandler(){
     try{
       FileManager.logHandler = new FileHandler("log.txt");
@@ -35,10 +38,17 @@ public class FileManager {
     }
   }
 
+  /**
+   * Returns the FileManager's logHandler
+   * @return the logHandler
+   */
   public static FileHandler getLogHandler() {
     return logHandler;
   }
 
+  /**
+   * Closes the log handler
+   */
   public static void closeLogHandler(){
     FileManager.logHandler.close();
   }
