@@ -22,7 +22,7 @@ public class ImageManager implements Serializable {
   private String name;
   private Path imagePath;
 
-  ImageManager(Path path) {
+  public ImageManager(Path path) {
     //Gets the current number of ImageManagers in order to create the correct serializable file
     this.fileNumber = FileManager.getNumberOfImageManagers() + 1;
     //Initializes instance variables
