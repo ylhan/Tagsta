@@ -175,7 +175,7 @@ public class TagViewController {
       // Load directory view from fxml file.
       FXMLLoader loader = new FXMLLoader();
       loader.setLocation(getClass().getResource("/app/view/IndependentTagView.fxml"));
-      ListView lv = loader.load();
+      BorderPane lv = loader.load();
 
       // Make the directory view component anchor to the size of the pane
       AnchorPane.setBottomAnchor(lv, 0.0);
