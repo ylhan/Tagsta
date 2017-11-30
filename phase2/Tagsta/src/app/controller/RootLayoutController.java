@@ -119,7 +119,7 @@ public class RootLayoutController {
    *
    * @param root the root tree item that holds the root folder
    */
-  void openSelectedFolder(TreeItem<File> root) {
+  private void openSelectedFolder(TreeItem<File> root) {
     root.setExpanded(true);
     main.updateDirectoryView(root);
   }
@@ -147,31 +147,26 @@ public class RootLayoutController {
   /** Handle show log menu item */
   @FXML
   private void handleShowLog() {
-    // Get the currently opened image's manager
-    ImageManager im = main.getImageOverviewController().getImageManager();
-    // Make sure there is an image
-    if (im != null) {
-      try {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/app/view/LogView.fxml"));
-        BorderPane showLog = loader.load();
+    try {
+      FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(getClass().getResource("/app/view/LogView.fxml"));
+      BorderPane showLog = loader.load();
 
-        // Create the new window and show it
-        Stage logWindow = new Stage();
-        logWindow.setTitle("Log for " + im.getFile().getName());
-        logWindow.setScene(new Scene(showLog, 800, 600));
-        logWindow.getIcons().add(Tagsta.getIcon());
-        // Set the focus on this stage
-        logWindow.initOwner(main.getPrimaryStage());
-        logWindow.initModality(Modality.WINDOW_MODAL);
+      // Create the new window and show it
+      Stage logWindow = new Stage();
+      logWindow.setTitle("Program Log");
+      logWindow.setScene(new Scene(showLog, 800, 600));
+      logWindow.getIcons().add(Tagsta.getIcon());
+      // Set the focus on this stage
+      logWindow.initOwner(main.getPrimaryStage());
+      logWindow.initModality(Modality.WINDOW_MODAL);
 
-        logWindow.show();
-        // Add the logs to be displayed
-        LogViewController lvc = loader.getController();
-        lvc.setLog(im.getLog());
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      logWindow.show();
+      // Add the logs to be displayed
+      LogViewController lvc = loader.getController();
+      lvc.setLog(FileManager.getLog());
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
@@ -214,11 +209,10 @@ public class RootLayoutController {
   }
 
   /**
-   * By default (i.e. start of the program) there is no image displayed so the show log menu item,
-   * and the show image folder are disabled. This method will enable the item.
+   * By default (i.e. start of the program) there is no image displayed so show image folder are
+   * disabled. This method will enable the item.
    */
   void enableMenuItems() {
-    showLog.setDisable(false);
     showImageFolder.setDisable(false);
   }
 
@@ -265,7 +259,7 @@ public class RootLayoutController {
       alert.setContentText("Do you want to load the last session?");
 
       Optional<ButtonType> result = alert.showAndWait();
-      if (result.get() == ButtonType.OK) {
+      if (result.isPresent() && result.get() == ButtonType.OK) {
         loadLastSession.setSelected(true);
         String lastImagePath = main.getTagManager().getConfigOption("LAST_IMAGE_PATH");
         String lastDirectoryPath = main.getTagManager().getConfigOption("LAST_DIRECTORY_PATH");
