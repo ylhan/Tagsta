@@ -56,6 +56,13 @@ public class TagManager {
     }
   }
 
+  /***
+   * Clears all tags from the independent tag list.
+   */
+  public void clearIndependentTagList() {
+    listOfTags = new ArrayList<String>();
+  }
+
   /**
    * Adds a tag to the independent tags list, without repeating tags in the independent tags list
    * @param tag The file name with tags to add
