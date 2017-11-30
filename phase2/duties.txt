@@ -2,10 +2,11 @@ George Ly: Worked on the Model portion of the application. Main contributor of I
 planning of interaction of model & initial design of UI.
 
 Amritpal Aujla: 
-- Proposed and contributed to planning initial model plan and UML diagrams, ways to use MVC, serialization, config, and helped design UI. 
-- Main contributor to TagManager.java (structure of model, independent tags list). 
-- Main contributor to FileManager.java (all methods, serialization, config, opening folders in file explorer).
-- Partial contributor to ImageManager.java (readObject, writeObject, and logging)./
+- Proposed and contributed to planning initial model plan and UML diagrams, use of MVC and SOLID principles, serialization, config, and helped design UI. 
+- Main contributor to TagManager.java (all methods, structure of model, independent tags list, logging). 
+- Main contributor to FileManager.java (all methods, serialization, config, logging, opening folders in file explorer).
+- Partial contributor to ImageManager.java (readObject, writeObject, and logging).
+- Updated help.txt for phase2 and added additional info for running the program.
 
 Yilun (Allen) Han: Added support for more image formats, changed show log to display the log for the whole program, refactored and modified the view
 and controllers to use MVC and adhere to SOLID principles, added search feature, added load previous session feature, assisted with independent tag (drag and drop tags),

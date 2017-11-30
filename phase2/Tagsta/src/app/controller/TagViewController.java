@@ -113,7 +113,8 @@ public class TagViewController {
   }
 
   /**
-   * Add all tags in this list of tags to the tag view and the image
+   * Add all tags in this list of tags to the tag view and the image. This allows us to add multiple
+   * tags to the image.
    *
    * @param tags the list of tags to add
    */
@@ -145,7 +146,9 @@ public class TagViewController {
     directoryViewController.updateFileName(oldFile, imageManager.getFile());
   }
 
-  /** Enables the add tag, revert name, and text field (disabled by default) */
+  /**
+   * Enables the add tag, revert name, and text field (disabled by default when no image is loaded)
+   */
   void enableControls() {
     // Enable all controls
     addTag.setDisable(false);
@@ -190,37 +193,39 @@ public class TagViewController {
   @FXML
   private void loadIndependentTagView() {
     try {
-      // Load directory view from fxml file.
+      // Load IndependentTagView from fxml file.
       FXMLLoader loader = new FXMLLoader();
       loader.setLocation(getClass().getResource("/app/view/IndependentTagView.fxml"));
       BorderPane lv = loader.load();
 
-      // Make the directory view component anchor to the size of the pane
+      // Make the IndependentTagView component anchor to the size of the pane
       AnchorPane.setBottomAnchor(lv, 5.0);
       AnchorPane.setTopAnchor(lv, 10.0);
       AnchorPane.setRightAnchor(lv, 10.0);
       AnchorPane.setLeftAnchor(lv, 10.0);
 
-      // Attach the directory view to the overview
+      // Attach the independent tag view to the tag view
       independentTagAnchor.getChildren().add(lv);
 
       // Load the controller
       independentTagViewController = loader.getController();
 
-      // Set TagViewController access in IndependentTagViewController
+      // Give IndependentTagViewController access to the TagView to update it when the user tries to
+      // add a tag
       independentTagViewController.setTagViewController(this);
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  /** Reverts name of ImageManager and updates TagView */
+  /** Reverts name of image and updates TagView */
   void revert(String oldName) {
     File oldFile = imageManager.getFile();
     imageManager.revert(oldName);
     newTagView(imageManager);
     // Updates the directory and file view
     directoryViewController.updateFileName(oldFile, imageManager.getFile());
+    // Close the window since an item has been selected
     revertWindow.close();
   }
 
@@ -239,7 +244,7 @@ public class TagViewController {
    *
    * @param independentTagList the list of independent tags
    */
-  public void setIndependentTagView(ObservableList<String> independentTagList) {
+  void setIndependentTagView(ObservableList<String> independentTagList) {
     // Load the independent tag list
     independentTagViewController.setIndependentTagList(independentTagList);
   }
@@ -253,6 +258,11 @@ public class TagViewController {
     this.directoryViewController = dvc;
   }
 
+  /**
+   * Initializes this controller. This method will load the list of independent tags and define the
+   * appropriate methods necessary to enable dragging and dropping between the tag list and the tag
+   * view.
+   */
   @FXML
   private void initialize() {
     loadIndependentTagView();
@@ -282,7 +292,8 @@ public class TagViewController {
     tagView.setOnDragOver(
         (DragEvent event) -> {
           // Make sure the source of the drag isn't this tagView, there are tags to move, and that
-          // the source of the event is not the directory view and there is an opened image to add tags to
+          // the source of the event is not the directory view and there is an opened image to add
+          // tags to
           if (!(event.getGestureSource() instanceof TreeCell)
               && event.getGestureSource() != tagView
               && event.getDragboard().hasFiles()
@@ -293,6 +304,7 @@ public class TagViewController {
         });
   }
 
+  /** @return the current image manager */
   ImageManager getImageManager() {
     return this.imageManager;
   }

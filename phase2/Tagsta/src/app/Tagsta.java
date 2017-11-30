@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 
-/** An Image Tagging application */
+/** An Image tagging application */
 public class Tagsta extends Application {
 
   private Stage primaryStage;
@@ -37,6 +37,11 @@ public class Tagsta extends Application {
   private static final Image ICON =
       new Image(Tagsta.class.getResourceAsStream("/resources/icon.png"));
 
+  /**
+   * Called when the program is started
+   * @param primaryStage the primary stage to display everything on
+   * @throws Exception exception thrown when an error occurs when making the UI
+   */
   @Override
   public void start(Stage primaryStage) throws Exception {
     // This will manage all the tags for each image
@@ -52,22 +57,22 @@ public class Tagsta extends Application {
     primaryStage.setMinWidth(900);
     primaryStage.setMinHeight(650);
     primaryStage.show();
-    // Initializes the loadMenuBar bar of the application
+    // Initializes the menu bar of the application
     loadMenuBar();
     // Initializes and adds the image view to the root UI
     loadImageOverview();
     primaryStage.setOnCloseRequest(t -> FileManager.closeLogHandler());
   }
 
-  /** Initializes the root layout (border pane, and loadMenuBar bar) */
+  /** Loads the menu and adds it to the rootLayout*/
   private void loadMenuBar() {
     try {
-      // Load root layout from fxml file.
+      // Load menu bar from fxml file.
       FXMLLoader loader = new FXMLLoader();
       loader.setLocation(getClass().getResource("view/Menu.fxml"));
       menuBar = loader.load();
       rootLayout.setTop(menuBar);
-      // Initialize the root controller and give it a reference to this app
+      // Initialize the menu controller and give it a reference to this
       menuController = loader.getController();
       menuController.setMainApp(this);
     } catch (IOException e) {
@@ -117,10 +122,6 @@ public class Tagsta extends Application {
     tagManager.setConfigOption("THEME", "light");
   }
 
-  public static void main(String[] args) {
-    launch(args);
-  }
-
   /** @return the stage for this application */
   public Stage getPrimaryStage() {
     return primaryStage;
@@ -163,7 +164,7 @@ public class Tagsta extends Application {
     return imageOverviewController;
   }
 
-  /** @return the root layout controller for this application */
+  /** @return the menu controller for this application */
   public MenuController getMenuController() {
     return menuController;
   }
@@ -171,5 +172,13 @@ public class Tagsta extends Application {
   /** @return this program's icon */
   public static Image getIcon() {
     return ICON;
+  }
+
+  /**
+   * Launches the program
+   * @param args command line arguments if the program is run from command line
+   */
+  public static void main(String[] args) {
+    launch(args);
   }
 }

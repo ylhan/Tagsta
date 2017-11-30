@@ -20,14 +20,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 
-/** Controller for the root element of the UI (menu bar and border pane) */
+/** Controller for the menu bar of this application */
 public class MenuController {
 
-  // Reference to the main application
   private Tagsta main;
-
   private Stage searchWindow;
-
   private final ImageView FOLDER_ICON = new ImageView(new Image("/resources/folderIcon.png"));
   private final ImageView PICTURE_ICON = new ImageView(new Image("/resources/pictureIcon.png"));
   private final ImageView SEARCH_ICON = new ImageView(new Image("/resources/searchIcon.png"));
@@ -172,7 +169,7 @@ public class MenuController {
     }
   }
 
-  /** Handle the show search menu item */
+  /** Handle the show search menu item by launching the search window*/
   @FXML
   private void handleShowSearch() {
     try {
