@@ -446,13 +446,18 @@
  *                                                                             *
  ******************************************************************************/
 .list-view:focused .list-cell:filled:focused:selected {
-	-fx-background-color: -swatch-light-grey;
-	-fx-text-fill: -swatch-500;
+	-fx-background-color: -swatch-500;
+	-fx-text-fill: white;
 }
 
 .list-view:hover .list-cell:hover {
 	-fx-background-color: -swatch-light-grey;
 	-fx-text-fill: -fx-text-base-color;
+}
+
+.list-view:focused .list-cell:selected:hover {
+    -fx-background-color: -swatch-400;
+    -fx-text-fill: white;
 }
 
 .list-cell {
