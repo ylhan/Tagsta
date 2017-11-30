@@ -24,7 +24,7 @@
       <HBox alignment="CENTER" prefHeight="62.0" prefWidth="781.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <Button graphicTextGap="2.0" mnemonicParsing="false" onAction="#addTag" prefHeight="40.0" prefWidth="55.0" text="+" />
-            <TextField fx:id="tagListTextField" prefHeight="42.0" prefWidth="185.0" />
+            <TextField fx:id="tagListTextField" onKeyPressed="#handleAddTagKeyPress" prefHeight="42.0" prefWidth="185.0" />
          </children>
       </HBox>
    </bottom>
