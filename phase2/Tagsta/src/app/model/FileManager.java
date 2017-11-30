@@ -39,6 +39,10 @@ public class FileManager {
     return logHandler;
   }
 
+  public static void closeLogHandler(){
+    FileManager.logHandler.close();
+  }
+
   /**
    * Finds and returns the configuration file from the working directory
    *
