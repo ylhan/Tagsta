@@ -13,3 +13,4 @@ Tips for running program:
 - The 'Load Last Session' setting gives the option of loading the last image and directory open before the program is closed at startup
 - Tags from the independent tags list (left box below image) can be added to the image by dragging them to the right where the image specific tags are, and multiple tags can be selected by using Shift and Ctrl as usual
 - Tags can be removed from the independent tags list via a right click menu from anywhere in the independent tags list box
+- Double clicking on the log entries copies them
