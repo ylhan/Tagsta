@@ -7,16 +7,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.input.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Controller for the tag view at the bottom right of the overview */
 public class TagViewController {
@@ -109,6 +112,21 @@ public class TagViewController {
   }
 
   /**
+   * Add all tags in this list of tags to the tag view and the image
+   * @param tags the list of tags to add
+   */
+  private void addTags(List<String> tags) {
+    File oldFile = imageManager.getFile();
+    // Add all tags to the image manager and reload the tags in the tag view
+    for (String tag : tags) {
+      imageManager.addTag(tag);
+    }
+    newTagView(imageManager);
+    // Update the directory and file view and save the tags
+    directoryViewController.updateFileName(oldFile, imageManager.getFile());
+  }
+
+  /**
    * Removes a tag from the tag view
    *
    * @param tag the tag to be removed
@@ -166,9 +184,7 @@ public class TagViewController {
     }
   }
 
-  /**
-   * Loads the IndependentTagView into the tag view
-   */
+  /** Loads the IndependentTagView into the tag view */
   @FXML
   private void loadIndependentTagView() {
     try {
@@ -187,7 +203,7 @@ public class TagViewController {
       independentTagAnchor.getChildren().add(lv);
 
       // Load the controller
-       independentTagViewController = loader.getController();
+      independentTagViewController = loader.getController();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -215,6 +231,7 @@ public class TagViewController {
 
   /**
    * Loads the independent tags list
+   *
    * @param independentTagList the list of independent tags
    */
   public void setIndependentTagView(ObservableList<String> independentTagList) {
@@ -232,8 +249,38 @@ public class TagViewController {
   }
 
   @FXML
-  private void initialize(){
+  private void initialize() {
     loadIndependentTagView();
-  }
+    // Define the action to take when tags are dropped onto the tag view
+    tagView.setOnDragDropped(
+        (DragEvent event) -> {
+          Dragboard db = event.getDragboard();
+          boolean success = false;
+          // Make sure there is something to drop
+          if (db.hasFiles()) {
+            // Get the tags to drop
+            List<File> tags = db.getFiles();
+            // Convert these back to tag strings
+            ArrayList<String> tagString = new ArrayList<>();
+            for (File f : tags) {
+              tagString.add(f.getName());
+            }
+            // Add all the tags to the tag view
+            addTags(tagString);
+            success = true;
+          }
+          event.setDropCompleted(success);
+          event.consume();
+        });
 
+    // Define the action to take when something is dragged over the tag view
+    tagView.setOnDragOver(
+        (DragEvent event) -> {
+          // Make sure the source of the drag isn't this tagView and there are tags to move
+          if (event.getGestureSource() != tagView && event.getDragboard().hasFiles()) {
+            event.acceptTransferModes(TransferMode.MOVE);
+          }
+          event.consume();
+        });
+  }
 }
