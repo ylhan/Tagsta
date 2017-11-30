@@ -14,6 +14,8 @@ import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.SimpleFormatter;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * FileManager is responsible for the saving/loading of ImageManagers and the program's
@@ -35,6 +37,22 @@ public class FileManager {
     catch (IOException ex){
       ExceptionDialogPopup.createExceptionPopup("The log could not be made",
               "Changes to images" + "will not be logged");
+    }
+  }
+
+  /**
+   * Returns the log as an observable list of strings from the log text file, and null if the file
+   * cannot be found
+   * @return The log, or null if its not found
+   */
+  public static ObservableList<String> getLog(){
+    try{
+      return FXCollections.observableArrayList(Files.readAllLines(Paths.get("log.txt")));
+    }
+    catch(IOException ex){
+      ExceptionDialogPopup.createExceptionPopup("The log could not be loaded",
+      "The log file could not be found");
+      return null;
     }
   }
 
