@@ -21,12 +21,8 @@ public class ImageManager implements Serializable {
   private static final long serialVersionUID = 123456789;
   private String name;
   private Path imagePath;
-  private ObservableList<String> log;
 
   ImageManager(Path path) {
-    //Creates the current date & time for purposes of creating the history
-    LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
-    String current = converter.toString(LocalDateTime.now());
     //Gets the current number of ImageManagers in order to create the correct serializable file
     this.fileNumber = FileManager.getNumberOfImageManagers() + 1;
     //Initializes instance variables
@@ -37,7 +33,7 @@ public class ImageManager implements Serializable {
     int periodIndex = name.indexOf(".");
     name = name.substring(0, periodIndex);
     //Stores the current name in the log of naming history
-    previousNames.add(current + ", " + name);
+    previousNames.add(getDateAndTime() + ", " + name);
     //Parses the tags out of the current name in order to place all the tags into the current tag list
     tags = parseTags(name);
     TagManager.getLogger().log(Level.INFO, "Started the logging of " + name + ".");
@@ -49,9 +45,6 @@ public class ImageManager implements Serializable {
    * @param revertedName The String to which the name of the file will be changed to.
    */
   public void revert(String revertedName) {
-    //Creates the current date & time for purposes of creating the history
-    LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
-    String current = converter.toString(LocalDateTime.now());
     //Parses out the tags from the name to be reverted to
     tags = parseTags(revertedName);
     //Parses out the date from the formatting of the name as when this method is called the name is returned with the date formatting
@@ -64,7 +57,7 @@ public class ImageManager implements Serializable {
         .log(Level.INFO, "Reverted from the name: " + parsedRevertedName + " to " + name);
     name = parsedRevertedName;
     //Stores name and the date for history storing purposes
-    String nameAndDate = current + ", " + name;
+    String nameAndDate = getDateAndTime() + ", " + name;
     previousNames.add(nameAndDate);
     FileManager.storeImageManager(this);
   }
@@ -98,8 +91,6 @@ public class ImageManager implements Serializable {
       }
       //Actions to take if the tag is determined to be added
       if (added) {
-        LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
-        String current = converter.toString(LocalDateTime.now());
         tags.add(tag);
         String newName = name + " @" + tag;
         Path newPath = getTotalPath(newName);
@@ -109,7 +100,7 @@ public class ImageManager implements Serializable {
             Level.INFO,
             "Changed name from: " + name + " to: " + name + " @" + tag + ". By adding tag: " + tag);
         name = newName;
-        String nameAndDate = current + ", " + name;
+        String nameAndDate = getDateAndTime() + ", " + name;
         previousNames.add(nameAndDate);
       }
     }
@@ -124,10 +115,10 @@ public class ImageManager implements Serializable {
    * @param tag String to be removed from the file name of the image.
    */
   public void removeTag(String tag) {
-    LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
-    String current = converter.toString(LocalDateTime.now());
     String tagName = " @" + tag;
+    //Stores the current name of the ImageManager for logging purposes
     String previousName = name;
+    //Parses out the tag from the name of the ImageManager
     int index = name.indexOf(tagName);
     if (index + tagName.length() + 1 < name.length()) {
       name = name.substring(0, index) + name.substring(index + tagName.length());
@@ -142,7 +133,7 @@ public class ImageManager implements Serializable {
     FileManager.moveImage(imagePath, Paths.get(temp));
     imagePath = Paths.get(temp);
     tags.remove(tag);
-    String nameAndDate = current + ", " + name;
+    String nameAndDate = getDateAndTime() + ", " + name;
     previousNames.add(nameAndDate);
     FileManager.storeImageManager(this);
   }
@@ -302,7 +293,13 @@ public class ImageManager implements Serializable {
 
   }
 
-  public ObservableList<String> getLog() {
-    return log;
+  /***
+   * Helper method used to get the current Date and Time.
+   * @return The string format of the current date and time.
+   */
+  private String getDateAndTime() {
+    LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
+    return converter.toString(LocalDateTime.now());
   }
+
 }
