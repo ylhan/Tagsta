@@ -77,7 +77,7 @@ public class ImageManager implements Serializable {
     //Doesn't do anything if the tag only contained spaces
     if (!tempTag.isEmpty()) {
       //Only adds the tag if the tag contains only non special characters
-      added = TagManager.isValidTag(new ArrayList<String>(this.tags), tempTag);
+      added = TagManager.isValidTag(new ArrayList<>(this.tags), tempTag);
       //Actions to take if the tag is determined to be added
       if (added) {
         tags.add(tag);
