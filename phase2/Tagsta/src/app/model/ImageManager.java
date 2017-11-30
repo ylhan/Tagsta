@@ -17,40 +17,30 @@ public class ImageManager implements Serializable {
 
   private ObservableList<String> tags;
   private ObservableList<String> previousNames;
-  private ObservableList<String> log;
   private long fileNumber;
   private static final long serialVersionUID = 123456789;
   private String name;
   private Path imagePath;
+  private ObservableList<String> log;
 
   ImageManager(Path path) {
+    //Creates the current date & time for purposes of creating the history
+    LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
+    String current = converter.toString(LocalDateTime.now());
+    //Gets the current number of ImageManagers in order to create the correct serializable file
     this.fileNumber = FileManager.getNumberOfImageManagers() + 1;
+    //Initializes instance variables
     imagePath = path;
     previousNames = FXCollections.observableArrayList(new ArrayList<String>());
     name = imagePath.getFileName().toString();
+    //Searches for the last index of the '.' character in order to remove the file extension from the name
     int periodIndex = name.indexOf(".");
     name = name.substring(0, periodIndex);
-    LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
-    String current = converter.toString(LocalDateTime.now());
+    //Stores the current name in the log of naming history
     previousNames.add(current + ", " + name);
-    this.log = FXCollections.observableArrayList(new ArrayList<>());
+    //Parses the tags out of the current name in order to place all the tags into the current tag list
     tags = parseTags(name);
-    if (!tags.isEmpty()) {
-      String logMessage = "Detected the following tags: ";
-      StringBuilder builder = new StringBuilder(logMessage);
-      boolean firstTime = true;
-      for (String s : tags) {
-        if (!firstTime) {
-          builder.append(", ");
-        }
-        builder.append(s);
-        if (firstTime) {
-          firstTime = false;
-        }
-      }
-      TagManager.getLogger().info("Started the logging of " + name + ".");
-      this.log.add(builder.toString());
-    }
+    TagManager.getLogger().log(Level.INFO, "Started the logging of " + name + ".");
   }
 
   /**
@@ -59,21 +49,22 @@ public class ImageManager implements Serializable {
    * @param revertedName The String to which the name of the file will be changed to.
    */
   public void revert(String revertedName) {
-    tags = parseTags(revertedName);
-    String parsedRevertedName = revertedName.substring(revertedName.indexOf("M") + 3);
-    String temp = imagePath.toString();
-    int index = temp.lastIndexOf(File.separator);
-    int periodIndex = temp.indexOf(".");
-    temp = temp.substring(0, index + 1) + parsedRevertedName + temp.substring(periodIndex);
-    FileManager.moveImage(imagePath, Paths.get(temp));
-    imagePath = Paths.get(temp);
+    //Creates the current date & time for purposes of creating the history
     LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
     String current = converter.toString(LocalDateTime.now());
-    TagManager.getLogger().info("Reverted from the name: " + parsedRevertedName + " to " + name);
-    this.log.add("Reverted to name: " + parsedRevertedName + ", from: " + name + ", at " + current);
+    //Parses out the tags from the name to be reverted to
+    tags = parseTags(revertedName);
+    //Parses out the date from the formatting of the name as when this method is called the name is returned with the date formatting
+    String parsedRevertedName = revertedName.substring(revertedName.indexOf("M") + 3);
+    //Retrieves the total file path and stores it to temp in order to move the file
+    Path newPath = getTotalPath(parsedRevertedName);
+    FileManager.moveImage(imagePath, newPath);
+    imagePath = newPath;
+    TagManager.getLogger()
+        .log(Level.INFO, "Reverted from the name: " + parsedRevertedName + " to " + name);
     name = parsedRevertedName;
+    //Stores name and the date for history storing purposes
     String nameAndDate = current + ", " + name;
-
     previousNames.add(nameAndDate);
     FileManager.storeImageManager(this);
   }
@@ -87,42 +78,38 @@ public class ImageManager implements Serializable {
    */
   public void addTag(String tag) {
     String tempTag = tag;
+    //Trims the tag to remove spaces
     tempTag = tempTag.trim();
+    boolean added;
+    //Doesn't do anything if the tag only contained spaces
     if (!tempTag.isEmpty()) {
-      String invalidChar = "/\\:*?|<>\"@";
-      boolean add = true;
-      for (char c : invalidChar.toCharArray()) {
-        if (tempTag.contains(Character.toString(c))) {
-          add = false;
-          ExceptionDialogPopup.createExceptionPopup("Error adding tag",
-              "TagController cannot contain the following characters: \n / \\ : * ? | < > \" @");
-          break;
-        }
+      //Only adds the tag if the tag contains only non special characters
+      added = tempTag.matches("^[a-zA-Z0-9]*$");
+      if (!added) {
+        ExceptionDialogPopup
+            .createExceptionPopup("Error adding tag", "That tag contains an illegal character");
       }
+      //Checks whether or not the the tag has already been added to the current iteration of tags
       if (tags.contains(tempTag)) {
         ExceptionDialogPopup
-            .createExceptionPopup("Error adding tag", "Image already contains this tag!");
-        add = false;
+            .createExceptionPopup("Error adding tag",
+                "Image already contains this tag!");
+        added = false;
       }
-      if (add) {
-        tags.add(tag);
-        String temp = imagePath.toString();
-        int index = temp.lastIndexOf(File.separator);
-        int extensionIndex = temp.lastIndexOf(".");
-        temp =
-            temp.substring(0, index + name.length() + 1)
-                + " @"
-                + tag
-                + temp.substring(extensionIndex);
-        FileManager.moveImage(imagePath, Paths.get(temp));
-        imagePath = Paths.get(temp);
-        TagManager.getLogger().info("Changed name from: " + name + " to: " + name + " @" + tag + ". By adding tag: " + tag);
-        name = name + " @" + tag;
+      //Actions to take if the tag is determined to be added
+      if (added) {
         LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
         String current = converter.toString(LocalDateTime.now());
+        tags.add(tag);
+        String newName = name + " @" + tag;
+        Path newPath = getTotalPath(newName);
+        FileManager.moveImage(imagePath, newPath);
+        imagePath = newPath;
+        TagManager.getLogger().log(
+            Level.INFO,
+            "Changed name from: " + name + " to: " + name + " @" + tag + ". By adding tag: " + tag);
+        name = newName;
         String nameAndDate = current + ", " + name;
-
-        this.log.add("Added the tag: " + tag + " at " + current);
         previousNames.add(nameAndDate);
       }
     }
@@ -137,6 +124,8 @@ public class ImageManager implements Serializable {
    * @param tag String to be removed from the file name of the image.
    */
   public void removeTag(String tag) {
+    LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
+    String current = converter.toString(LocalDateTime.now());
     String tagName = " @" + tag;
     String previousName = name;
     int index = name.indexOf(tagName);
@@ -145,17 +134,15 @@ public class ImageManager implements Serializable {
     } else {
       name = name.substring(0, index);
     }
-    TagManager.getLogger().info("Changed name from: " + previousName + " to: " + name + ". By removing tag: " + tag);
+    TagManager.getLogger().log(Level.INFO,
+        "Changed name from: " + previousName + " to: " + name + ". By removing tag: " + tag);
     String temp = imagePath.toString();
     index = temp.indexOf(tagName);
     temp = temp.substring(0, index) + temp.substring(index + tagName.length());
     FileManager.moveImage(imagePath, Paths.get(temp));
     imagePath = Paths.get(temp);
     tags.remove(tag);
-    LocalDateTimeStringConverter converter = new LocalDateTimeStringConverter();
-    String current = converter.toString(LocalDateTime.now());
     String nameAndDate = current + ", " + name;
-    this.log.add("Removed the tag: " + tag + " at " + current);
     previousNames.add(nameAndDate);
     FileManager.storeImageManager(this);
   }
@@ -211,9 +198,10 @@ public class ImageManager implements Serializable {
 
   /**
    * Returns the number that this imageManager will have if turned into a file
+   *
    * @return The number of this imageManager
    */
-  long getFileNumber(){
+  long getFileNumber() {
     return this.fileNumber;
   }
 
@@ -238,7 +226,6 @@ public class ImageManager implements Serializable {
     stream.writeObject(new ArrayList<>(this.previousNames));
     stream.writeObject(this.name);
     stream.writeObject(this.imagePath.toString());
-    stream.writeObject(new ArrayList<>(this.log));
   }
 
   /**
@@ -254,7 +241,6 @@ public class ImageManager implements Serializable {
     previousNames = FXCollections.observableArrayList((ArrayList<String>) stream.readObject());
     name = (String) stream.readObject();
     imagePath = Paths.get((String) stream.readObject());
-    log = FXCollections.observableArrayList((ArrayList<String>) stream.readObject());
   }
 
   /**
@@ -291,22 +277,32 @@ public class ImageManager implements Serializable {
     FileManager.storeImageManager(this);
   }
 
-  /***
-   * *Returns the log of changes of this ImageManager.
-   *
-   * @return The log of changes being returned.
-   */
-  public ObservableList<String> getLog() {
-    return log;
-  }
-
   /**
    * Returns the name of this ImageManager
+   *
    * @return the name of this ImageManager
    */
   @Override
-  public String toString(){
+  public String toString() {
     File file = new File(imagePath.toString());
     return file.getName();
+  }
+
+  /***
+   * Helper method used to gather the new file path with the new name of the file.
+   * @param newName The name which is going to replace the current name of the this ImageManager
+   * @return The new path of this ImageManager.
+   */
+  private Path getTotalPath(String newName) {
+    String temp = imagePath.toString();
+    int separatorIndex = temp.lastIndexOf(File.separator);
+    int periodIndex = temp.indexOf(".");
+    temp = temp.substring(0, separatorIndex + 1) + newName + temp.substring(periodIndex);
+    return Paths.get(temp);
+
+  }
+
+  public ObservableList<String> getLog() {
+    return log;
   }
 }
