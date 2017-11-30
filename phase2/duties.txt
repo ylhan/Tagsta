@@ -7,5 +7,8 @@ Amritpal Aujla:
 - Main contributor to FileManager.java (all methods, serialization, config, opening folders in file explorer).
 - Partial contributor to ImageManager.java (readObject, writeObject, and logging)./
 
-Yilun (Allen) Han: Contributed to the planning of the program and the design of the UI. Major contributor to Tagsta, and all view related classes and files (choosing/displaying directory/image, dragging & dropping files, theming, add tag, remove tag, etc). Created design.pdf
+Yilun (Allen) Han: Added support for more image formats, changed show log to display the log for the whole program, refactored and modified the view
+and controllers to use MVC and adhere to SOLID principles, added search feature, added load previous session feature, assisted with independent tag (drag and drop tags),
+loaded/stored more configuration options, made adjustments to the look & feel of the UI, and assisted with JUnit tests. Created updated ui_design.pdf and design.pdf
+
 Samin Khan: Contributed to design of UI and program planning. Handled front end development by programming view related classes. Mainly dealt with how the image is viewed and how tags are entered. Created methods for reverting to old names of image. Loaded icons and contributed programming of the MenuBar and its options. Partial contributor to ImageManager. Assisted with facilitating UI changes to name and tags, and for creating checks for valid tags.
