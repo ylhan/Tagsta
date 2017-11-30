@@ -189,5 +189,6 @@ public class ImageOverviewController {
     // Give the controllers a reference to the main application as well
     tagViewController.setMainApp(main);
     directoryViewController.setTagManager(main.getTagManager());
+    tagViewController.setIndependentTagView(main.getTagManager().getTagsList());
   }
 }

@@ -2,7 +2,6 @@ package app.controller;
 
 import app.Tagsta;
 import app.model.ImageManager;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,19 +9,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TreeItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
 
 /** Controller for the tag view at the bottom right of the overview */
 public class TagViewController {
@@ -30,38 +24,13 @@ public class TagViewController {
   @FXML private Button revertName;
   @FXML private FlowPane tagView;
   @FXML private TextField addTagTextField;
-
-  @FXML private ListView<String> tagListView;
-
+  @FXML private AnchorPane independentTagAnchor;
 
   private Stage revertWindow;
   private Tagsta main;
   private ImageManager imageManager;
   private DirectoryViewController directoryViewController;
-
-  public void updateTagList() {
-    ObservableList<String> uniqueTagList = FXCollections.observableArrayList(
-            new HashSet<>(main.getTagManager().getTagsList()));
-    tagListView.setItems(uniqueTagList.sorted());
-  }
-
-  private void addTagList(String tag) {
-    if (!tagListView.getItems().contains(tag)) {
-      ObservableList<String> tempList = tagListView.getItems();
-      tempList.add(tag);
-      tagListView.setItems(tempList.sorted());
-    }
-  }
-
-  @FXML
-  private void handleTagListClick(MouseEvent event) {
-    if (event.getClickCount() == 2) {
-      String tagItem = tagListView.getSelectionModel().getSelectedItem();
-      tagView.getChildren().add(createTag(tagItem));
-      imageManager.addTag(tagItem);
-      // updateFileName(new TreeItem<>(imageManager.getFile()));
-    }
-  }
+  private IndependentTagViewController independentTagViewController;
 
   /**
    * Loads new tags into the tag view given the image manager of the image
@@ -194,6 +163,33 @@ public class TagViewController {
     }
   }
 
+  /**
+   * Loads the IndependentTagView into the tag view
+   */
+  @FXML
+  private void loadIndependentTagView() {
+    try {
+      // Load directory view from fxml file.
+      FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(getClass().getResource("/app/view/IndependentTagView.fxml"));
+      ListView lv = loader.load();
+
+      // Make the directory view component anchor to the size of the pane
+      AnchorPane.setBottomAnchor(lv, 0.0);
+      AnchorPane.setTopAnchor(lv, 0.0);
+      AnchorPane.setRightAnchor(lv, 0.0);
+      AnchorPane.setLeftAnchor(lv, 0.0);
+
+      // Attach the directory view to the overview
+      independentTagAnchor.getChildren().add(lv);
+
+      // Load the controller
+       independentTagViewController = loader.getController();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
   /** Reverts name of ImageManager and updates TagView */
   void revert(String oldName) {
     File oldFile = imageManager.getFile();
@@ -214,6 +210,15 @@ public class TagViewController {
   }
 
   /**
+   * Loads the independent tags list
+   * @param independentTagList the list of independent tags
+   */
+  public void setIndependentTagView(ObservableList<String> independentTagList) {
+    // Load the independent tag list
+    independentTagViewController.setIndependentTagList(independentTagList);
+  }
+
+  /**
    * Gives this controller a reference to the directory view controller
    *
    * @param dvc the directory view's controller
@@ -221,4 +226,10 @@ public class TagViewController {
   void setDirectoryViewController(DirectoryViewController dvc) {
     this.directoryViewController = dvc;
   }
+
+  @FXML
+  private void initialize(){
+    loadIndependentTagView();
+  }
+
 }
