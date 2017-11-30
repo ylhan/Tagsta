@@ -29,11 +29,16 @@ public class IndependentTagViewController {
   private void addTag() {
     // Get the text from the text-field
     String tag = tagListTextField.getText();
-
-        main.getTagManager().addIndependentTag(tag);
-        setIndependentTagList(main.getTagManager().getTagsList());
- // Clear the text from the text-field
+    main.getTagManager().addIndependentTag(tag);
+    setIndependentTagList(main.getTagManager().getTagsList());
+    // Clear the text from the text-field
     tagListTextField.clear();
+  }
+
+  /** Add a tag to the list by pressing ENTER key */
+  @FXML
+  private void handleAddTagKeyPress(KeyEvent keyPressed) {
+    if (keyPressed.getCode().equals(KeyCode.ENTER)) addTag();
   }
 
   /**
@@ -75,20 +80,6 @@ public class IndependentTagViewController {
     setIndependentTagList(main.getTagManager().getTagsList());
   }
 
-  /** Sets tagList with listOfTags */
-  void setIndependentTagList(ObservableList<String> listOfTags) {
-    this.tagList.setItems(listOfTags.sorted());
-  }
-
-  /**
-   * Gives this controller a reference to the main application
-   *
-   * @param mainApp the main application
-   */
-  void setMainApp(Tagsta mainApp) {
-    this.main = mainApp;
-  }
-
   /** Initializes controller with appropriate settings for ListView tagList */
   @FXML
   private void initialize() {
@@ -107,8 +98,22 @@ public class IndependentTagViewController {
         });
   }
 
+  /** Sets tagList with listOfTags */
+  void setIndependentTagList(ObservableList<String> listOfTags) {
+    this.tagList.setItems(listOfTags.sorted());
+  }
+
   /** Sets access to a tag view controller */
   void setTagViewController(TagViewController tagViewController) {
     this.tagViewController = tagViewController;
+  }
+
+  /**
+   * Gives this controller a reference to the main application
+   *
+   * @param mainApp the main application
+   */
+  void setMainApp(Tagsta mainApp) {
+    this.main = mainApp;
   }
 }
