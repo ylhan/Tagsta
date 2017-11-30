@@ -31,6 +31,6 @@ public class IndependentTagViewController {
   //        }
   //    }
   void setIndependentTagList(ObservableList<String> tagList) {
-    this.tagList.setItems(tagList);
+    this.tagList.setItems(tagList.sorted());
   }
 }
