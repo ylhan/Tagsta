@@ -30,11 +30,13 @@ public class MenuController {
 
   private final ImageView FOLDER_ICON = new ImageView(new Image("/resources/folderIcon.png"));
   private final ImageView PICTURE_ICON = new ImageView(new Image("/resources/pictureIcon.png"));
+  private final ImageView SEARCH_ICON = new ImageView(new Image("/resources/searchIcon.png"));
+
 
   @FXML private MenuItem openFolder;
   @FXML private MenuItem openImage;
+  @FXML private MenuItem search;
   @FXML private RadioMenuItem darkTheme;
-  @FXML private MenuItem showLog;
   @FXML private MenuItem showImageFolder;
   @FXML private RadioMenuItem loadLastSession;
 
@@ -328,13 +330,9 @@ public class MenuController {
   @FXML
   private void initialize() {
     // Set icons for the menu items
-    FOLDER_ICON.setFitHeight(15);
-    FOLDER_ICON.setFitWidth(15);
     openFolder.setGraphic(FOLDER_ICON);
-
-    PICTURE_ICON.setFitHeight(15);
-    PICTURE_ICON.setFitWidth(15);
     openImage.setGraphic(PICTURE_ICON);
+    search.setGraphic(SEARCH_ICON);
   }
 
   /** Exit option in menu bar that will exit the program */

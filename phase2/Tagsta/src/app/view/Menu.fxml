@@ -12,6 +12,7 @@
          <items>
             <MenuItem fx:id="openImage" mnemonicParsing="false" onAction="#handleOpenImage" text="Open Image" />
             <MenuItem fx:id="openFolder" mnemonicParsing="false" onAction="#handleOpenFolder" text="Open Folder" />
+            <MenuItem fx:id="search" mnemonicParsing="false" onAction="#handleShowSearch" text="Search" />
             <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
          </items>
       </Menu>
@@ -19,7 +20,6 @@
          <items>
             <MenuItem fx:id="showLog" mnemonicParsing="false" onAction="#handleShowLog" text="Show Log" />
             <MenuItem fx:id="showImageFolder" disable="true" mnemonicParsing="false" onAction="#handleShowImageFolder" text="Show Image Folder" />
-            <MenuItem mnemonicParsing="false" onAction="#handleShowSearch" text="Show Search" />
          </items>
       </Menu>
       <Menu mnemonicParsing="true" text="_Settings">
