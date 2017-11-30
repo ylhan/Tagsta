@@ -257,9 +257,14 @@ public class RootLayoutController {
       alert.setTitle("Confirm Open Last Session");
       alert.setHeaderText("Open Last Session");
       alert.setContentText("Do you want to load the last session?");
+      // Create yes/no buttons for the popup
+      ButtonType yesButton = new ButtonType("Yes");
+      ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+      alert.getButtonTypes().setAll(yesButton,noButton);
 
+      // Get the result of the button press and load the last session if yes was pressed
       Optional<ButtonType> result = alert.showAndWait();
-      if (result.isPresent() && result.get() == ButtonType.OK) {
+      if (result.isPresent() && result.get() == yesButton) {
         loadLastSession.setSelected(true);
         String lastImagePath = main.getTagManager().getConfigOption("LAST_IMAGE_PATH");
         String lastDirectoryPath = main.getTagManager().getConfigOption("LAST_DIRECTORY_PATH");
