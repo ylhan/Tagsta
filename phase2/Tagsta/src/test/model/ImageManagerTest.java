@@ -1,17 +1,12 @@
 package test.model;
 import app.model.ImageManager;
-import java.net.URI;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class ImageManagerTest {
 
@@ -21,9 +16,12 @@ class ImageManagerTest {
   }
 
   @Test
-  void ImageManagerTagFromNameTest() throws URISyntaxException{
+  void ImageManagerTagFromNameTest() throws URISyntaxException,FileNotFoundException{
     ImageManager test = this.getImageManager();
     assertEquals("arbitrary", test.getTags().get(0));
+    File file = new File("imagemanagers" + File.separator +
+        test.getFileNumber() + ".ser");
+    file.delete();
   }
 
   @Test
@@ -31,6 +29,9 @@ class ImageManagerTest {
     ImageManager test = this.getImageManager();
     assertEquals(1, test.getPrevNames().size());
     assertEquals("pic @arbitrary.png", test.toString());
+    File file = new File("imagemanagers" + File.separator +
+        test.getFileNumber() + ".ser");
+    file.delete();
   }
 
   @Test
@@ -40,6 +41,9 @@ class ImageManagerTest {
     assertEquals(2, test.getPrevNames().size());
     assertEquals("pic @arbitrary @test.png", test.toString());
     test.removeTag("test");
+    File file = new File("imagemanagers" + File.separator +
+        test.getFileNumber() + ".ser");
+    file.delete();
   }
 
   @Test
@@ -49,6 +53,9 @@ class ImageManagerTest {
     assertEquals(2, test.getPrevNames().size());
     assertEquals("pic.png", test.toString());
     test.addTag("arbitrary");
+    File file = new File("imagemanagers" + File.separator +
+        test.getFileNumber() + ".ser");
+    file.delete();
   }
 
   @Test
@@ -58,12 +65,18 @@ class ImageManagerTest {
     test.revert(test.getPrevNames().get(0));
     assertEquals(3, test.getPrevNames().size());
     assertEquals("pic @arbitrary.png", test.toString());
+    File file = new File("imagemanagers" + File.separator +
+        test.getFileNumber() + ".ser");
+    file.delete();
   }
 
   @Test
   void ImageManagerToStringTest() throws URISyntaxException{
     ImageManager test = this.getImageManager();
     assertEquals("pic @arbitrary.png", test.toString());
+    File file = new File("imagemanagers" + File.separator +
+        test.getFileNumber() + ".ser");
+    file.delete();
   }
 
 
