@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
@@ -14,14 +15,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class IndependentTagViewController {
-  @FXML private ListView<String> tagList;
+  @FXML
+  private ListView<String> tagList;
   private Tagsta main;
 
-      private void updateTagList() {
-          ObservableList<String> uniqueTagList = FXCollections.observableArrayList(
-                  new HashSet<>(main.getTagManager().getTagsList()));
-          tagList.setItems(uniqueTagList.sorted());
-      }
+  private void updateTagList() {
+    ObservableList<String> uniqueTagList = FXCollections.observableArrayList(
+            new HashSet<>(main.getTagManager().getTagsList()));
+    tagList.setItems(uniqueTagList.sorted());
+  }
   //
   //    private void addTagList(String tag) {
   //        if (!tagListView.getItems().contains(tag)) {
@@ -42,14 +44,14 @@ public class IndependentTagViewController {
 //          }
 //      }
 
-      @FXML
-      private void handleDelete() {
-        ObservableList<String> tags = tagList.getSelectionModel().getSelectedItems();
-        for (String tag: tags) {
-          main.getTagManager().deleteIndependentTag(tag);
-          updateTagList();
-        }
-      }
+  @FXML
+  private void handleDelete() {
+    System.out.println(tagList.getSelectionModel().getSelectedItems());
+    ObservableList<String> tags = tagList.getSelectionModel().getSelectedItems();
+    for (String tag : tags)
+      main.getTagManager().deleteIndependentTag(tag);
+    updateTagList();
+  }
 
   void setIndependentTagList(ObservableList<String> tagList) {
     this.tagList.setItems(tagList.sorted());
@@ -62,4 +64,10 @@ public class IndependentTagViewController {
    */
   void setMainApp(Tagsta mainApp) {
     this.main = mainApp;
-  }}
+  }
+
+  @FXML
+  private void initialize() {
+    tagList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+  }
+}
