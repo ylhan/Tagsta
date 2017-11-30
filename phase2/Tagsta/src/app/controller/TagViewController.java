@@ -210,6 +210,7 @@ public class TagViewController {
    */
   void setMainApp(Tagsta mainApp) {
     this.main = mainApp;
+    independentTagViewController.setMainApp(mainApp);
   }
 
   /**
