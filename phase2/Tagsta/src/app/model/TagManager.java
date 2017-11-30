@@ -35,6 +35,7 @@ public class TagManager {
     this.listOfImageManagers = FileManager.loadImageManagers();
     this.listOfTags = FileManager.loadTagsList();
     FileManager.createLogHandler();
+    logger.setUseParentHandlers(false);
     logger.addHandler(FileManager.getLogHandler());
     logger.setLevel(Level.INFO);
   }
