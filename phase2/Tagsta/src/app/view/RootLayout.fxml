@@ -20,7 +20,7 @@
                 </Menu>
                 <Menu mnemonicParsing="true" text="_View">
                     <items>
-                        <MenuItem fx:id="showLog" disable="true" mnemonicParsing="false" onAction="#handleShowLog" text="Show Log" />
+                        <MenuItem fx:id="showLog" mnemonicParsing="false" onAction="#handleShowLog" text="Show Log" />
                         <MenuItem fx:id="showImageFolder" disable="true" mnemonicParsing="false" onAction="#handleShowImageFolder" text="Show Image Folder" />
                         <MenuItem mnemonicParsing="false" onAction="#handleShowSearch" text="Show Search" />
                     </items>
