@@ -11,7 +11,7 @@ import javafx.scene.input.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Controller for the independent tag view list  */
+/** Controller for the independent tag view list */
 public class IndependentTagViewController {
   // Reference to list of tags
   @FXML private ListView<String> tagList;
@@ -23,11 +23,6 @@ public class IndependentTagViewController {
 
   // Reference to tag view controller of currently image
   private TagViewController tagViewController;
-
-  /** Updates items of tagList to list of tags from TagManager */
-  private void updateTagList() {
-    tagList.setItems(main.getTagManager().getTagsList());
-  }
 
   /** Add a tag to the list */
   @FXML
@@ -52,7 +47,7 @@ public class IndependentTagViewController {
       // If tag is valid, update list of tags
       if (added) {
         main.getTagManager().addIndependentTag(tag);
-        updateTagList();
+        setIndependentTagList(main.getTagManager().getTagsList());
       }
     }
     // Clear the text from the text-field
@@ -63,7 +58,7 @@ public class IndependentTagViewController {
    * Handles clicking of tagsList items and attempts to add a tag if double-clicked
    *
    * @param event the mouse click
-   * */
+   */
   @FXML
   private void handleClick(MouseEvent event) {
     if (event.getButton().equals(MouseButton.PRIMARY))
@@ -75,10 +70,11 @@ public class IndependentTagViewController {
   }
 
   /**
-   * Handles key presses when tagsList items are selected and attempts to add one or more tags if ENTER is pressed
+   * Handles key presses when tagsList items are selected and attempts to add one or more tags if
+   * ENTER is pressed
    *
    * @param keyPressed the key pressed on the keyboard
-   * */
+   */
   @FXML
   private void handleKeyEnter(KeyEvent keyPressed) {
     if (keyPressed.getCode().equals(KeyCode.ENTER)) {
@@ -94,7 +90,7 @@ public class IndependentTagViewController {
   private void handleDelete() {
     ObservableList<String> tags = tagList.getSelectionModel().getSelectedItems();
     for (String tag : tags) main.getTagManager().deleteIndependentTag(tag);
-    updateTagList();
+    setIndependentTagList(main.getTagManager().getTagsList());
   }
 
   /** Sets tagList with listOfTags */

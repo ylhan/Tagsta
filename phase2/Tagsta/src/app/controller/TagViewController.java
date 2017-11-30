@@ -196,10 +196,10 @@ public class TagViewController {
       BorderPane lv = loader.load();
 
       // Make the directory view component anchor to the size of the pane
-      AnchorPane.setBottomAnchor(lv, 0.0);
-      AnchorPane.setTopAnchor(lv, 0.0);
-      AnchorPane.setRightAnchor(lv, 0.0);
-      AnchorPane.setLeftAnchor(lv, 0.0);
+      AnchorPane.setBottomAnchor(lv, 5.0);
+      AnchorPane.setTopAnchor(lv, 10.0);
+      AnchorPane.setRightAnchor(lv, 10.0);
+      AnchorPane.setLeftAnchor(lv, 10.0);
 
       // Attach the directory view to the overview
       independentTagAnchor.getChildren().add(lv);
