@@ -8,6 +8,9 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** Controller for the independent tag view list  */
 public class IndependentTagViewController {
   // Reference to list of tags
@@ -17,6 +20,9 @@ public class IndependentTagViewController {
 
   // Reference to main application
   private Tagsta main;
+
+  // Reference to tag view controller of currently image
+  private TagViewController tagViewController;
 
   /** Updates items of tagList to list of tags from TagManager */
   private void updateTagList() {
@@ -53,27 +59,47 @@ public class IndependentTagViewController {
     tagListTextField.clear();
   }
 
-  //      @FXML
-  //      private void handleClick(MouseEvent event) {
-  //        if (event.getButton().equals(MouseButton.SECONDARY))
-  //          if (event.getClickCount() == 2) {
-  //              String tagItem = tagListView.getSelectionModel().getSelectedItem();
-  //              tagView.getChildren().add(createTag(tagItem));
-  //              imageManager.addTag(tagItem);
-  //              // updateFileName(new TreeItem<>(imageManager.getFile()));
-  //          }
-  //      }
+  /**
+   * Handles clicking of tagsList items and attempts to add a tag if double-clicked
+   *
+   * @param event the mouse click
+   * */
+  @FXML
+  private void handleClick(MouseEvent event) {
+    if (event.getButton().equals(MouseButton.PRIMARY))
+      if (event.getClickCount() == 2) {
+        List<String> tagItem = new ArrayList<>();
+        tagItem.add(tagList.getSelectionModel().getSelectedItem());
+        this.tagViewController.addTags(tagItem);
+      }
+  }
 
+  /**
+   * Handles key presses when tagsList items are selected and attempts to add one or more tags if ENTER is pressed
+   *
+   * @param keyPressed the key pressed on the keyboard
+   * */
+  @FXML
+  private void handleKeyEnter(KeyEvent keyPressed) {
+    if (keyPressed.getCode().equals(KeyCode.ENTER)) {
+      List<String> tagItem = new ArrayList<>();
+      tagItem.addAll(tagList.getSelectionModel().getSelectedItems());
+      this.tagViewController.addTags(tagItem);
+      tagList.getSelectionModel().clearSelection();
+    }
+  }
+
+  /** Deletes tags from tagsList */
   @FXML
   private void handleDelete() {
-    System.out.println(tagList.getSelectionModel().getSelectedItems());
     ObservableList<String> tags = tagList.getSelectionModel().getSelectedItems();
     for (String tag : tags) main.getTagManager().deleteIndependentTag(tag);
     updateTagList();
   }
 
-  void setIndependentTagList(ObservableList<String> tagList) {
-    this.tagList.setItems(tagList.sorted());
+  /** Sets tagList with listOfTags */
+  void setIndependentTagList(ObservableList<String> listOfTags) {
+    this.tagList.setItems(listOfTags.sorted());
   }
 
   /**
@@ -101,5 +127,10 @@ public class IndependentTagViewController {
           db.setContent(content);
           event.consume();
         });
+  }
+
+  /** Sets access to a tag view controller */
+  void setTagViewController(TagViewController tagViewController) {
+    this.tagViewController = tagViewController;
   }
 }

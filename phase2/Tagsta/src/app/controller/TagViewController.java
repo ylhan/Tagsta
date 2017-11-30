@@ -117,7 +117,7 @@ public class TagViewController {
    *
    * @param tags the list of tags to add
    */
-  private void addTags(List<String> tags) {
+  void addTags(List<String> tags) {
     File oldFile = imageManager.getFile();
     // Add all tags to the image manager and reload the tags in the tag view
     for (String tag : tags) {
@@ -206,6 +206,9 @@ public class TagViewController {
 
       // Load the controller
       independentTagViewController = loader.getController();
+
+      // Set TagViewController access in IndependentTagViewController
+      independentTagViewController.setTagViewController(this);
     } catch (IOException e) {
       e.printStackTrace();
     }
