@@ -28,7 +28,7 @@ public class FileManager {
    */
   public static void createLogHandler(){
     try{
-      FileManager.logHandler = new FileHandler("log.txt");
+      FileManager.logHandler = new FileHandler("log.txt",true);
       FileManager.logHandler.setLevel(Level.ALL);
       FileManager.logHandler.setFormatter(new SimpleFormatter());
     }
