@@ -77,18 +77,7 @@ public class ImageManager implements Serializable {
     //Doesn't do anything if the tag only contained spaces
     if (!tempTag.isEmpty()) {
       //Only adds the tag if the tag contains only non special characters
-      added = tempTag.matches("^[a-zA-Z0-9]*$");
-      if (!added) {
-        ExceptionDialogPopup
-            .createExceptionPopup("Error adding tag", "That tag contains an illegal character");
-      }
-      //Checks whether or not the the tag has already been added to the current iteration of tags
-      if (tags.contains(tempTag)) {
-        ExceptionDialogPopup
-            .createExceptionPopup("Error adding tag",
-                "Image already contains this tag!");
-        added = false;
-      }
+      added = TagManager.isValidTag(new ArrayList<String>(this.tags), tempTag);
       //Actions to take if the tag is determined to be added
       if (added) {
         tags.add(tag);

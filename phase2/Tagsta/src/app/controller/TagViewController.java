@@ -292,4 +292,8 @@ public class TagViewController {
           event.consume();
         });
   }
+
+  ImageManager getImageManager() {
+    return this.imageManager;
+  }
 }

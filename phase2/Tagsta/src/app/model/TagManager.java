@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import app.controller.ExceptionDialogPopup;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -68,7 +69,9 @@ public class TagManager {
    * @param tag The file name with tags to add
    */
   public void addIndependentTag(String tag){
-    if(!listOfTags.contains(tag)) {
+    //Trims the tag to remove spaces
+    tag = tag.trim();
+    if(TagManager.isValidTag(this.listOfTags, tag)) {
         listOfTags.add(tag);
       }
     FileManager.storeTagsList(this.listOfTags);
@@ -155,4 +158,19 @@ public class TagManager {
     return temp;
   }
 
+  public static boolean isValidTag(ArrayList<String> list, String tag){
+    boolean valid = tag.matches("^[a-zA-Z0-9]*$");
+    if (!valid) {
+      ExceptionDialogPopup
+              .createExceptionPopup("Error adding tag", "That tag contains an illegal character");
+    }
+    //Checks whether or not the the tag has already been added to the current iteration of tags
+    if (list.contains(tag)) {
+      ExceptionDialogPopup
+              .createExceptionPopup("Error adding tag",
+                      "The list of current tags already contains this tag!");
+      valid = false;
+    }
+    return valid;
+  }
 }

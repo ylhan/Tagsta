@@ -30,6 +30,43 @@ class ImageManagerTest {
   void ImageManagerPreviousNamesTest() throws URISyntaxException{
     ImageManager test = this.getImageManager();
     assertEquals(1, test.getPrevNames().size());
-    assertEquals("pic.png", test.getPrevNames().get(0));
+    assertEquals("pic @arbitrary", test.getName());
   }
+
+  @Test
+  void ImageManagerAddTagsTest() throws URISyntaxException{
+    ImageManager test = this.getImageManager();
+    test.addTag("test");
+    assertEquals(2, test.getPrevNames().size());
+    assertEquals("pic @arbitrary @test", test.getName());
+    test.removeTag("test");
+  }
+
+  @Test
+  void ImageManagerRemoveTagsTest() throws URISyntaxException{
+    ImageManager test = this.getImageManager();
+    test.removeTag("arbitrary");
+    assertEquals(2, test.getPrevNames().size());
+    assertEquals("pic", test.getName());
+    test.addTag("arbitrary");
+  }
+
+  @Test
+  void ImageManagerRevertTest() throws URISyntaxException{
+    ImageManager test = this.getImageManager();
+    test.removeTag("arbitrary");
+    test.revert(test.getPrevNames().get(0));
+    assertEquals(3, test.getPrevNames().size());
+    assertEquals("pic @arbitrary", test.getName());
+  }
+
+  @Test
+  void ImageManagerToStringTest() throws URISyntaxException{
+    ImageManager test = this.getImageManager();
+    assertEquals("pic @arbitrary.png", test.toString());
+  }
+
+
+
+
 }

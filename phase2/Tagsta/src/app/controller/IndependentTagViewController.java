@@ -29,28 +29,10 @@ public class IndependentTagViewController {
   private void addTag() {
     // Get the text from the text-field
     String tag = tagListTextField.getText();
-    // Trim off whitespace
-    tag = tag.trim();
-    // Ensure there is currently and image and the text field has text
-    if (!tag.equals("")) {
-      boolean added = tag.matches("^[a-zA-Z0-9]*$");
-      if (!added) {
-        ExceptionDialogPopup.createExceptionPopup(
-            "Error adding tag", "That tag contains an illegal character");
-      }
-      // Checks whether or not the the tag has already been added to the current iteration of tags
-      if (main.getTagManager().getTagsList().contains(tag)) {
-        ExceptionDialogPopup.createExceptionPopup(
-            "Error adding tag", "Image already contains this tag!");
-        added = false;
-      }
-      // If tag is valid, update list of tags
-      if (added) {
+
         main.getTagManager().addIndependentTag(tag);
         setIndependentTagList(main.getTagManager().getTagsList());
-      }
-    }
-    // Clear the text from the text-field
+ // Clear the text from the text-field
     tagListTextField.clear();
   }
 
@@ -61,7 +43,7 @@ public class IndependentTagViewController {
    */
   @FXML
   private void handleClick(MouseEvent event) {
-    if (event.getButton().equals(MouseButton.PRIMARY))
+    if (this.tagViewController.getImageManager() != null && event.getButton().equals(MouseButton.PRIMARY))
       if (event.getClickCount() == 2) {
         List<String> tagItem = new ArrayList<>();
         tagItem.add(tagList.getSelectionModel().getSelectedItem());
@@ -77,7 +59,7 @@ public class IndependentTagViewController {
    */
   @FXML
   private void handleKeyEnter(KeyEvent keyPressed) {
-    if (keyPressed.getCode().equals(KeyCode.ENTER)) {
+    if (this.tagViewController.getImageManager() != null && keyPressed.getCode().equals(KeyCode.ENTER)) {
       List<String> tagItem = new ArrayList<>();
       tagItem.addAll(tagList.getSelectionModel().getSelectedItems());
       this.tagViewController.addTags(tagItem);
