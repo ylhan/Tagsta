@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeCell;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -113,6 +114,7 @@ public class TagViewController {
 
   /**
    * Add all tags in this list of tags to the tag view and the image
+   *
    * @param tags the list of tags to add
    */
   private void addTags(List<String> tags) {
@@ -276,8 +278,11 @@ public class TagViewController {
     // Define the action to take when something is dragged over the tag view
     tagView.setOnDragOver(
         (DragEvent event) -> {
-          // Make sure the source of the drag isn't this tagView and there are tags to move
-          if (event.getGestureSource() != tagView && event.getDragboard().hasFiles()) {
+          // Make sure the source of the drag isn't this tagView, there are tags to move, and that
+          // the source of the event is not the directory view
+          if (!(event.getGestureSource() instanceof TreeCell)
+              && event.getGestureSource() != tagView
+              && event.getDragboard().hasFiles()) {
             event.acceptTransferModes(TransferMode.MOVE);
           }
           event.consume();
