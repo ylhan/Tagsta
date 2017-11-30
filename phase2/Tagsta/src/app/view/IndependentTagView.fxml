@@ -4,8 +4,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuItem?>
 
-
-<ListView fx:id="tagList" onMouseClicked="#handleClick" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.IndependentTagViewController">
+<ListView fx:id="tagList" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.IndependentTagViewController">
    <contextMenu>
       <ContextMenu>
         <items>
