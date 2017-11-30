@@ -1,5 +1,5 @@
 George Ly: Worked on the Model portion of the application. Main contributor of ImageManager class, partial contributor of FileManager & TagManager. Created help.txt. Contributor in 
-planning of interaction of model & initial design of UI.
+planning of interaction of model & initial design of UI. Created unit tests, changed the algorithms of getting ImageMangers. Suggested methods for saving. Created the help files.
 
 Amritpal Aujla: 
 - Proposed and contributed to planning initial model plan and UML diagrams, use of MVC and SOLID principles, serialization, config, and helped design UI. 
