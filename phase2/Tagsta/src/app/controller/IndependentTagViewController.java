@@ -1,7 +1,6 @@
 package app.controller;
 
 import app.Tagsta;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -9,21 +8,22 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.*;
 
-import java.util.HashSet;
-
+/** Controller for the independent tag view list  */
 public class IndependentTagViewController {
+  // Reference to list of tags
   @FXML private ListView<String> tagList;
+  // Reference text field entry for adding tags
   @FXML private TextField tagListTextField;
 
+  // Reference to main application
   private Tagsta main;
 
+  /** Updates items of tagList to list of tags from TagManager */
   private void updateTagList() {
-    ObservableList<String> uniqueTagList =
-        FXCollections.observableArrayList(new HashSet<>(main.getTagManager().getTagsList()));
-    tagList.setItems(uniqueTagList.sorted());
+    tagList.setItems(main.getTagManager().getTagsList());
   }
 
-  /** Add a tag to the image */
+  /** Add a tag to the list */
   @FXML
   private void addTag() {
     // Get the text from the text-field
@@ -43,6 +43,7 @@ public class IndependentTagViewController {
             "Error adding tag", "Image already contains this tag!");
         added = false;
       }
+      // If tag is valid, update list of tags
       if (added) {
         main.getTagManager().addIndependentTag(tag);
         updateTagList();
@@ -51,15 +52,6 @@ public class IndependentTagViewController {
     // Clear the text from the text-field
     tagListTextField.clear();
   }
-
-  //
-  //    private void addTagList(String tag) {
-  //        if (!tagListView.getItems().contains(tag)) {
-  //            ObservableList<String> tempList = tagListView.getItems();
-  //            tempList.add(tag);
-  //            tagListView.setItems(tempList.sorted());
-  //        }
-  //    }
 
   //      @FXML
   //      private void handleClick(MouseEvent event) {
@@ -93,8 +85,10 @@ public class IndependentTagViewController {
     this.main = mainApp;
   }
 
+  /** Initializes controller with appropriate settings for ListView tagList */
   @FXML
   private void initialize() {
+    // Enables option to select multiple items
     tagList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     // Define the appropriate action when dragging items from the tagList
     tagList.setOnDragDetected(
