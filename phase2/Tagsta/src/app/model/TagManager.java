@@ -174,7 +174,7 @@ public class TagManager {
     if (list.contains(tag) ) {
       ExceptionDialogPopup
               .createExceptionPopup("Error adding tag",
-                      "The list of current tags already contains this tag!");
+                      "The list of current tags already contains the tag: " + tag + "!");
       valid = false;
     }
     return valid;
