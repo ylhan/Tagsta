@@ -98,8 +98,7 @@ public class FileManager {
    */
   static void storeImageManager(ImageManager imageManager){
     try{
-      Path path = Paths.get("imagemanagers");
-      Files.createDirectories(path);
+      FileManager.createImageManagersFolder();
       OutputStream file = new FileOutputStream("imagemanagers" + File.separator +
                                                 imageManager.getFileNumber() + ".ser");
       OutputStream buffer = new BufferedOutputStream(file);
@@ -111,8 +110,7 @@ public class FileManager {
     catch (IOException ex){
       ExceptionDialogPopup
           .createExceptionPopup("An error occurred while saving Image File data",
-              //"The file could not be saved");
-          ex.getMessage());
+              "The file could not be saved");
     }
   }
 
@@ -120,15 +118,14 @@ public class FileManager {
    * Finds the serialized ImageManager corresponding to the given file number and returns it. if
    * there is no such ImageManager, returns null
    *
-   * @param fileNumber The number of the ImageManager to be gotten
+   * @param serFile The number of the ImageManager to be gotten
    * @return The ImageManager corresponding to the given id and null if no such ImageManager exists
    */
   @SuppressWarnings("unchecked")
-  private static ImageManager loadImageManager(long fileNumber) {
+  private static ImageManager loadImageManager(File serFile) {
     ImageManager imageManager;
     try {
-      InputStream file = new FileInputStream("imagemanagers" + File.separator +
-          fileNumber + ".ser");
+      InputStream file = new FileInputStream(serFile);
       InputStream buffer = new BufferedInputStream(file);
       ObjectInput input = new ObjectInputStream(buffer);
 
@@ -136,12 +133,12 @@ public class FileManager {
       input.close();
     } catch (IOException ex) {
       ExceptionDialogPopup.createExceptionPopup("An error occurred while loading Image data",
-          "Image " + fileNumber + " could not be found or loaded");
+          "Image " + serFile + " could not be found or loaded");
       return null;
     } catch (ClassNotFoundException ex) {
       ExceptionDialogPopup
           .createExceptionPopup("An error occurred while finding saved Image data",
-              "The changes made to the image " + fileNumber + " in the past could not be loaded");
+              "The changes made to the image " + serFile + " in the past could not be loaded");
       return null;
     }
     return imageManager;
@@ -190,6 +187,16 @@ public class FileManager {
     return listOfTags;
   }
 
+  private static void createImageManagersFolder(){
+    try{
+      Files.createDirectories(Paths.get("imagemanagers"));
+    }
+    catch (IOException ex){
+      ExceptionDialogPopup.createExceptionPopup("The image files could not loaded",
+          "The imagemanagers folder could not be created");
+    }
+  }
+
   /**
    * Finds the serialized ImageManagers in the working directory, and creates an empty serialized
    * list if there are none, and returns it
@@ -199,8 +206,14 @@ public class FileManager {
   @SuppressWarnings("unchecked")
   static ArrayList<ImageManager> loadImageManagers() {
     ArrayList<ImageManager> imageManagers = new ArrayList<>();
-    for(long i = 1; i <= FileManager.getNumberOfImageManagers(); i++){
-      imageManagers.add(FileManager.loadImageManager(i));
+    File folder = new File("imagemanagers");
+    if(!folder.exists()){
+      FileManager.createImageManagersFolder();
+    }
+    if (folder.listFiles() != null) {
+      for (File file : folder.listFiles()) {
+        imageManagers.add(FileManager.loadImageManager(file));
+      }
     }
     return imageManagers;
   }
