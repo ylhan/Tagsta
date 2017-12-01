@@ -12,7 +12,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /***
- * The class storing the information about the Image.
+ * The class storing the information about the Image. Responsible for storing the current tags of the Image,
+ * the previous names of the image, the current name of the image, the path to the image, and the
+ * serializable number by which this ImageManager is represented by.
  */
 public class ImageManager implements Serializable {
 
