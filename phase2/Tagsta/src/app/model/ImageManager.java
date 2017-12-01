@@ -11,6 +11,9 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+/***
+ * The class storing the information about the Image.
+ */
 public class ImageManager implements Serializable {
 
   private ObservableList<String> tags;
@@ -20,6 +23,10 @@ public class ImageManager implements Serializable {
   private String name;
   private Path imagePath;
 
+  /***
+   * Creates an instance of ImageManager
+   * @param path The path to the image.
+   */
   public ImageManager(Path path) {
     //Gets the current number of ImageManagers in order to create the correct serializable file
     this.fileNumber = FileManager.getNumberOfImageManagers() + 1;
