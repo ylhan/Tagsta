@@ -163,6 +163,7 @@ public class MenuController {
       logWindow.show();
       // Add the logs to be displayed
       LogViewController lvc = loader.getController();
+      lvc.setStage(logWindow);
       lvc.setLog(FileManager.getLog());
     } catch (IOException e) {
       e.printStackTrace();
