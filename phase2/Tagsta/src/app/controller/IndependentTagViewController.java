@@ -42,32 +42,37 @@ public class IndependentTagViewController {
   }
 
   /**
-   * Handles clicking of tagsList items and attempts to add a tag if double-clicked
+   * Handles clicking of tagsList items and attempts to add a tag to current image if double-clicked
    *
    * @param event the mouse click
    */
   @FXML
   private void handleClick(MouseEvent event) {
-    if (this.tagViewController.getImageManager() != null && event.getButton().equals(MouseButton.PRIMARY))
+    if (event.getButton().equals(MouseButton.PRIMARY))
       if (event.getClickCount() == 2) {
-        List<String> tagItem = new ArrayList<>();
-        tagItem.add(tagList.getSelectionModel().getSelectedItem());
-        this.tagViewController.addTags(tagItem);
+        addToImage();
       }
   }
 
   /**
-   * Handles key presses when tagsList items are selected and attempts to add one or more tags if
+   * Handles key presses when tagsList items are selected and attempts to selected tags if
    * ENTER is pressed
    *
    * @param keyPressed the key pressed on the keyboard
    */
   @FXML
   private void handleKeyEnter(KeyEvent keyPressed) {
-    if (this.tagViewController.getImageManager() != null && keyPressed.getCode().equals(KeyCode.ENTER)) {
-      List<String> tagItem = new ArrayList<>();
-      tagItem.addAll(tagList.getSelectionModel().getSelectedItems());
-      this.tagViewController.addTags(tagItem);
+    if (keyPressed.getCode().equals(KeyCode.ENTER)) addToImage();
+  }
+
+  /** Helper method for adding tags from tagList to image */
+  @FXML
+  private void addToImage() {
+    if (this.tagViewController.getImageManager() != null &&
+            !tagList.getSelectionModel().getSelectedItems().contains(null)) {
+      List<String> tagItems = new ArrayList<>();
+      tagItems.addAll(tagList.getSelectionModel().getSelectedItems());
+      if (!tagItems.contains(null)) this.tagViewController.addTags(tagItems);
       tagList.getSelectionModel().clearSelection();
     }
   }

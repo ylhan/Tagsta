@@ -1,5 +1,4 @@
-George Ly: Worked on the Model portion of the application. Main contributor of ImageManager class, partial contributor of FileManager & TagManager. Created help.txt. Contributor in 
-planning of interaction of model & initial design of UI. Created unit tests, changed the algorithms of getting ImageMangers. Suggested methods for saving. Created the help files.
+George Ly: Worked on the Model portion of the application. Main contributor of ImageManager class, partial contributor of FileManager & TagManager. Created help.txt. Contributor in planning of interaction of model & initial design of UI. Created unit tests, changed the algorithms of getting ImageMangers. Suggested methods for saving. Created the help files.
 
 Amritpal Aujla: 
 - Proposed and contributed to planning initial model plan and UML diagrams, use of MVC and SOLID principles, serialization, config, and helped design UI. 
@@ -9,7 +8,6 @@ Amritpal Aujla:
 - Updated help.txt for phase2 and added additional info for running the program.
 
 Yilun (Allen) Han: Added support for more image formats, changed show log to display the log for the whole program, refactored and modified the view
-and controllers to use MVC and adhere to SOLID principles, added search feature, added load previous session feature, assisted with independent tag (drag and drop tags),
-loaded/stored more configuration options, made adjustments to the look & feel of the UI, and assisted with JUnit tests. Created updated ui_design.pdf and design.pdf
+and controllers to use MVC and adhere to SOLID principles, added search feature, added load previous session feature, assisted with independent tag (drag and drop tags), loaded/stored more configuration options, made adjustments to the look & feel of the UI, and assisted with JUnit tests. Created updated ui_design.pdf and design.pdf
 
-Samin Khan: Contributed to design of UI and program planning. Handled front end development by programming view related classes. Mainly dealt with how the image is viewed and how tags are entered. Created methods for reverting to old names of image. Loaded icons and contributed programming of the MenuBar and its options. Partial contributor to ImageManager. Assisted with facilitating UI changes to name and tags, and for creating checks for valid tags.
+Samin Khan: Contributed to design of UI and program planning. Handled front end development by programming view related classes. Mainly dealt with how the image is viewed and how tags are entered. Created methods for reverting to old names of image. Loaded icons and contributed programming of the MenuBar and its options. Partial contributor to ImageManager. Assisted with facilitating UI changes to name and tags, and for creating checks for valid tags. Main contributor to IndependentTagViewController.java and IndependentTagView.fxml, which provided the program a GUI for the cumulative list of tags for each directory opened. Implemented ability to manage this list through the UI by having options to add and delete tags, and having option to add tags to current image open from the list.
