@@ -14,13 +14,13 @@
 * Theming (dark/light) for the interface
 * Basic image manipulation
 
-# Technologies Used
+## Technologies Used
 * Java
 * JavaFX
    * CSS 
    * XML
    
-# Deployment
+## Deployment
 #####
 Currently, the project requires manually cloning the repository and compiling it with JDK8 (other versions may work). The project has documentation and can be extended or changed to your liking. 
 
